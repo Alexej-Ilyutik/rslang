@@ -4,7 +4,7 @@ export const renderHeader = (): void => {
   const headerBlock = `
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
-          <a class="navbar-brand" href="#">
+          <a class="navbar-brand" href="#/main">
             <img src="./assets/united-kingdom.svg" alt="logo" width="75" height="65" />
             <div>RS Lang</div>
           </a>
@@ -25,7 +25,7 @@ export const renderHeader = (): void => {
                 <a
                   class="nav-link fw-bolder fs-5 active"
                   aria-current="page"
-                  href="#"
+                  href="#/main"
                   >Главная</a
                 >
               </li>

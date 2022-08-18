@@ -18,7 +18,7 @@ const main = document.getElementById('main') as HTMLElement;
 
 const onNavigate = (location: string): void => {
   switch (location) {
-    case '#':
+    case '#/main':
       renderMain();
       break;
     case '#/book':
@@ -43,7 +43,7 @@ window.addEventListener('click', (e: Event) => {
   const target = e.target as HTMLAnchorElement;
 
   if (target.classList.contains('nav-link')) {
-    const location = target.href.slice(22);
+    const location = target.href.split('/').slice(-2).join('/');
     onNavigate(location);
   }
 });
@@ -52,6 +52,6 @@ const brand = document.querySelector('.navbar-brand') as HTMLElement;
 
 brand.addEventListener('click', (e: Event) => {
   const target = e.currentTarget as HTMLAnchorElement;
-  const location = target.href.slice(22);
+  const location = target.href.split('/').slice(-2).join('/');
   onNavigate(location);
 });
