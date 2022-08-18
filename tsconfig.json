@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "module": "esnext",
+    "allowJs": true,
+    "sourceMap": true,
+    "outDir": "./dist/",
+    "downlevelIteration": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "strictFunctionTypes": true,
+
+    "strictPropertyInitialization": true,
+    "alwaysStrict": true,
+
+    "moduleResolution": "node",
+
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  }
+}
