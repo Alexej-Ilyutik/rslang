@@ -8,30 +8,29 @@ import './style.scss';
 
 export const renderPage = (): void => {
   renderHeader();
+  renderMain();
   renderFooter();
-  // renderMain();
 };
 
 renderPage();
 
 const main = document.getElementById('main') as HTMLElement;
 
-
 const onNavigate = (location: string): void => {
   switch (location) {
-    case '/':
-      main.innerHTML = `<h1>Main</h1>`;
+    case '#':
+      renderMain();
       break;
-    case '/book':
+    case '#/book':
       main.innerHTML = `<h1>Book</h1>`;
       break;
-    case '/games':
+    case '#/games':
       main.innerHTML = `<h1>Games</h1>`;
       break;
-    case '/statistic':
+    case '#/statistic':
       main.innerHTML = `<h1>Statistic</h1>`;
       break;
-    case '/command':
+    case '#/command':
       main.innerHTML = `<h1>Command</h1>`;
       break;
     default:
@@ -40,27 +39,19 @@ const onNavigate = (location: string): void => {
   }
 };
 
-window.addEventListener('load', ()=>{
-  const location = window.location.hash;
-  if(location){
+window.addEventListener('click', (e: Event) => {
+  const target = e.target as HTMLAnchorElement;
+
+  if (target.classList.contains('nav-link')) {
+    const location = target.href.slice(22);
     onNavigate(location);
   }
-})
+});
 
-// const routes = {
-//   '/': home,
-//   '/book': book,
-//   '/games': games,
-// };
+const brand = document.querySelector('.navbar-brand') as HTMLElement;
 
-// const main = document.getElementById('main') as HTMLElement;
-// main.innerHTML = routes[window.location.pathname];
-
-// const onNavigate = (pathname: void) => {
-//   window.history.pushState({}, pathname, window.location.origin + pathname);
-//   main.innerHTML = routes[pathname];
-// };
-
-// window.onpopstate = (): void => {
-//   main.innerHTML = routes[window.location.pathname];
-// };
+brand.addEventListener('click', (e: Event) => {
+  const target = e.currentTarget as HTMLAnchorElement;
+  const location = target.href.slice(22);
+  onNavigate(location);
+});
