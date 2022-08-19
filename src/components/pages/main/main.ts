@@ -1,34 +1,16 @@
-export const renderMain = (): string =>
-  `
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container-fluid">
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-      <a class="navbar-brand" href="#">RS Lang</a>
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#" onclick="onNavigate('/'); return false;">Главная</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#" onclick="onNavigate('/textBook'); return false;">Учебник</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#" onclick="onNavigate('/textBook'); return false;">Игры</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#" onclick="onNavigate('/textBook'); return false;">Статистика</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#" onclick="onNavigate('/textBook'); return false;">Учебник</a>
-        </li>
+import './main.scss';
 
-      </ul>
-      <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
+export const renderMain = (): void => {
+  const mainBlock = `
+    <div class="card bg-dark text-white">
+      <img src="../../../assets/london.jpg" class="card-img" alt="london">
+      <div class="card-img-overlay text-center">
+        <h5 class="card-title main-title">Card title</h5>
+        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+        <p class="card-text">Last updated 3 mins ago</p>
+      </div>
     </div>
-  </div>
-</nav>`;
+`;
+  const main = document.getElementById('main') as HTMLElement;
+  main.innerHTML = mainBlock;
+};

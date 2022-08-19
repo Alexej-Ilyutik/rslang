@@ -1,34 +1,57 @@
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { renderHeader } from './components/header/header';
+import { renderFooter } from './components/footer/footer';
 import { renderMain } from './components/pages/main/main';
 import { textBook } from './components/pages/textBook/textBook';
 import './style.scss';
 
-// renderPage();
-
 export const renderPage = (): void => {
-  const pageContent = `
-         ${renderMain()}
-`;
-  const app = document.createElement('div');
-  app.innerHTML = pageContent;
-  document.body.appendChild(app);
+  renderHeader();
+  renderMain();
+  renderFooter();
 };
+
 renderPage();
 
-// const routes = {
-//   '/': main,
-//   '/textBook': textBook,
-// };
+const main = document.getElementById('main') as HTMLElement;
 
-// const rootDiv = document.getElementById('root') as HTMLElement;
-// rootDiv.innerHTML = routes[window.location.pathname];
+const onNavigate = (location: string): void => {
+  switch (location) {
+    case '#/main':
+      renderMain();
+      break;
+    case '#/book':
+      main.innerHTML = `<h1>Book</h1>`;
+      break;
+    case '#/games':
+      main.innerHTML = `<h1>Games</h1>`;
+      break;
+    case '#/statistic':
+      main.innerHTML = `<h1>Statistic</h1>`;
+      break;
+    case '#/command':
+      main.innerHTML = `<h1>Command</h1>`;
+      break;
+    default:
+      main.innerHTML = `<h1>Main</h1>`;
+      break;
+  }
+};
 
-// const onNavigate = pathname => {
-//   window.history.pushState({}, pathname, window.location.origin + pathname);
-//   rootDiv.innerHTML = routes[pathname];
-// };
+window.addEventListener('click', (e: Event) => {
+  const target = e.target as HTMLAnchorElement;
 
-// window.onpopstate = () => {
-//   rootDiv.innerHTML = routes[window.location.pathname];
-// };
+  if (target.classList.contains('nav-link')) {
+    const location = target.href.split('/').slice(-2).join('/');
+    onNavigate(location);
+  }
+});
+
+const brand = document.querySelector('.navbar-brand') as HTMLElement;
+
+brand.addEventListener('click', (e: Event) => {
+  const target = e.currentTarget as HTMLAnchorElement;
+  const location = target.href.split('/').slice(-2).join('/');
+  onNavigate(location);
+});
