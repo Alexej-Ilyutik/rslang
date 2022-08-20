@@ -1,5 +1,5 @@
 :root {
-  --bg-color:#FEE2B3;
+  --bg-color: #fee2b3;
 }
 
 * {
@@ -10,10 +10,11 @@
   font-weight: 500;
 }
 
-
 body {
   min-height: 100vh;
   background-color: var(--bg-color);
   overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
-
