@@ -6,7 +6,7 @@ import { renderMain } from './pages/main/main';
 import { deleteClassActive } from './services/deleteClassActive';
 import './style.scss';
 
-export const renderPage = (): void => {
+const renderPage = (): void => {
   renderHeader();
   renderMain();
   renderFooter();

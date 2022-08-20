@@ -2,10 +2,10 @@ import './header.scss';
 
 export const renderHeader = (): void => {
   const headerBlock = `
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg mb-5">
         <div class="container">
           <a class="navbar-brand" href="#/main">
-            <img src="./assets/united-kingdom.svg" alt="logo" width="75" height="65" />
+            <img src="./assets/flag-UK.svg" alt="logo" width="75" height="55" />
             <div>RS Lang</div>
           </a>
           <button
@@ -49,10 +49,10 @@ export const renderHeader = (): void => {
             </ul>
             <ul class="navbar-nav mb-2 mb-lg-0 navbar-btn-group">
               <li class="nav-item">
-                <button type="button" class="btn btn-primary">Log in</button>
+                <button type="button" class="btn nav-btn">Log in</button>
               </li>
                <li class="nav-item">
-                <button type="button" class="btn btn-secondary">Register</button>
+                <button type="button" class="btn btn-warning nav-btn">Register</button>
               </li>
             </ul>
           </div>
