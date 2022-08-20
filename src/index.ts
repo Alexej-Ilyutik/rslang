@@ -2,8 +2,8 @@ import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { renderHeader } from './components/header/header';
 import { renderFooter } from './components/footer/footer';
-import { renderMain } from './components/pages/main/main';
-import { textBook } from './components/pages/textBook/textBook';
+import { renderMain } from './pages/main/main';
+import { textBook } from './pages/textBook/textBook';
 import './style.scss';
 
 export const renderPage = (): void => {
