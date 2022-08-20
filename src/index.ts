@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { renderHeader } from './components/header/header';
 import { renderFooter } from './components/footer/footer';
 import { renderMain } from './pages/main/main';
+import { deleteClassActive } from './services/deleteClassActive';
 import './style.scss';
 
 export const renderPage = (): void => {
@@ -14,6 +15,9 @@ export const renderPage = (): void => {
 renderPage();
 
 const main = document.getElementById('main') as HTMLElement;
+const mainLink = document.querySelector('.main-link') as HTMLElement;
+
+const navLinks = Array.from(document.getElementsByClassName('nav-link'));
 
 const onNavigate = (location: string): void => {
   switch (location) {
@@ -42,7 +46,11 @@ window.addEventListener('click', (e: Event) => {
   const target = e.target as HTMLAnchorElement;
 
   if (target.classList.contains('nav-link')) {
+
+    deleteClassActive(navLinks);
+
     const location = target.href.split('/').slice(-2).join('/');
+    target.classList.add('active');
     onNavigate(location);
   }
 });
@@ -50,7 +58,10 @@ window.addEventListener('click', (e: Event) => {
 const brand = document.querySelector('.navbar-brand') as HTMLElement;
 
 brand.addEventListener('click', (e: Event) => {
-  const target = e.currentTarget as HTMLAnchorElement;
-  const location = target.href.split('/').slice(-2).join('/');
+  deleteClassActive(navLinks);
+  const curTarget = e.currentTarget as HTMLAnchorElement;
+  const location = curTarget.href.split('/').slice(-2).join('/');
+
+  mainLink.classList.add('active');
   onNavigate(location);
 });
