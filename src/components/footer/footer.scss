@@ -1,0 +1,25 @@
+#footer {
+  background-color: var(--footer-bg);
+  margin-top: 3rem;
+  .footer__container {
+    .footer__brand {
+      text-decoration: none;
+      p{
+        color: var(--bs-white);
+      }
+    }
+    .footer__description{
+      color: var(--bs-white);
+    }
+    .footer__title{
+      color: var(--bs-white);
+    }
+  }
+  .footer__resources{
+     text-decoration: none;
+  }
+  .footer__github{
+    padding: 0.3rem 0.35rem 0.1rem 0.35rem;
+    border-radius: 50%;
+  }
+}
