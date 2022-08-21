@@ -36,11 +36,12 @@
     border: none;
     margin-bottom: 3rem;
   }
-  .card__video{
+  .card__video {
     background-color: var(--secondary-color);
     border: none;
     padding: 2rem;
-    h2{
+    margin-bottom: 5rem;
+    h2 {
       font-weight: 700;
     }
   }
@@ -143,6 +144,56 @@
         .card-btn {
           padding: 0.3rem;
         }
+      }
+    }
+  }
+}
+
+.team-boxed {
+  h2 {
+    font-weight: 700;
+  }
+  .item {
+    text-align: center;
+    .box {
+      text-align: center;
+      padding: 30px;
+      background-color: var(--secondary-color);
+      margin-bottom: 30px;
+      border-radius: 0.3rem;
+    }
+    .name {
+      font-weight: bold;
+      margin-top: 28px;
+      margin-bottom: 8px;
+      color: inherit;
+    }
+    .title {
+      text-transform: uppercase;
+      font-weight: bold;
+      color: #d0d0d0;
+      letter-spacing: 2px;
+      font-size: 13px;
+    }
+    .description {
+      font-size: 15px;
+      margin-top: 15px;
+      margin-bottom: 20px;
+    }
+    img {
+      max-width: 160px;
+    }
+  }
+  .social {
+    font-size: 18px;
+    color: var(--bs-gray);
+    a {
+      color: inherit;
+      margin: 0 10px;
+      display: inline-block;
+      opacity: 0.7;
+      &:hover {
+        opacity: 1;
       }
     }
   }

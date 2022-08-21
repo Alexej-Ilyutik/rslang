@@ -26,25 +26,25 @@ export const renderHeader = (): void => {
                   class="nav-link fw-bolder fs-5 active main-link"
                   aria-current="page"
                   href="#/main"
-                  >Главная</a
+                  >Home</a
                 >
               </li>
               <li class="nav-item mx-3">
                 <a class="nav-link fw-bolder fs-5" href="#/book"
-                  >Учебник</a
+                  >Book</a
                 >
               </li>
               <li class="nav-item mx-3">
                 <a class="nav-link fw-bolder fs-5" href="#/games"
-                >Игры</a>
+                >Games</a>
               </li>
               <li class="nav-item mx-3">
                 <a class="nav-link fw-bolder fs-5" href="#/statistic"
-                >Статистика</a>
+                >Statistics</a>
               </li>
               <li class="nav-item mx-3">
                 <a class="nav-link fw-bolder fs-5" href="#/command"
-                >Команда</a>
+                >Team</a>
               </li>
             </ul>
             <ul class="navbar-nav mb-2 mb-lg-0 navbar-btn-group">
