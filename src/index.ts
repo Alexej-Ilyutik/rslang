@@ -24,7 +24,7 @@ const onNavigate = (location: string): void => {
     case '#/book':
       // main.innerHTML = `<h1>Book</h1>`;
       renderTextBook();
-      renderTextBoxPage(1);
+      renderTextBoxPage();
       break;
     case '#/games':
       main.innerHTML = `<h1>Games</h1>`;

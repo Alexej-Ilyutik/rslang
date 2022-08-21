@@ -37,7 +37,7 @@ export const renderTextBook = (): void => {
     main.innerHTML = textBook;
   }
 
-  const arrayOfWords = [
+  const arrayOfWords: pageOfWordsInterface = [
     {
       "id": "1",
       "group": 1,
@@ -69,6 +69,38 @@ export const renderTextBook = (): void => {
       "wordTranslate": "string",
       "textMeaningTranslate": "string",
       "textExampleTranslate": "string"
+    },
+    {
+      "id": "3",
+      "group": 1,
+      "page": 2,
+      "word": "duck3",
+      "image": "../../assets/duck.png",
+      "audio": "string",
+      "audioMeaning": "string",
+      "audioExample": "string",
+      "textMeaning": "string",
+      "textExample": "string",
+      "transcription": "string",
+      "wordTranslate": "string",
+      "textMeaningTranslate": "string",
+      "textExampleTranslate": "string"
+    },
+    {
+      "id": "4",
+      "group": 1,
+      "page": 2,
+      "word": "duck4",
+      "image": "../../assets/duck.png",
+      "audio": "string",
+      "audioMeaning": "string",
+      "audioExample": "string",
+      "textMeaning": "string",
+      "textExample": "string",
+      "transcription": "string",
+      "wordTranslate": "string",
+      "textMeaningTranslate": "string",
+      "textExampleTranslate": "string"
     }
   ]; //Delete this!
 
@@ -76,18 +108,20 @@ export const renderTextBook = (): void => {
     //arrayOfWords: pageOfWordsInterface = getWords(pageNumber);
     const wordsList = document.querySelector('.textBook__words-list') as HTMLElement;
     storage.wordsListPage = pageNumber; //update page number
-    const html = arrayOfWords.map((element) => `
-    <li class="textBook__words-list_word-card word-card">
-      <img class="word-card_img" src="${element.image}" alt="${element.word} image"></img>
-      <div class="word-card_information-wrapper">
-        <h2 class="word-card_word-name">${element.word}</h2>
-        <p class="word-card_word-transcription">${element.transcription}</p>
-        <p class="word-card_word-name-translation">${element.wordTranslate}</p>
-        <p class="word-card_word-meaning">${element.textMeaning}</p>
-        <p class="word-card_word-meaning-translation">${element.textMeaningTranslate}</p>
-        <p class="word-card_word-example">${element.textExample}</p>
-        <p class="word-card_word-example-translation">${element.textExampleTranslate}</p>
-      </div>
-    </li>`).join('');
+    const html = arrayOfWords.map((element) => {
+      if (element.page === pageNumber) return `
+      <li class="textBook__words-list_word-card word-card">
+        <img class="word-card_img" src="${element.image}" alt="${element.word} image"></img>
+        <div class="word-card_information-wrapper">
+          <h2 class="word-card_word-name">${element.word}</h2>
+          <p class="word-card_word-transcription">${element.transcription}</p>
+          <p class="word-card_word-name-translation">${element.wordTranslate}</p>
+          <p class="word-card_word-meaning">${element.textMeaning}</p>
+          <p class="word-card_word-meaning-translation">${element.textMeaningTranslate}</p>
+          <p class="word-card_word-example">${element.textExample}</p>
+          <p class="word-card_word-example-translation">${element.textExampleTranslate}</p>
+        </div>
+      </li>`
+    }).join('');
     wordsList.innerHTML = html;
   }
