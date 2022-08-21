@@ -1,7 +1,9 @@
 interface storageInterface {
-  wordsListPage: number;
+  wordsListCurrentPage: number;
+  limitOfPages: number; //delete it
 }
 
 export const storage: storageInterface = {
-  wordsListPage: 1,
+  wordsListCurrentPage: 1,
+  limitOfPages: 4,
 };
