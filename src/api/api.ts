@@ -28,6 +28,19 @@ class API {
       },
       body: JSON.stringify({ "name": `${name}`, "email": `${email}`, "password": `${password}` })
     });
+
+    if (response.status === 417) {
+      throw new Error('User with this email is already registered');
+    }
+
+    if (response.status === 422) {
+      throw new Error('Incorrect email address or password');
+    }
+
+    if (!response.ok) {
+      throw new Error('Oops, something went wrong');
+    }
+
     const content = await response.json();
     console.log(content);
     return content;
@@ -148,7 +161,8 @@ class API {
   //USERS/AGGREGATED WORDS:
 
   static async getAggregatedWords(userId: string, token: string) {
-    const response = await fetch(`${API.users}/${userId}/aggregatedWords?wordsPerPage=3600&filter={"userWord.difficulty":"hard"}`, {
+    const filter = '?wordsPerPage=3600&filter={"userWord.difficulty":"hard"}';
+    const response = await fetch(`${API.users}/${userId}/aggregatedWords${filter}`, {
       headers: {
         'Authorization': `Bearer ${token}`
       },
@@ -234,6 +248,19 @@ class API {
       },
       body: JSON.stringify({ "email": `${email}`, "password": `${password}` })
     });
+
+    if (response.status === 404) {
+      throw new Error('Cannot found user with this email address');
+    }
+
+    if (response.status === 403) {
+      throw new Error('Incorrect email address or password');
+    }
+
+    if (!response.ok) {
+      throw new Error('Oops, something went wrong');
+    }
+
     const content = await response.json();
     console.log(content);
     localStorage.setItem('userAuthenticationData', JSON.stringify(content));
