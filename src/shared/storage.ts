@@ -5,5 +5,5 @@ interface storageInterface {
 
 export const storage: storageInterface = {
   wordsListCurrentPage: 1,
-  limitOfPages: 2,
+  limitOfPages: 10,
 };

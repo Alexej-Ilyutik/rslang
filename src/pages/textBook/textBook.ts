@@ -121,8 +121,15 @@ export const renderPagination = (pageNumber: number, totalPagesNumber: number  =
   const pagination = document.querySelector('.textBook__pagination_list') as HTMLElement;
 
   const maxNumberOfButtons = 8;
+
+  let i = 1;
+  let lastIndex = maxNumberOfButtons;
+  if (pageNumber > maxNumberOfButtons) {
+    i = pageNumber - maxNumberOfButtons + 1;
+    lastIndex = maxNumberOfButtons + i - 1;
+  }
   let numButtonsHtml: string = '';
-  for(let i = 1; i <= totalPagesNumber && i <= maxNumberOfButtons; i++) {
+  for(; i <= totalPagesNumber && i <= lastIndex; i++) {
     let isActive = '';
     if (i === pageNumber) {
       isActive = 'active';
