@@ -1,5 +1,5 @@
 nav {
-  box-shadow: 5px 5px 18px var(--bs-gray);
+  box-shadow: 5px 5px 20px var(--bs-gray);
   z-index: 10;
 }
 
@@ -13,7 +13,26 @@ nav {
   text-align: center;
 }
 
-.navbar-btn-group{
+.navbar-btn-group {
   display: flex;
   gap: 1rem;
+  flex-direction: row;
+  .nav-btn {
+    width: 5.5rem;
+    font-weight: 500;
+    border: 3px solid var(--bs-warning);
+    color: var(--text-color);
+  }
+}
+
+@media (max-width: 530px) {
+  .navbar-brand {
+    img {
+      width: 50px;
+      height: 30px;
+    }
+    div {
+      font-size: 0.8rem;
+    }
+  }
 }
