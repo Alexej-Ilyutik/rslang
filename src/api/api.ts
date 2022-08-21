@@ -3,6 +3,11 @@ class API {
   private static users = `${API.base}/users`;
   private static words = `${API.base}/words`;
 
+  static getJwt() {
+    const user = JSON.parse(localStorage.getItem('userAuthenticationData') as string);
+    return user;
+  }
+
   static async getWords(group: number, page: number) {
     const response = await fetch(`${API.words}?page=${page}&group=${group}`);
     const content = await response.json();
@@ -46,7 +51,8 @@ class API {
     return content;
   };
 
-  static async getUser(userId: string, token: string) {
+  static async getUser() {
+    const {userId, token} = API.getJwt();
     const response = await fetch(`${API.users}/${userId}`, {
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -57,7 +63,8 @@ class API {
     return content;
   };
 
-  static async updateUser(userId: string, email: string, password: string, token: string) {
+  static async updateUser(email: string, password: string) {
+    const {userId, token} = API.getJwt();
     const response = await fetch(`${API.users}/${userId}`, {
       method: 'PUT',
       headers: {
@@ -71,7 +78,8 @@ class API {
     console.log(content);
   };
 
-  static async deleteUser(userId: string, token: string) {
+  static async deleteUser() {
+    const {userId, token} = API.getJwt();
     await fetch(`${API.users}/${userId}`, {
       method: 'DELETE',
       headers: {
@@ -81,20 +89,23 @@ class API {
     localStorage.removeItem('userAuthenticationData');
   };
 
-  static async getNewToken(userId: string, token: string) {
+  static async getNewToken() {
+    const {userId, refreshToken} = API.getJwt();
     const response = await fetch(`${API.users}/${userId}/tokens`, {
       headers: {
-        'Authorization': `Bearer ${token}`,
+        'Authorization': `Bearer ${refreshToken}`,
       },
     });
     const content = await response.json();
+    localStorage.setItem('userAuthenticationData', JSON.stringify(content));
     console.log(content);
     return content;
   };
 
   //USER/WORDS:
 
-  static async getUserWords(userId: string, token: string) {
+  static async getUserWords() {
+    const {userId, token} = API.getJwt();
     const response = await fetch(`${API.users}/${userId}/words`, {
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -105,7 +116,8 @@ class API {
     return content;
   };
 
-  static async createUserWord(userId: string, wordId: string, difficulty: string, token: string) {
+  static async createUserWord(wordId: string, difficulty: string) {
+    const {userId, token} = API.getJwt();
     const response = await fetch(`${API.users}/${userId}/words/${wordId}`, {
       method: 'POST',
       //credentials: 'include',
@@ -121,7 +133,8 @@ class API {
     return content;
   };
 
-  static async getUserWord(userId: string, wordId: string, token: string) {
+  static async getUserWord(wordId: string) {
+    const {userId, token} = API.getJwt();
     const response = await fetch(`${API.users}/${userId}/words/${wordId}`, {
       headers: {
         'Authorization': `Bearer ${token}`
@@ -132,7 +145,8 @@ class API {
     return content;
   }
 
-  static async updateUserWord(userId: string, wordId: string, difficulty: string, token: string) {
+  static async updateUserWord(wordId: string, difficulty: string) {
+    const {userId, token} = API.getJwt();
     const response = await fetch(`${API.users}/${userId}/words/${wordId}`, {
       method: 'PUT',
       headers: {
@@ -147,7 +161,8 @@ class API {
     return content;
   }
 
-  static async deleteUserWord(userId: string, wordId: string, token: string) {
+  static async deleteUserWord(wordId: string) {
+    const {userId, token} = API.getJwt();
     const response = await fetch(`${API.users}/${userId}/words/${wordId}`, {
       method: 'DELETE',
       headers: {
@@ -160,7 +175,8 @@ class API {
 
   //USERS/AGGREGATED WORDS:
 
-  static async getAggregatedWords(userId: string, token: string) {
+  static async getAggregatedWords() {
+    const {userId, token} = API.getJwt();
     const filter = '?wordsPerPage=3600&filter={"userWord.difficulty":"hard"}';
     const response = await fetch(`${API.users}/${userId}/aggregatedWords${filter}`, {
       headers: {
@@ -172,7 +188,8 @@ class API {
     return content;
   }
 
-  static async getAggregatedWord(userId: string, wordId:string, token: string) {
+  static async getAggregatedWord(wordId:string) {
+    const {userId, token} = API.getJwt();
     const response = await fetch(`${API.users}/${userId}/aggregatedWords/${wordId}`, {
       headers: {
         'Authorization': `Bearer ${token}`
@@ -185,7 +202,8 @@ class API {
 
   //USERS/STATISTICS:
 
-  static async getStatistics(userId: string, token: string) {
+  static async getStatistics() {
+    const {userId, token} = API.getJwt();
     const response = await fetch(`${API.users}/${userId}/statistics`, {
       headers: {
         'Authorization': `Bearer ${token}`
@@ -196,7 +214,8 @@ class API {
     return content;
   }
 
-  static async upsertStatistics(userId: string, token: string) {
+  static async upsertStatistics() {
+    const {userId, token} = API.getJwt();
     const response = await fetch(`${API.users}/${userId}/statistics`, {
       method: 'PUT',
       headers: {
@@ -212,7 +231,8 @@ class API {
 
   //USERS/SETTINGS:
 
-  static async getSettings(userId: string, token: string) {
+  static async getSettings() {
+    const {userId, token} = API.getJwt();
     const response = await fetch(`${API.users}/${userId}/settings`, {
       headers: {
         'Authorization': `Bearer ${token}`
@@ -223,7 +243,8 @@ class API {
     return content;
   }
 
-  static async upsertSettings(userId: string, token: string) {
+  static async upsertSettings() {
+    const {userId, token} = API.getJwt();
     const response = await fetch(`${API.users}/${userId}/settings`, {
       method: 'PUT',
       headers: {
