@@ -1,1 +1,50 @@
-/* No CSS *//*# sourceMappingURL=textBook.css.map */
+nav {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  z-index: 10;
+}
+
+.textBook {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding: 2rem;
+  -webkit-box-shadow: 5px 5px 18px var(--bs-gray);
+          box-shadow: 5px 5px 18px var(--bs-gray);
+  border-radius: 30px;
+}
+
+.textBook__nav {
+  gap: 1rem;
+}
+
+.nav-pills .nav-link {
+  color: var(--text-basic);
+  background-color: var(--buttons-color);
+}
+
+.textBook__pagination {
+  margin-top: 1rem;
+}
+
+.textBook__pagination_list {
+  gap: 1rem;
+}
+
+.word-card {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: start;
+  gap: 1rem;
+  margin-top: 1rem;
+  -webkit-box-shadow: 5px 5px 18px var(--bs-gray);
+          box-shadow: 5px 5px 18px var(--bs-gray);
+  border-radius: 30px;
+}
+
+.word-card_information-wrapper {
+  padding: 1rem;
+}
+/*# sourceMappingURL=textBook.css.map */
