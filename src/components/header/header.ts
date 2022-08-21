@@ -2,10 +2,10 @@ import './header.scss';
 
 export const renderHeader = (): void => {
   const headerBlock = `
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg mb-5">
         <div class="container">
           <a class="navbar-brand" href="#/main">
-            <img src="./assets/united-kingdom.svg" alt="logo" width="75" height="65" />
+            <img src="./assets/flag-UK.svg" alt="logo" width="75" height="55" />
             <div>RS Lang</div>
           </a>
           <button
@@ -23,36 +23,36 @@ export const renderHeader = (): void => {
             <ul class="navbar-nav mb-2 mb-lg-0 navbar-links">
               <li class="nav-item mx-3">
                 <a
-                  class="nav-link fw-bolder fs-5 active"
+                  class="nav-link fw-bolder fs-5 active main-link"
                   aria-current="page"
                   href="#/main"
-                  >Главная</a
+                  >Home</a
                 >
               </li>
               <li class="nav-item mx-3">
                 <a class="nav-link fw-bolder fs-5" href="#/book"
-                  >Учебник</a
+                  >Book</a
                 >
               </li>
               <li class="nav-item mx-3">
                 <a class="nav-link fw-bolder fs-5" href="#/games"
-                >Игры</a>
+                >Games</a>
               </li>
               <li class="nav-item mx-3">
                 <a class="nav-link fw-bolder fs-5" href="#/statistic"
-                >Статистика</a>
+                >Statistics</a>
               </li>
               <li class="nav-item mx-3">
                 <a class="nav-link fw-bolder fs-5" href="#/command"
-                >Команда</a>
+                >Team</a>
               </li>
             </ul>
             <ul class="navbar-nav mb-2 mb-lg-0 navbar-btn-group">
               <li class="nav-item">
-                <button type="button" class="btn btn-primary">Log in</button>
+                <button type="button" class="btn nav-btn">Log in</button>
               </li>
                <li class="nav-item">
-                <button type="button" class="btn btn-secondary">Register</button>
+                <button type="button" class="btn btn-warning nav-btn">Register</button>
               </li>
             </ul>
           </div>

@@ -4,15 +4,16 @@ export const renderFooter = (): void => {
   const footerBlock = `
         <div class="container p-4 pb-0">
       <!-- Section: Links -->
-      <section class="">
+      <section class="footer__container">
         <!--Grid row-->
         <div class="row">
           <!-- Grid column -->
           <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
-            <h6 class="text-uppercase mb-4 font-weight-bold">
-              Company name
-            </h6>
-            <p>
+            <a class="footer__brand" href="#/main">
+            <img src="./assets/flag-UK.svg" alt="logo" width="60" height="40" />
+            <p>RS Lang</p>
+          </a>
+            <p class="footer__description">
               Here you can use rows and columns to organize your footer
               content. Lorem ipsum dolor sit amet, consectetur adipisicing
               elit.
@@ -20,65 +21,61 @@ export const renderFooter = (): void => {
           </div>
           <!-- Grid column -->
 
-          <hr class="w-100 clearfix d-md-none" />
+          <hr class="w-100 clearfix d-md-none text-white" />
 
           <!-- Grid column -->
           <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
-            <h6 class="text-uppercase mb-4 font-weight-bold">Products</h6>
+            <h6 class="footer__title text-uppercase mb-4 font-weight-bold">Navigation</h6>
             <p>
-              <a class="text-white">MDBootstrap</a>
+              <a class="text-white nav-link" href="#/main">Home</a>
             </p>
             <p>
-              <a class="text-white">MDWordPress</a>
+              <a class="text-white nav-link" href="#/book">Book</a>
             </p>
             <p>
-              <a class="text-white">BrandFlow</a>
+              <a class="text-white nav-link" href="#/games">Games</a>
             </p>
             <p>
-              <a class="text-white">Bootstrap Angular</a>
+              <a class="text-white nav-link" href="#/statistic">Statistics</a>
             </p>
+            <p>
+              <a class="text-white nav-link" href="#/command">Team</a>
+            </p>
+
           </div>
           <!-- Grid column -->
 
-          <hr class="w-100 clearfix d-md-none" />
+          <hr class="w-100 clearfix d-md-none text-white" />
 
           <!-- Grid column -->
           <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
-            <h6 class="text-uppercase mb-4 font-weight-bold">
-              Useful links
+            <h6 class="footer__title text-uppercase mb-4 font-weight-bold">
+              Resources
             </h6>
             <p>
-              <a class="text-white">Your Account</a>
+              <a class="text-white footer__resources" href="https://webpack.js.org/" target="_blank">Webpack</a>
             </p>
             <p>
-              <a class="text-white">Become an Affiliate</a>
+              <a class="text-white footer__resources"  href="https://www.typescriptlang.org/" target="_blank">Typescript</a>
             </p>
             <p>
-              <a class="text-white">Shipping Rates</a>
+              <a class="text-white footer__resources"  href="https://developer.mozilla.org/ru/docs/Web/JavaScript" target="_blank">JavaScript</a>
             </p>
             <p>
-              <a class="text-white">Help</a>
+              <a class="text-white footer__resources"  href="https://getbootstrap.com/" target="_blank">Bootstrap</a>
+            </p>
+            <p>
+              <a class="text-white footer__resources"  href="https://github.com/" target="_blank">GitHub</a>
             </p>
           </div>
 
-          <!-- Grid column -->
-          <hr class="w-100 clearfix d-md-none" />
 
-          <!-- Grid column -->
-          <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
-            <h6 class="text-uppercase mb-4 font-weight-bold">Contact</h6>
-            <p><i class="fas fa-home mr-3"></i> New York, NY 10012, US</p>
-            <p><i class="fas fa-envelope mr-3"></i> info@gmail.com</p>
-            <p><i class="fas fa-phone mr-3"></i> + 01 234 567 88</p>
-            <p><i class="fas fa-print mr-3"></i> + 01 234 567 89</p>
-          </div>
-          <!-- Grid column -->
         </div>
         <!--Grid row-->
       </section>
       <!-- Section: Links -->
 
-      <hr class="my-3">
+      <hr class="my-3 text-white">
 
       <!-- Section: Copyright -->
       <section class="p-3 pt-0">
@@ -86,11 +83,8 @@ export const renderFooter = (): void => {
           <!-- Grid column -->
           <div class="col-md-7 col-lg-8 text-center text-md-start">
             <!-- Copyright -->
-            <div class="p-3">
-              © 2020 Copyright:
-              <a class="text-white" href="https://mdbootstrap.com/"
-                 >MDBootstrap.com</a
-                >
+            <div class="p-3 text-white">
+              © 2022 Copyright: Team 41
             </div>
             <!-- Copyright -->
           </div>
@@ -98,36 +92,23 @@ export const renderFooter = (): void => {
 
           <!-- Grid column -->
           <div class="col-md-5 col-lg-4 ml-lg-0 text-center text-md-end">
-            <!-- Facebook -->
-            <a
-               class="btn btn-outline-light btn-floating m-1"
+           <a
+               class="btn btn-outline-light btn-floating m-1 footer__github"
                class="text-white"
                role="button"
-               ><i class="fab fa-facebook-f"></i
+               ><i class="fa fa-github fa-2x"></i
               ></a>
-
-            <!-- Twitter -->
             <a
-               class="btn btn-outline-light btn-floating m-1"
+               class="btn btn-outline-light btn-floating m-1 footer__github"
                class="text-white"
                role="button"
-               ><i class="fab fa-twitter"></i
+               ><i class="fa fa-github fa-2x"></i
               ></a>
-
-            <!-- Google -->
             <a
-               class="btn btn-outline-light btn-floating m-1"
+               class="btn btn-outline-light btn-floating m-1 footer__github"
                class="text-white"
                role="button"
-               ><i class="fab fa-google"></i
-              ></a>
-
-            <!-- Instagram -->
-            <a
-               class="btn btn-outline-light btn-floating m-1"
-               class="text-white"
-               role="button"
-               ><i class="fab fa-instagram"></i
+               ><i class="fa fa-github fa-2x"></i
               ></a>
           </div>
           <!-- Grid column -->
