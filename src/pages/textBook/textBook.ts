@@ -18,16 +18,6 @@ export const renderTextBook = (): void => {
         </nav>
         <nav class="textBook__pagination" aria-label="Page navigation example">
           <ul class="textBook__pagination_list pagination justify-content-center">
-            <li class="page-item textBook__pagination_prev-page disabled">
-              <span class="page-link">\<</span>
-            </li>
-            <li class="page-item">
-              <span class="page-link textBook__pagination_page-number active" data-page="1">1</span></li>
-            <li class="page-item"><span class="page-link textBook__pagination_page-number" data-page="2">2</span></li>
-            <li class="page-item"><span class="page-link textBook__pagination_page-number" data-page="3">3</span></li>
-            <li class="page-item">
-              <span class="page-link textBook__pagination_next-page">\></span>
-            </li>
           </ul>
         </nav>
         <ul class="textBook__words-list">
@@ -105,7 +95,7 @@ const arrayOfWords: pageOfWordsInterface = [
   }
 ]; //Delete this!
 
-export const renderTextBoxPage = (pageNumber: number = 1): void => {
+export const renderTextBoxPage = (pageNumber: number): void => {
   //arrayOfWords: pageOfWordsInterface = getWords(pageNumber);
   const wordsList = document.querySelector('.textBook__words-list') as HTMLElement;
   storage.wordsListCurrentPage = pageNumber; //update page number
@@ -127,11 +117,36 @@ export const renderTextBoxPage = (pageNumber: number = 1): void => {
   wordsList.innerHTML = html;
 }
 
+export const renderPagination = (pageNumber: number, totalPagesNumber: number  = storage.limitOfPages): void => {
+  const pagination = document.querySelector('.textBook__pagination_list') as HTMLElement;
+
+  const maxNumberOfButtons = 8;
+  let numButtonsHtml: string = '';
+  for(let i = 1; i <= totalPagesNumber && i <= maxNumberOfButtons; i++) {
+    let isActive = '';
+    if (i === pageNumber) {
+      isActive = 'active';
+    }
+    numButtonsHtml += `<li class="page-item"><span class="page-link textBook__pagination_page-number ${isActive}" data-page="${i}">${i}</span></li>`;
+  }
+
+  const html = `<li class="page-item textBook__pagination_prev-page disabled">
+    <span class="page-link">\<</span>
+    </li>
+    ${ numButtonsHtml }
+    <li class="page-item">
+      <span class="page-link textBook__pagination_next-page">\></span>
+    </li>`;
+
+  pagination.innerHTML = html;
+}
+
 export const addEventPagination = (): void => {
   const paginationArea = document.querySelector('.textBook__pagination_list') as HTMLElement;
   paginationArea.addEventListener('click', (event) => {
     if ((event.target as HTMLElement).classList.contains('textBook__pagination_page-number')) {
       const pageNumber = Number((event.target as HTMLElement).getAttribute('data-page'));
+      console.log(storage);
       changePage(pageNumber);
     }
     if ((event.target as HTMLElement).classList.contains('textBook__pagination_prev-page')) {
@@ -150,4 +165,5 @@ export const addEventPagination = (): void => {
 export const changePage = (pageNumber: number): void => {
   storage.wordsListCurrentPage = pageNumber;
   renderTextBoxPage(pageNumber);
+  renderPagination(pageNumber);
 }
