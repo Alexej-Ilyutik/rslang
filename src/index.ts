@@ -4,6 +4,7 @@ import { renderHeader } from './components/header/header';
 import { renderFooter } from './components/footer/footer';
 import { renderMain } from './pages/main/main';
 import './style.scss';
+import { renderTextBook, renderTextBoxPage } from './pages/textBook/textBook';
 
 export const renderPage = (): void => {
   renderHeader();
@@ -21,7 +22,9 @@ const onNavigate = (location: string): void => {
       renderMain();
       break;
     case '#/book':
-      main.innerHTML = `<h1>Book</h1>`;
+      // main.innerHTML = `<h1>Book</h1>`;
+      renderTextBook();
+      renderTextBoxPage(1);
       break;
     case '#/games':
       main.innerHTML = `<h1>Games</h1>`;
