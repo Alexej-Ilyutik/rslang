@@ -11,7 +11,7 @@ class API {
   static async getWords(group: number, page: number) {
     const response = await fetch(`${API.words}?page=${page}&group=${group}`);
     const content = await response.json();
-    console.log(content);
+    // console.log(content);
     return content;
   };
 

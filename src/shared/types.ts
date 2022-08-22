@@ -15,4 +15,4 @@ export interface wordInterface {
   textExampleTranslate: string,
 };
 
-export type pageOfWordsInterface = wordInterface[];
+export type pageOfWordsInterface = Promise<wordInterface[]>;

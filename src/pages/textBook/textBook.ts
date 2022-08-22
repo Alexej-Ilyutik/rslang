@@ -1,6 +1,7 @@
 import './textBook.scss';
 import { pageOfWordsInterface } from '../../shared/types';
 import { storage } from '../../shared/storage';
+import API from '../../services/api';
 
 export const renderTextBook = (): void => {
   const textBook = `
@@ -28,78 +29,12 @@ export const renderTextBook = (): void => {
     main.innerHTML = textBook;
   }
 
-const arrayOfWords: pageOfWordsInterface = [
-  {
-    "id": "1",
-    "group": 1,
-    "page": 1,
-    "word": "duck",
-    "image": "../../assets/duck.png",
-    "audio": "string",
-    "audioMeaning": "string",
-    "audioExample": "string",
-    "textMeaning": "string",
-    "textExample": "string",
-    "transcription": "string",
-    "wordTranslate": "string",
-    "textMeaningTranslate": "string",
-    "textExampleTranslate": "string"
-  },
-  {
-    "id": "2",
-    "group": 1,
-    "page": 1,
-    "word": "duck2",
-    "image": "../../assets/duck.png",
-    "audio": "string",
-    "audioMeaning": "string",
-    "audioExample": "string",
-    "textMeaning": "string",
-    "textExample": "string",
-    "transcription": "string",
-    "wordTranslate": "string",
-    "textMeaningTranslate": "string",
-    "textExampleTranslate": "string"
-  },
-  {
-    "id": "3",
-    "group": 1,
-    "page": 2,
-    "word": "duck3",
-    "image": "../../assets/duck.png",
-    "audio": "string",
-    "audioMeaning": "string",
-    "audioExample": "string",
-    "textMeaning": "string",
-    "textExample": "string",
-    "transcription": "string",
-    "wordTranslate": "string",
-    "textMeaningTranslate": "string",
-    "textExampleTranslate": "string"
-  },
-  {
-    "id": "4",
-    "group": 1,
-    "page": 2,
-    "word": "duck4",
-    "image": "../../assets/duck.png",
-    "audio": "string",
-    "audioMeaning": "string",
-    "audioExample": "string",
-    "textMeaning": "string",
-    "textExample": "string",
-    "transcription": "string",
-    "wordTranslate": "string",
-    "textMeaningTranslate": "string",
-    "textExampleTranslate": "string"
-  }
-]; //Delete this!
+export const renderTextBoxPage = async (pageNumber: number): Promise<void> => {
+  const arrayOfWords: pageOfWordsInterface = await API.getWords(1, pageNumber)
 
-export const renderTextBoxPage = (pageNumber: number): void => {
-  //arrayOfWords: pageOfWordsInterface = getWords(pageNumber);
   const wordsList = document.querySelector('.textBook__words-list') as HTMLElement;
   storage.wordsListCurrentPage = pageNumber; //update page number
-  const html = arrayOfWords.map((element) => {
+  const html = (await arrayOfWords).map((element) => {
     if (element.page === pageNumber) return `
     <li class="textBook__words-list_word-card word-card">
       <img class="word-card_img" src="${element.image}" alt="${element.word} image"></img>
@@ -134,15 +69,15 @@ export const renderPagination = (pageNumber: number, totalPagesNumber: number  =
     if (i === pageNumber) {
       isActive = 'active';
     }
-    numButtonsHtml += `<li class="page-item"><span class="page-link textBook__pagination_page-number ${isActive}" data-page="${i}">${i}</span></li>`;
+    numButtonsHtml += `<li class="page-item"><button class="page-link textBook__pagination_page-number ${isActive}" data-page="${i}">${i}</button></li>`;
   }
 
   const html = `<li class="page-item textBook__pagination_prev-page disabled">
-    <span class="page-link">\<</span>
+    <button class="page-link">\<</button>
     </li>
     ${ numButtonsHtml }
     <li class="page-item">
-      <span class="page-link textBook__pagination_next-page">\></span>
+      <button class="page-link textBook__pagination_next-page">\></button>
     </li>`;
 
   pagination.innerHTML = html;
@@ -153,7 +88,6 @@ export const addEventPagination = (): void => {
   paginationArea.addEventListener('click', (event) => {
     if ((event.target as HTMLElement).classList.contains('textBook__pagination_page-number')) {
       const pageNumber = Number((event.target as HTMLElement).getAttribute('data-page'));
-      console.log(storage);
       changePage(pageNumber);
     }
     if ((event.target as HTMLElement).classList.contains('textBook__pagination_prev-page')) {
