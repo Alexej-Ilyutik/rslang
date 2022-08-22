@@ -70,9 +70,3 @@ export const loginHandler = () => {
     switchLoginMode();
   });
 }
-
-export const checkIsLogin = () => {
-  if (localStorage.getItem('userAuthenticationData')) {
-    switchLoginMode();
-  }
-}

@@ -7,7 +7,10 @@ import { storage } from './shared/storage';
 import { deleteClassActive } from './services/deleteClassActive';
 import './style.scss';
 import { renderTextBook, renderTextBoxPage, renderPagination, addTestBookEvents } from './pages/textBook/textBook';
-import { loginForm, loginHandler, checkIsLogin } from './components/loginForm/loginForm';
+import { loginForm, loginHandler } from './components/loginForm/loginForm';
+import { registerForm, registerHandler } from './components/registerForm/registerForm';
+import { isLogin } from './services/isLogin';
+import { switchLoginMode } from './services/switchLoginMode';
 
 const renderPage = (): void => {
   renderHeader();
@@ -19,8 +22,12 @@ renderPage();
 
 const header = document.getElementById('header');
 header?.insertAdjacentHTML('beforeend', loginForm);
-loginHandler()
-checkIsLogin();
+header?.insertAdjacentHTML('beforeend', registerForm);
+loginHandler();
+registerHandler();
+
+if (isLogin()) switchLoginMode();
+
 const main = document.getElementById('main') as HTMLElement;
 const mainLink = document.querySelector('.main-link') as HTMLElement;
 
