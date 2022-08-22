@@ -3,8 +3,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { renderHeader } from './components/header/header';
 import { renderFooter } from './components/footer/footer';
 import { renderMain } from './pages/main/main';
+import { storage } from './shared/storage';
 import { deleteClassActive } from './services/deleteClassActive';
 import './style.scss';
+import { renderTextBook, renderTextBoxPage, renderPagination, addTestBookEvents } from './pages/textBook/textBook';
 
 const renderPage = (): void => {
   renderHeader();
@@ -25,7 +27,11 @@ const onNavigate = (location: string): void => {
       renderMain();
       break;
     case '#/book':
-      main.innerHTML = `<h1>Book</h1>`;
+      // main.innerHTML = `<h1>Book</h1>`;
+      renderTextBook();
+      renderTextBoxPage(0, 1);
+      renderPagination(storage.wordsListCurrentPage);
+      addTestBookEvents()
       break;
     case '#/games':
       main.innerHTML = `<h1>Games</h1>`;

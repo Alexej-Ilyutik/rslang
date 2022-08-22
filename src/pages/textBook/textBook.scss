@@ -1,0 +1,41 @@
+nav {
+  box-shadow: none;
+  z-index: 10;
+}
+
+.page-item {
+  cursor: pointer;
+}
+
+.textBook {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding: 2rem;
+  box-shadow: 5px 5px 18px var(--bs-gray);
+  border-radius: 30px;
+}
+
+.textBook__btn-group-wrapper {
+  text-align: center;
+}
+
+.textBook__pagination {
+  margin-top: 1rem;
+}
+
+.textBook__pagination_list {
+  gap: 1rem;
+}
+
+.word-card {
+  display: flex;
+  justify-content: start;
+  gap: 1rem;
+  margin-top: 1rem;
+  box-shadow: 5px 5px 18px var(--bs-gray);
+  border-radius: 30px;
+}
+
+.word-card_information-wrapper {
+  padding: 1rem;
+}
