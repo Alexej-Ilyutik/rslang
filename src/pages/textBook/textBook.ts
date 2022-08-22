@@ -2,6 +2,7 @@ import './textBook.scss';
 import { pageOfWordsInterface } from '../../shared/types';
 import { storage } from '../../shared/storage';
 import API from '../../services/api';
+import { deleteClassActive } from '../../services/deleteClassActive';
 
 export const renderTextBook = (): void => {
   const textBook = `
@@ -10,13 +11,13 @@ export const renderTextBook = (): void => {
       <div class="textBook__content-wrapper">
         <div class="textBook__btn-group-wrapper">
           <div class="btn-group" role="group" aria-label="Basic outlined example">
-            <button type="button" class="btn btn-outline-primary" data-group="0">A1</button>
-            <button type="button" class="btn btn-outline-primary" data-group="1">A2</button>
-            <button type="button" class="btn btn-outline-primary" data-group="2">B1</button>
-            <button type="button" class="btn btn-outline-primary" data-group="3">B2</button>
-            <button type="button" class="btn btn-outline-primary" data-group="4">C1</button>
-            <button type="button" class="btn btn-outline-primary" data-group="5">C2</button>
-            <button type="button" class="btn btn-outline-primary" data-group="6">HD</button>
+            <button type="button" class="textBook__btn-group_button btn btn-outline-primary active" data-group="0">A1</button>
+            <button type="button" class="textBook__btn-group_button btn btn-outline-primary" data-group="1">A2</button>
+            <button type="button" class="textBook__btn-group_button btn btn-outline-primary" data-group="2">B1</button>
+            <button type="button" class="textBook__btn-group_button btn btn-outline-primary" data-group="3">B2</button>
+            <button type="button" class="textBook__btn-group_button btn btn-outline-primary" data-group="4">C1</button>
+            <button type="button" class="textBook__btn-group_button btn btn-outline-primary" data-group="5">C2</button>
+            <button type="button" class="textBook__btn-group_button btn btn-outline-primary" data-group="6">HD</button>
           </div>
         </div>
         <nav class="textBook__pagination" aria-label="Page navigation example">
@@ -111,6 +112,9 @@ export const addEventWordsGroup = (): void => {
   wordsGroupArea.addEventListener('click', (event) => {
     if ((event.target as HTMLElement).classList.contains('btn')) {
       const groupNumber = Number((event.target as HTMLElement).getAttribute('data-group'));
+      const buttonsList = Array.from(document.querySelectorAll('.textBook__btn-group_button'));
+      deleteClassActive(buttonsList);
+      (event.target as HTMLElement).classList.add('active');
       changePage(groupNumber, storage.wordsListCurrentPage);
     }
   })
