@@ -1,5 +1,5 @@
 class API {
-  private static base = 'https://be-rs-lang.herokuapp.com';
+  static base = 'https://be-rs-lang.herokuapp.com';
   private static users = `${API.base}/users`;
   private static words = `${API.base}/words`;
 
