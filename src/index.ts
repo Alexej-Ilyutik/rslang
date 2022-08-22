@@ -31,7 +31,7 @@ const onNavigate = (location: string): void => {
       renderTextBook();
       renderTextBoxPage(0, 1);
       renderPagination(storage.wordsListCurrentPage);
-      addTestBookEvents()
+      addTestBookEvents();
       break;
     case '#/games':
       main.innerHTML = `<h1>Games</h1>`;

@@ -41,15 +41,22 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
   const html = (await arrayOfWords).map((element) => {
     if (element.page === pageNumber) return `
     <li class="textBook__words-list_word-card word-card" tabindex="0">
-      <img class="word-card_img" src="${`${API.base}/${element.image}`}" alt="${element.word} image"></img>
-      <div class="word-card_information-wrapper">
-        <h2 class="word-card_word-name">${element.word}</h2>
-        <p class="word-card_word-transcription">${element.transcription}</p>
-        <p class="word-card_word-name-translation">${element.wordTranslate}</p>
-        <p class="word-card_word-meaning">${element.textMeaning}</p>
-        <p class="word-card_word-meaning-translation">${element.textMeaningTranslate}</p>
-        <p class="word-card_word-example">${element.textExample}</p>
-        <p class="word-card_word-example-translation">${element.textExampleTranslate}</p>
+      <div class="word-card_visual-content-wrapper">
+        <img class="word-card_img" src="${API.base + '/'+ element.image}" alt="${element.word} image"></img>
+        <div class="word-card_information-wrapper">
+          <h2 class="word-card_word-name">${element.word}</h2>
+          <p class="word-card_word-transcription">${element.transcription}</p>
+          <p class="word-card_word-name-translation">${element.wordTranslate}</p>
+          <p class="word-card_word-meaning">${element.textMeaning}</p>
+          <p class="word-card_word-meaning-translation">${element.textMeaningTranslate}</p>
+          <p class="word-card_word-example">${element.textExample}</p>
+          <p class="word-card_word-example-translation">${element.textExampleTranslate}</p>
+        </div>
+      </div>
+      <div class="word-card_audio-content-wrapper">
+        <button class="word-card_audio-button">
+          <img class="word-card_audio-button-image" src="../../assets/volume.svg" alt="audio button" data-audio="${API.base + '/'+ element.audio}"></img>
+        </button>
       </div>
     </li>`
   }).join('');
@@ -120,13 +127,30 @@ export const addEventWordsGroup = (): void => {
   })
 }
 
+export const addEventAudioButton = (): void => {
+  const wordsArea = document.querySelector('.textBook__words-list') as HTMLElement;
+  wordsArea.addEventListener('click', (event) => {
+    if ((event.target as HTMLElement).classList.contains('word-card_audio-button-image')) {
+      const audioLink = (event.target as HTMLElement).getAttribute('data-audio') || '';
+      if (audioLink === '') alert(`Audio file doesn't exist!`);
+      else playAudio(audioLink);
+    }
+  })
+}
+
 export const changePage = (groupNumber:number, pageNumber: number): void => {
   storage.wordsListCurrentPage = pageNumber;
   renderTextBoxPage(groupNumber, pageNumber);
   renderPagination(pageNumber);
 }
 
+export const playAudio = (link: string): void => {
+  const audio = new Audio(link);
+  audio.play();
+}
+
 export const addTestBookEvents = (): void => {
   addEventWordsGroup();
   addEventPagination();
+  addEventAudioButton();
 }
