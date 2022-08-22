@@ -49,10 +49,13 @@ export const renderHeader = (): void => {
             </ul>
             <ul class="navbar-nav mb-2 mb-lg-0 navbar-btn-group">
               <li class="nav-item">
-                <button type="button" class="btn nav-btn">Log in</button>
+                <button type="button" id="logout-btn" class="btn btn-warning nav-btn hidden-element">Log out</button>
+              </li>
+              <li class="nav-item">
+                <button type="button" id="login-btn" class="btn nav-btn" data-bs-toggle="modal" data-bs-target="#loginModal">Log in</button>
               </li>
                <li class="nav-item">
-                <button type="button" class="btn btn-warning nav-btn">Register</button>
+                <button type="button" id="register-btn" class="btn btn-warning nav-btn">Register</button>
               </li>
             </ul>
           </div>

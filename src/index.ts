@@ -7,6 +7,7 @@ import { storage } from './shared/storage';
 import { deleteClassActive } from './services/deleteClassActive';
 import './style.scss';
 import { renderTextBook, renderTextBoxPage, renderPagination, addTestBookEvents } from './pages/textBook/textBook';
+import { loginForm, loginHandler, checkIsLogin } from './components/loginForm/loginForm';
 
 const renderPage = (): void => {
   renderHeader();
@@ -16,6 +17,10 @@ const renderPage = (): void => {
 
 renderPage();
 
+const header = document.getElementById('header');
+header?.insertAdjacentHTML('beforeend', loginForm);
+loginHandler()
+checkIsLogin();
 const main = document.getElementById('main') as HTMLElement;
 const mainLink = document.querySelector('.main-link') as HTMLElement;
 
