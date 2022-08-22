@@ -3,6 +3,5 @@ export const switchLoginMode = () => {
   const logoutBtn = document.getElementById('logout-btn') as HTMLButtonElement;
   const registerBtn = document.getElementById('register-btn') as HTMLButtonElement;
 
-  [loginBtn, registerBtn].forEach(x => x.classList.toggle('hidden-element'));
-  logoutBtn.classList.toggle('hidden-element');
+  [loginBtn, registerBtn, logoutBtn].forEach(x => x.classList.toggle('hidden-element'));
 }
