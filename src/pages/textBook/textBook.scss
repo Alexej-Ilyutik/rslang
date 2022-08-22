@@ -15,13 +15,8 @@ nav {
   border-radius: 30px;
 }
 
-.textBook__nav {
-  gap: 1rem;
-}
-
-.nav-pills .nav-link {
-  color: var(--text-basic);
-  background-color: var(--buttons-color);
+.textBook__btn-group-wrapper {
+  text-align: center;
 }
 
 .textBook__pagination {

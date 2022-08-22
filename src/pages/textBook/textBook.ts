@@ -8,15 +8,17 @@ export const renderTextBook = (): void => {
     <div class="textBook container">
       <h2 class="textBook__title">Text book</h2>
       <div class="textBook__content-wrapper">
-        <nav class="textBook__nav nav nav-pills flex-column flex-sm-row">
-          <a class="flex-sm-fill text-sm-center nav-link active" href="#none">A1</a>
-          <a class="flex-sm-fill text-sm-center nav-link" href="#none">A2</a>
-          <a class="flex-sm-fill text-sm-center nav-link" href="#none">B1</a>
-          <a class="flex-sm-fill text-sm-center nav-link" href="#none">B2</a>
-          <a class="flex-sm-fill text-sm-center nav-link" href="#none">C1</a>
-          <a class="flex-sm-fill text-sm-center nav-link" href="#none">C2</a>
-          <a class="flex-sm-fill text-sm-center nav-link disabled" href="#none" tabindex="-1" aria-disabled="true">H</a>
-        </nav>
+        <div class="textBook__btn-group-wrapper">
+          <div class="btn-group" role="group" aria-label="Basic outlined example">
+            <button type="button" class="btn btn-outline-primary" data-group="1">A1</button>
+            <button type="button" class="btn btn-outline-primary" data-group="2">A2</button>
+            <button type="button" class="btn btn-outline-primary" data-group="3">B1</button>
+            <button type="button" class="btn btn-outline-primary" data-group="4">B2</button>
+            <button type="button" class="btn btn-outline-primary" data-group="5">C1</button>
+            <button type="button" class="btn btn-outline-primary" data-group="6">C2</button>
+            <button type="button" class="btn btn-outline-primary" data-group="7">HD</button>
+          </div>
+        </div>
         <nav class="textBook__pagination" aria-label="Page navigation example">
           <ul class="textBook__pagination_list pagination justify-content-center">
           </ul>
@@ -29,8 +31,9 @@ export const renderTextBook = (): void => {
     main.innerHTML = textBook;
   }
 
-export const renderTextBoxPage = async (pageNumber: number): Promise<void> => {
-  const arrayOfWords: pageOfWordsInterface = await API.getWords(1, pageNumber)
+export const renderTextBoxPage = async (groupNumber: number, pageNumber: number): Promise<void> => {
+  storage.wordsListCurrentGroup = groupNumber;
+  const arrayOfWords: pageOfWordsInterface = await API.getWords(storage.wordsListCurrentGroup, pageNumber)
 
   const wordsList = document.querySelector('.textBook__words-list') as HTMLElement;
   storage.wordsListCurrentPage = pageNumber; //update page number
@@ -88,23 +91,23 @@ export const addEventPagination = (): void => {
   paginationArea.addEventListener('click', (event) => {
     if ((event.target as HTMLElement).classList.contains('textBook__pagination_page-number')) {
       const pageNumber = Number((event.target as HTMLElement).getAttribute('data-page'));
-      changePage(pageNumber);
+      changePage(storage.wordsListCurrentGroup, pageNumber);
     }
     if ((event.target as HTMLElement).classList.contains('textBook__pagination_prev-page')) {
       if (storage.wordsListCurrentPage > 1) {
-        changePage(storage.wordsListCurrentPage - 1);
+        changePage(storage.wordsListCurrentGroup, storage.wordsListCurrentPage - 1);
       }
     }
     if ((event.target as HTMLElement).classList.contains('textBook__pagination_next-page')) {
       if (storage.wordsListCurrentPage < storage.limitOfPages) {
-        changePage(storage.wordsListCurrentPage + 1);
+        changePage(storage.wordsListCurrentGroup, storage.wordsListCurrentPage + 1);
       }
     }
   })
 }
 
-export const changePage = (pageNumber: number): void => {
+export const changePage = (groupNumber:number, pageNumber: number): void => {
   storage.wordsListCurrentPage = pageNumber;
-  renderTextBoxPage(pageNumber);
+  renderTextBoxPage(groupNumber, pageNumber);
   renderPagination(pageNumber);
 }

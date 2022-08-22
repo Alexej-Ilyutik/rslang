@@ -29,7 +29,7 @@ const onNavigate = (location: string): void => {
     case '#/book':
       // main.innerHTML = `<h1>Book</h1>`;
       renderTextBook();
-      renderTextBoxPage(1);
+      renderTextBoxPage(1, 1);
       renderPagination(storage.wordsListCurrentPage);
       addEventPagination();
       break;
