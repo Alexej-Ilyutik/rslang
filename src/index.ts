@@ -6,7 +6,7 @@ import { renderMain } from './pages/main/main';
 import { storage } from './shared/storage';
 import { deleteClassActive } from './services/deleteClassActive';
 import './style.scss';
-import { renderTextBook, renderTextBoxPage, renderPagination, addEventPagination } from './pages/textBook/textBook';
+import { renderTextBook, renderTextBoxPage, renderPagination, addTestBookEvents } from './pages/textBook/textBook';
 
 const renderPage = (): void => {
   renderHeader();
@@ -29,9 +29,9 @@ const onNavigate = (location: string): void => {
     case '#/book':
       // main.innerHTML = `<h1>Book</h1>`;
       renderTextBook();
-      renderTextBoxPage(1, 1);
+      renderTextBoxPage(0, 1);
       renderPagination(storage.wordsListCurrentPage);
-      addEventPagination();
+      addTestBookEvents()
       break;
     case '#/games':
       main.innerHTML = `<h1>Games</h1>`;

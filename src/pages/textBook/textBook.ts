@@ -10,13 +10,13 @@ export const renderTextBook = (): void => {
       <div class="textBook__content-wrapper">
         <div class="textBook__btn-group-wrapper">
           <div class="btn-group" role="group" aria-label="Basic outlined example">
-            <button type="button" class="btn btn-outline-primary" data-group="1">A1</button>
-            <button type="button" class="btn btn-outline-primary" data-group="2">A2</button>
-            <button type="button" class="btn btn-outline-primary" data-group="3">B1</button>
-            <button type="button" class="btn btn-outline-primary" data-group="4">B2</button>
-            <button type="button" class="btn btn-outline-primary" data-group="5">C1</button>
-            <button type="button" class="btn btn-outline-primary" data-group="6">C2</button>
-            <button type="button" class="btn btn-outline-primary" data-group="7">HD</button>
+            <button type="button" class="btn btn-outline-primary" data-group="0">A1</button>
+            <button type="button" class="btn btn-outline-primary" data-group="1">A2</button>
+            <button type="button" class="btn btn-outline-primary" data-group="2">B1</button>
+            <button type="button" class="btn btn-outline-primary" data-group="3">B2</button>
+            <button type="button" class="btn btn-outline-primary" data-group="4">C1</button>
+            <button type="button" class="btn btn-outline-primary" data-group="5">C2</button>
+            <button type="button" class="btn btn-outline-primary" data-group="6">HD</button>
           </div>
         </div>
         <nav class="textBook__pagination" aria-label="Page navigation example">
@@ -106,8 +106,23 @@ export const addEventPagination = (): void => {
   })
 }
 
+export const addEventWordsGroup = (): void => {
+  const wordsGroupArea = document.querySelector('.btn-group') as HTMLElement;
+  wordsGroupArea.addEventListener('click', (event) => {
+    if ((event.target as HTMLElement).classList.contains('btn')) {
+      const groupNumber = Number((event.target as HTMLElement).getAttribute('data-group'));
+      changePage(groupNumber, storage.wordsListCurrentPage);
+    }
+  })
+}
+
 export const changePage = (groupNumber:number, pageNumber: number): void => {
   storage.wordsListCurrentPage = pageNumber;
   renderTextBoxPage(groupNumber, pageNumber);
   renderPagination(pageNumber);
+}
+
+export const addTestBookEvents = (): void => {
+  addEventWordsGroup();
+  addEventPagination();
 }
