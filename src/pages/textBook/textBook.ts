@@ -36,7 +36,7 @@ export const renderTextBoxPage = async (pageNumber: number): Promise<void> => {
   storage.wordsListCurrentPage = pageNumber; //update page number
   const html = (await arrayOfWords).map((element) => {
     if (element.page === pageNumber) return `
-    <li class="textBook__words-list_word-card word-card">
+    <li class="textBook__words-list_word-card word-card" tabindex="0">
       <img class="word-card_img" src="${element.image}" alt="${element.word} image"></img>
       <div class="word-card_information-wrapper">
         <h2 class="word-card_word-name">${element.word}</h2>
