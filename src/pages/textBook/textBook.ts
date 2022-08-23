@@ -11,7 +11,8 @@ export const renderTextBook = (): void => {
       <div class="textBook__content-wrapper">
         <div class="textBook__btn-group-wrapper">
           <div class="btn-group" role="group" aria-label="Basic outlined example">
-            <button type="button" class="textBook__btn-group_button btn btn-outline-primary active" data-group="0">A1</button>
+            <button type="button" class="textBook__btn-group_button btn btn-outline-primary active"
+             data-group="0">A1</button>
             <button type="button" class="textBook__btn-group_button btn btn-outline-primary" data-group="1">A2</button>
             <button type="button" class="textBook__btn-group_button btn btn-outline-primary" data-group="2">B1</button>
             <button type="button" class="textBook__btn-group_button btn btn-outline-primary" data-group="3">B2</button>
@@ -28,22 +29,21 @@ export const renderTextBook = (): void => {
         </ul>
       </div>
     </div>`;
-    const main = document.getElementById('main') as HTMLElement;
-    main.innerHTML = textBook;
-  }
+  const main = document.getElementById('main') as HTMLElement;
+  main.innerHTML = textBook;
+}
 
 export const renderTextBoxPage = async (groupNumber: number, pageNumber: number): Promise<void> => {
   storage.wordsListCurrentGroup = groupNumber;
   const arrayOfWords: pageOfWordsInterface = await API.getWords(storage.wordsListCurrentGroup, pageNumber)
 
   const wordsList = document.querySelector('.textBook__words-list') as HTMLElement;
-  storage.wordsListCurrentPage = pageNumber; //update page number
-  const html = (await arrayOfWords).map((element) => {
-    if (element.page === pageNumber) return `
+  storage.wordsListCurrentPage = pageNumber; // update page number
+  const html = (await arrayOfWords).map((element) => `
     <li class="textBook__words-list_word-card word-card" tabindex="0">
       <div class="word-card_visual-content-wrapper">
         <div class="word-card_img-wrapper">
-          <img class="word-card_img" src="${API.base + '/'+ element.image}" alt="${element.word} image"></img>
+          <img class="word-card_img" src="${`${API.base  }/${ element.image}`}" alt="${element.word} image"></img>
         </div>
         <div class="word-card_information-wrapper">
           <h2 class="word-card_word-name">${element.word}</h2>
@@ -57,12 +57,14 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
       </div>
       <div class="word-card_audio-content-wrapper">
         <button class="word-card_audio-button">
-          <img class="word-card_audio-button-image" src="../../assets/volume.svg" alt="audio button" data-audio="${API.base + '/'+ element.audio}"
-          data-audio-example="${API.base + '/'+ element.audioExample}" data-audio-meaning="${API.base + '/'+ element.audioMeaning}"></img>
+          <img class="word-card_audio-button-image" src="../../assets/volume.svg" alt="audio button"
+          data-audio="${`${API.base  }/${ element.audio}`}"
+          data-audio-example="${`${API.base  }/${ element.audioExample}`}"
+          data-audio-meaning="${`${API.base  }/${ element.audioMeaning}`}"></img>
         </button>
       </div>
     </li>`
-  }).join('');
+  ).join('');
   wordsList.innerHTML = html;
 }
 
@@ -77,24 +79,41 @@ export const renderPagination = (pageNumber: number, totalPagesNumber: number  =
     i = pageNumber - maxNumberOfButtons + 1;
     lastIndex = maxNumberOfButtons + i - 1;
   }
-  let numButtonsHtml: string = '';
-  for(; i <= totalPagesNumber && i <= lastIndex; i++) {
+  let numButtonsHtml = '';
+  for(; i <= totalPagesNumber && i <= lastIndex; i += 1) {
     let isActive = '';
     if (i === pageNumber) {
       isActive = 'active';
     }
-    numButtonsHtml += `<li class="page-item"><button class="page-link textBook__pagination_page-number ${isActive}" data-page="${i}">${i}</button></li>`;
+    numButtonsHtml += `<li class="page-item"><button class="page-link textBook__pagination_page-number ${isActive}"
+    data-page="${i}">${i}</button></li>`;
   }
 
   const html = `<li class="page-item textBook__pagination_prev-page disabled">
-    <button class="page-link">\<</button>
+    <button class="page-link"><</button>
     </li>
     ${ numButtonsHtml }
     <li class="page-item">
-      <button class="page-link textBook__pagination_next-page">\></button>
+      <button class="page-link textBook__pagination_next-page">></button>
     </li>`;
 
   pagination.innerHTML = html;
+}
+
+export const changePage = (groupNumber:number, pageNumber: number): void => {
+  storage.wordsListCurrentPage = pageNumber;
+  renderTextBoxPage(groupNumber, pageNumber);
+  renderPagination(pageNumber);
+}
+
+export const playAllAudioFiles = (audioLinks: string[], index = 0): void => {
+  if (index < audioLinks.length) {
+    const audio = new Audio(audioLinks[index]);
+    audio.addEventListener("ended", () => {
+      playAllAudioFiles(audioLinks, index + 1);
+    });
+    audio.play();
+  }
 }
 
 export const addEventPagination = (): void => {
@@ -141,22 +160,6 @@ export const addEventAudioButton = (): void => {
       playAllAudioFiles(audioArray);
     }
   })
-}
-
-export const changePage = (groupNumber:number, pageNumber: number): void => {
-  storage.wordsListCurrentPage = pageNumber;
-  renderTextBoxPage(groupNumber, pageNumber);
-  renderPagination(pageNumber);
-}
-
-export const playAllAudioFiles = (audioLinks: string[], index = 0): void => {
-  if (index < audioLinks.length) {
-    const audio = new Audio(audioLinks[index]);
-    audio.addEventListener("ended", () => {
-      playAllAudioFiles(audioLinks, index + 1);
-    });
-    audio.play();
-  }
 }
 
 export const addTestBookEvents = (): void => {
