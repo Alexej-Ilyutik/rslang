@@ -42,7 +42,9 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
     if (element.page === pageNumber) return `
     <li class="textBook__words-list_word-card word-card" tabindex="0">
       <div class="word-card_visual-content-wrapper">
-        <img class="word-card_img" src="${API.base + '/'+ element.image}" alt="${element.word} image"></img>
+        <div class="word-card_img-wrapper">
+          <img class="word-card_img" src="${API.base + '/'+ element.image}" alt="${element.word} image"></img>
+        </div>
         <div class="word-card_information-wrapper">
           <h2 class="word-card_word-name">${element.word}</h2>
           <p class="word-card_word-transcription">${element.transcription}</p>
@@ -137,9 +139,6 @@ export const addEventAudioButton = (): void => {
       const audioLinkMeaning = (event.target as HTMLElement).getAttribute('data-audio-meaning') || '';
       const audioArray = [audioLinkWord, audioLinkMeaning, audioLinkExample];
       playAllAudioFiles(audioArray);
-      // playAudio(audioLinkWord);
-      // playAudio(audioLinkExample);
-      // playAudio(audioLinkMeaning);
     }
   })
 }

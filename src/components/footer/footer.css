@@ -1,4 +1,30 @@
 #footer {
-  background-color: #45526e;
+  background-color: var(--footer-bg);
+  margin-top: 3rem;
+}
+
+#footer .footer__container .footer__brand {
+  text-decoration: none;
+}
+
+#footer .footer__container .footer__brand p {
+  color: var(--bs-white);
+}
+
+#footer .footer__container .footer__description {
+  color: var(--bs-white);
+}
+
+#footer .footer__container .footer__title {
+  color: var(--bs-white);
+}
+
+#footer .footer__resources {
+  text-decoration: none;
+}
+
+#footer .footer__github {
+  padding: 0.3rem 0.35rem 0.1rem 0.35rem;
+  border-radius: 50%;
 }
 /*# sourceMappingURL=footer.css.map */
