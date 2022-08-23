@@ -59,7 +59,23 @@ nav {
 }
 
 .word-card_information-wrapper {
+  width: 100%;
   padding: 2rem;
+}
+
+.word-card_status-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.word-card_line {
+  border-top: 4px solid;
+}
+
+.word-card_counter-information {
+  margin: 0;
+  color: var(--bs-navbar-active-color);
 }
 
 .word-card_audio-content-wrapper {

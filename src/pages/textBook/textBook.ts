@@ -43,7 +43,7 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
     <li class="textBook__words-list_word-card word-card" tabindex="0">
       <div class="word-card_visual-content-wrapper">
         <div class="word-card_img-wrapper">
-          <img class="word-card_img" src="${`${API.base  }/${ element.image}`}" alt="${element.word} image"></img>
+          <img class="word-card_img" src="${`${API.base}/${element.image}`}" alt="${element.word} image"></img>
         </div>
         <div class="word-card_information-wrapper">
           <h2 class="word-card_word-name">${element.word}</h2>
@@ -53,14 +53,20 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
           <p class="word-card_word-meaning-translation">${element.textMeaningTranslate}</p>
           <p class="word-card_word-example">${element.textExample}</p>
           <p class="word-card_word-example-translation">${element.textExampleTranslate}</p>
+          <hr class="word-card_line">
+          <div class="word-card_status-wrapper">
+            <button class="btn btn-warning word-card_status-button-hard">Hard</button>
+            <button class="btn btn-warning word-card_status-button-learn">Learned</button>
+            <p class="word-card_counter-information">Guessed ${0} times</p>
+          </div>
         </div>
       </div>
       <div class="word-card_audio-content-wrapper">
         <button class="word-card_audio-button">
           <img class="word-card_audio-button-image" src="../../assets/volume.svg" alt="audio button"
-          data-audio="${`${API.base  }/${ element.audio}`}"
-          data-audio-example="${`${API.base  }/${ element.audioExample}`}"
-          data-audio-meaning="${`${API.base  }/${ element.audioMeaning}`}"></img>
+          data-audio="${`${API.base}/${ element.audio}`}"
+          data-audio-example="${`${API.base}/${element.audioExample}`}"
+          data-audio-meaning="${`${API.base}/${element.audioMeaning}`}"></img>
         </button>
       </div>
     </li>`
