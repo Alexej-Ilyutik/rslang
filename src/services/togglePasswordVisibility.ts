@@ -1,7 +1,8 @@
 export const togglePasswordVisibility = (passwordInput: HTMLInputElement) => {
-  if (passwordInput.type === 'password') {
-    passwordInput.type = 'text';
+  const element = passwordInput;
+  if (element.type === 'password') {
+    element.type = 'text';
   } else {
-    passwordInput.type = 'password';
+    element.type = 'password';
   }
 }
