@@ -11,6 +11,7 @@ import { loginForm, loginHandler } from './components/loginForm/loginForm';
 import { registerForm, registerHandler } from './components/registerForm/registerForm';
 import { isLogin } from './services/isLogin';
 import { switchLoginMode } from './services/switchLoginMode';
+import { renderGamePage } from './pages/games/game';
 
 const renderPage = (): void => {
   renderHeader();
@@ -39,20 +40,25 @@ const onNavigate = (location: string): void => {
       renderMain();
       break;
     case '#/book':
-      // main.innerHTML = `<h1>Book</h1>`;
       renderTextBook();
       renderTextBoxPage(0, 1);
       renderPagination(storage.wordsListCurrentPage);
-      addTestBookEvents()
+      addTestBookEvents();
       break;
     case '#/games':
-      main.innerHTML = `<h1>Games</h1>`;
+      renderGamePage();
       break;
     case '#/statistic':
       main.innerHTML = `<h1>Statistic</h1>`;
       break;
     case '#/command':
       main.innerHTML = `<h1>Command</h1>`;
+      break;
+    case '#/sprint':
+      main.innerHTML = `<h1>Sprint</h1>`;
+      break;
+    case '#/audio':
+      main.innerHTML = `<h1>Audio</h1>`;
       break;
     default:
       main.innerHTML = `<h1>Main</h1>`;
@@ -63,7 +69,7 @@ const onNavigate = (location: string): void => {
 window.addEventListener('click', (e: Event) => {
   const target = e.target as HTMLAnchorElement;
 
-  if (target.classList.contains('nav-link')) {
+  if (target.classList.contains('nav-link') || target.classList.contains('game__link')) {
     deleteClassActive(navLinks);
 
     const location = target.href.split('/').slice(-2).join('/');

@@ -1,6 +1,6 @@
 import './loginForm.scss';
-import API from "../../services/api";
 import * as bootstrap from 'bootstrap';
+import API from "../../services/api";
 import { togglePasswordVisibility } from '../../services/togglePasswordVisibility';
 import { switchLoginMode } from '../../services/switchLoginMode';
 
@@ -15,11 +15,13 @@ export const loginForm = `
         <div class="modal-body">
           <form id="login-form">
             <div class="form-floating mb-3">
-              <input type="email" class="form-control" id="login-email-input" required="required" placeholder="name@example.com">
+              <input type="email" class="form-control" id="login-email-input"
+              required="required" placeholder="name@example.com">
               <label for="login-email-input">Email address</label>
             </div>
             <div class="form-floating mb-2">
-              <input type="password" class="form-control" id="login-password-input" required="required" placeholder="Password">
+              <input type="password" class="form-control" id="login-password-input"
+              required="required" placeholder="Password">
               <label for="login-password-input">Password</label>
             </div>
             <div class="checkbox mb-2">
