@@ -41,7 +41,7 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
   const html = (await arrayOfWords).map((element) => {
     if (element.page === pageNumber) return `
     <li class="textBook__words-list_word-card word-card" tabindex="0">
-      <img class="word-card_img" src="${element.image}" alt="${element.word} image"></img>
+      <img class="word-card_img" src="${API.base}/${element.image}" alt="${element.word} image"></img>
       <div class="word-card_information-wrapper">
         <h2 class="word-card_word-name">${element.word}</h2>
         <p class="word-card_word-transcription">${element.transcription}</p>
