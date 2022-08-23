@@ -1,6 +1,8 @@
 class API {
   static base = 'https://be-rs-lang.herokuapp.com';
+
   private static users = `${API.base}/users`;
+
   private static words = `${API.base}/words`;
 
   static getJwt() {
@@ -22,7 +24,7 @@ class API {
     return content;
   };
 
-  //USER:
+  // USER:
 
   static async createUser(name: string, email: string, password: string) {
     const response = await fetch(API.users, {
@@ -102,7 +104,7 @@ class API {
     return content;
   };
 
-  //USER/WORDS:
+  // USER/WORDS:
 
   static async getUserWords() {
     const {userId, token} = API.getJwt();
@@ -120,7 +122,7 @@ class API {
     const {userId, token} = API.getJwt();
     const response = await fetch(`${API.users}/${userId}/words/${wordId}`, {
       method: 'POST',
-      //credentials: 'include',
+      // credentials: 'include',
       headers: {
         'Authorization': `Bearer ${token}`,
         'Accept': 'application/json',
@@ -173,7 +175,7 @@ class API {
     console.log(content);
   }
 
-  //USERS/AGGREGATED WORDS:
+  // USERS/AGGREGATED WORDS:
 
   static async getAggregatedWords() {
     const {userId, token} = API.getJwt();
@@ -200,7 +202,7 @@ class API {
     return content;
   }
 
-  //USERS/STATISTICS:
+  // USERS/STATISTICS:
 
   static async getStatistics() {
     const {userId, token} = API.getJwt();
@@ -229,7 +231,7 @@ class API {
     return content;
   }
 
-  //USERS/SETTINGS:
+  // USERS/SETTINGS:
 
   static async getSettings() {
     const {userId, token} = API.getJwt();
@@ -258,7 +260,7 @@ class API {
     return content;
   }
 
-  //SIGNIN:
+  // SIGNIN:
 
   static async loginUser(email: string, password: string) {
     const response = await fetch(`${API.base}/signin`, {
