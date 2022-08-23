@@ -55,8 +55,10 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
           <p class="word-card_word-example-translation">${element.textExampleTranslate}</p>
           <hr class="word-card_line">
           <div class="word-card_status-wrapper">
-            <button class="btn btn-warning word-card_status-button-hard">Hard</button>
-            <button class="btn btn-warning word-card_status-button-learn">Learned</button>
+            <input type="checkbox" class="word-card_status-checkbox" name="hard" value="yes" checked="checked">
+            <label for="hard">Hard word</label>
+            <input type="checkbox" class="word-card_status-checkbox" name="learned" value="yes">
+            <label for="learned">Learned</label>
             <p class="word-card_counter-information">Guessed ${0} times</p>
           </div>
         </div>
