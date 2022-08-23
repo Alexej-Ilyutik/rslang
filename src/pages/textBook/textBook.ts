@@ -55,7 +55,8 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
       </div>
       <div class="word-card_audio-content-wrapper">
         <button class="word-card_audio-button">
-          <img class="word-card_audio-button-image" src="../../assets/volume.svg" alt="audio button" data-audio="${API.base + '/'+ element.audio}"></img>
+          <img class="word-card_audio-button-image" src="../../assets/volume.svg" alt="audio button" data-audio="${API.base + '/'+ element.audio}"
+          data-audio-example="${API.base + '/'+ element.audioExample}" data-audio-meaning="${API.base + '/'+ element.audioMeaning}"></img>
         </button>
       </div>
     </li>`
@@ -131,9 +132,14 @@ export const addEventAudioButton = (): void => {
   const wordsArea = document.querySelector('.textBook__words-list') as HTMLElement;
   wordsArea.addEventListener('click', (event) => {
     if ((event.target as HTMLElement).classList.contains('word-card_audio-button-image')) {
-      const audioLink = (event.target as HTMLElement).getAttribute('data-audio') || '';
-      if (audioLink === '') alert(`Audio file doesn't exist!`);
-      else playAudio(audioLink);
+      const audioLinkWord = (event.target as HTMLElement).getAttribute('data-audio') || '';
+      const audioLinkExample = (event.target as HTMLElement).getAttribute('data-audio-example') || '';
+      const audioLinkMeaning = (event.target as HTMLElement).getAttribute('data-audio-meaning') || '';
+      const audioArray = [audioLinkWord, audioLinkMeaning, audioLinkExample];
+      playAllAudioFiles(audioArray);
+      // playAudio(audioLinkWord);
+      // playAudio(audioLinkExample);
+      // playAudio(audioLinkMeaning);
     }
   })
 }
@@ -144,9 +150,14 @@ export const changePage = (groupNumber:number, pageNumber: number): void => {
   renderPagination(pageNumber);
 }
 
-export const playAudio = (link: string): void => {
-  const audio = new Audio(link);
-  audio.play();
+export const playAllAudioFiles = (audioLinks: string[], index = 0): void => {
+  if (index < audioLinks.length) {
+    const audio = new Audio(audioLinks[index]);
+    audio.addEventListener("ended", () => {
+      playAllAudioFiles(audioLinks, index + 1);
+    });
+    audio.play();
+  }
 }
 
 export const addTestBookEvents = (): void => {
