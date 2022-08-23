@@ -11,6 +11,7 @@ import { loginForm, loginHandler } from './components/loginForm/loginForm';
 import { registerForm, registerHandler } from './components/registerForm/registerForm';
 import { isLogin } from './services/isLogin';
 import { switchLoginMode } from './services/switchLoginMode';
+import { renderGamePage } from './pages/games/game';
 
 const renderPage = (): void => {
   renderHeader();
@@ -39,14 +40,13 @@ const onNavigate = (location: string): void => {
       renderMain();
       break;
     case '#/book':
-      // main.innerHTML = `<h1>Book</h1>`;
       renderTextBook();
       renderTextBoxPage(0, 1);
       renderPagination(storage.wordsListCurrentPage);
       addTestBookEvents()
       break;
     case '#/games':
-      main.innerHTML = `<h1>Games</h1>`;
+      renderGamePage();
       break;
     case '#/statistic':
       main.innerHTML = `<h1>Statistic</h1>`;

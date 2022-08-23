@@ -56,10 +56,12 @@ export const renderFooter = (): void => {
               <a class="text-white footer__resources" href="https://webpack.js.org/" target="_blank">Webpack</a>
             </p>
             <p>
-              <a class="text-white footer__resources"  href="https://www.typescriptlang.org/" target="_blank">Typescript</a>
+              <a class="text-white footer__resources"
+              href="https://www.typescriptlang.org/" target="_blank">Typescript</a>
             </p>
             <p>
-              <a class="text-white footer__resources"  href="https://developer.mozilla.org/ru/docs/Web/JavaScript" target="_blank">JavaScript</a>
+              <a class="text-white footer__resources"
+              href="https://developer.mozilla.org/ru/docs/Web/JavaScript" target="_blank">JavaScript</a>
             </p>
             <p>
               <a class="text-white footer__resources"  href="https://getbootstrap.com/" target="_blank">Bootstrap</a>
