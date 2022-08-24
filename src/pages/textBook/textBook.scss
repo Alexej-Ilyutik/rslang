@@ -39,6 +39,15 @@ nav {
   border-radius: 30px;
 }
 
+@media (max-width: 992px) {
+  .word-card {
+    flex-direction: column;
+    // margin-top: 1rem;
+    // box-shadow: 5px 5px 18px var(--bs-gray);
+    // border-radius: 30px;
+  }
+}
+
 .word-card_img-wrapper {
   display:flex;
   justify-content: center;
@@ -49,6 +58,12 @@ nav {
   border-radius: 30px 0 0 30px;
 }
 
+@media (max-width: 992px) {
+  .word-card_img-wrapper {
+    width: 100%;
+  }
+}
+
 .word-card_img {
   height: 100%;
 }
@@ -56,6 +71,13 @@ nav {
 .word-card_visual-content-wrapper {
   display: flex;
   width: 90%;
+}
+
+@media (max-width: 992px) {
+  .word-card_visual-content-wrapper {
+    flex-direction: column;
+    margin: 0 auto;
+  }
 }
 
 .word-card_information-wrapper {
@@ -76,11 +98,6 @@ nav {
 .word-card_counter-information {
   margin: 0;
   color: var(--bs-navbar-active-color);
-  .underline {
-    text-decoration: underline;
-    text-decoration-color: var(--buttons-color);
-    text-decoration-thickness: 3px;
-  }
 }
 
 .word-card_status-checkbox {
