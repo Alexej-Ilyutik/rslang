@@ -175,6 +175,7 @@ export const addEventWordsGroup = (): void => {
       const buttonsList = Array.from(document.querySelectorAll('.textBook__btn-group_button'));
       deleteClassActive(buttonsList);
       (event.target as HTMLElement).classList.add('active');
+      storage.wordsListCurrentPage = 1;
       changePage(groupNumber, storage.wordsListCurrentPage);
     }
   })
