@@ -106,12 +106,19 @@ export const renderPagination = (pageNumber: number, totalPagesNumber: number  =
     data-page="${i - 1}">${i}</button></li>`;
   }
 
-  const html = `<li class="page-item textBook__pagination_prev-page disabled">
-    <button class="page-link"><</button>
+  const html = `
+    <li class="page-item textBook__pagination_prev-ten-page disabled">
+      <button class="page-link"><<</button>
+    </li>
+    <li class="page-item textBook__pagination_prev-page disabled">
+      <button class="page-link"><</button>
     </li>
     ${ numButtonsHtml }
     <li class="page-item">
       <button class="page-link textBook__pagination_next-page">></button>
+    </li>
+    <li class="page-item">
+      <button class="page-link textBook__pagination_next-ten-page">>></button>
     </li>`;
 
   pagination.innerHTML = html;
@@ -162,9 +169,25 @@ export const addEventPagination = (): void => {
         changePage(storage.wordsListCurrentGroup, storage.wordsListCurrentPage - 1);
       }
     }
+    if ((event.target as HTMLElement).classList.contains('textBook__pagination_prev-ten-page')) {
+      if (storage.wordsListCurrentPage > 0) {
+        let nextPage = storage.wordsListCurrentPage - 10;
+        if (nextPage < 0) nextPage = 0;
+        else nextPage = storage.wordsListCurrentPage - 10;
+        changePage(storage.wordsListCurrentGroup, nextPage);
+      }
+    }
     if ((event.target as HTMLElement).classList.contains('textBook__pagination_next-page')) {
       if (storage.wordsListCurrentPage < storage.limitOfPages - 1) {
         changePage(storage.wordsListCurrentGroup, storage.wordsListCurrentPage + 1);
+      }
+    }
+    if ((event.target as HTMLElement).classList.contains('textBook__pagination_next-ten-page')) {
+      if (storage.wordsListCurrentPage < storage.limitOfPages - 1) {
+        let nextPage = storage.wordsListCurrentPage + 10;
+        if (nextPage >= storage.limitOfPages) nextPage = storage.limitOfPages;
+        else nextPage = storage.wordsListCurrentPage + 10;
+        changePage(storage.wordsListCurrentGroup, nextPage - 1);
       }
     }
   })
