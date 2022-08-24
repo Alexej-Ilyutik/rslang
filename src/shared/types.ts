@@ -1,4 +1,4 @@
-export interface wordInterface {
+export interface WordInterface {
   id: string,
   group: number,
   page: number,
@@ -15,4 +15,4 @@ export interface wordInterface {
   textExampleTranslate: string,
 };
 
-export type pageOfWordsInterface = Promise<wordInterface[]>;
+export type PageOfWordsInterface = Promise<WordInterface[]>;

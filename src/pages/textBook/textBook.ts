@@ -1,5 +1,5 @@
 import './textBook.scss';
-import { pageOfWordsInterface } from '../../shared/types';
+import { PageOfWordsInterface } from '../../shared/types';
 import { storage } from '../../shared/storage';
 import API from '../../services/api';
 import { deleteClassActive } from '../../services/deleteClassActive';
@@ -35,7 +35,7 @@ export const renderTextBook = (): void => {
 
 export const renderTextBoxPage = async (groupNumber: number, pageNumber: number): Promise<void> => {
   storage.wordsListCurrentGroup = groupNumber;
-  const arrayOfWords: pageOfWordsInterface = await API.getWords(storage.wordsListCurrentGroup, pageNumber)
+  const arrayOfWords: PageOfWordsInterface = await API.getWords(storage.wordsListCurrentGroup, pageNumber)
 
   const wordsList = document.querySelector('.textBook__words-list') as HTMLElement;
   storage.wordsListCurrentPage = pageNumber; // update page number
@@ -85,13 +85,16 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
 export const renderPagination = (pageNumber: number, totalPagesNumber: number  = storage.limitOfPages): void => {
   const pagination = document.querySelector('.textBook__pagination_list') as HTMLElement;
 
-  const maxNumberOfButtons = 8;
+  const maxNumberOfButtons = 7;
   const currentPage = pageNumber + 1;
   let i = 1;
   let lastIndex = maxNumberOfButtons;
-  if (currentPage > maxNumberOfButtons) {
-    i = currentPage - maxNumberOfButtons + 1;
-    lastIndex = maxNumberOfButtons + i - 1;
+  if (currentPage > 4) {
+    i = currentPage - 3;
+    lastIndex = currentPage + 3;
+  }
+  if (currentPage > storage.limitOfPages - 3) {
+    i = currentPage - maxNumberOfButtons + (storage.limitOfPages - currentPage) + 1;
   }
   let numButtonsHtml = '';
   for(; i <= totalPagesNumber && i <= lastIndex; i += 1) {
