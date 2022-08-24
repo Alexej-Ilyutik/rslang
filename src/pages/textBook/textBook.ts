@@ -86,21 +86,21 @@ export const renderPagination = (pageNumber: number, totalPagesNumber: number  =
   const pagination = document.querySelector('.textBook__pagination_list') as HTMLElement;
 
   const maxNumberOfButtons = 8;
-
+  const currentPage = pageNumber + 1;
   let i = 1;
   let lastIndex = maxNumberOfButtons;
-  if (pageNumber > maxNumberOfButtons) {
-    i = pageNumber - maxNumberOfButtons + 1;
+  if (currentPage > maxNumberOfButtons) {
+    i = currentPage - maxNumberOfButtons + 1;
     lastIndex = maxNumberOfButtons + i - 1;
   }
   let numButtonsHtml = '';
   for(; i <= totalPagesNumber && i <= lastIndex; i += 1) {
     let isActive = '';
-    if (i === pageNumber) {
+    if (i === currentPage) {
       isActive = 'active';
     }
     numButtonsHtml += `<li class="page-item"><button class="page-link textBook__pagination_page-number ${isActive}"
-    data-page="${i}">${i}</button></li>`;
+    data-page="${i - 1}">${i}</button></li>`;
   }
 
   const html = `<li class="page-item textBook__pagination_prev-page disabled">
@@ -155,12 +155,12 @@ export const addEventPagination = (): void => {
       changePage(storage.wordsListCurrentGroup, pageNumber);
     }
     if ((event.target as HTMLElement).classList.contains('textBook__pagination_prev-page')) {
-      if (storage.wordsListCurrentPage > 1) {
+      if (storage.wordsListCurrentPage > 0) {
         changePage(storage.wordsListCurrentGroup, storage.wordsListCurrentPage - 1);
       }
     }
     if ((event.target as HTMLElement).classList.contains('textBook__pagination_next-page')) {
-      if (storage.wordsListCurrentPage < storage.limitOfPages) {
+      if (storage.wordsListCurrentPage < storage.limitOfPages - 1) {
         changePage(storage.wordsListCurrentGroup, storage.wordsListCurrentPage + 1);
       }
     }
@@ -175,7 +175,7 @@ export const addEventWordsGroup = (): void => {
       const buttonsList = Array.from(document.querySelectorAll('.textBook__btn-group_button'));
       deleteClassActive(buttonsList);
       (event.target as HTMLElement).classList.add('active');
-      storage.wordsListCurrentPage = 1;
+      storage.wordsListCurrentPage = 0;
       changePage(groupNumber, storage.wordsListCurrentPage);
     }
   })
