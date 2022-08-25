@@ -3,6 +3,7 @@ import { PageOfWordsInterface } from '../../shared/types';
 import { storage } from '../../shared/storage';
 import API from '../../services/api';
 import { deleteClassActive } from '../../services/deleteClassActive';
+import { playAllAudioFiles } from '../../components/audioButton/audioButton';
 
 export const renderTextBook = (): void => {
   const textBook = `
@@ -10,16 +11,15 @@ export const renderTextBook = (): void => {
       <h2 class="textBook__title">Text book</h2>
       <div class="textBook__content-wrapper">
         <div class="textBook__btn-group-wrapper">
-          <div class="btn-group" role="group" aria-label="Basic outlined example">
-            <button type="button" class="textBook__btn-group_button btn btn-outline-primary active"
-             data-group="0">A1</button>
-            <button type="button" class="textBook__btn-group_button btn btn-outline-primary" data-group="1">A2</button>
-            <button type="button" class="textBook__btn-group_button btn btn-outline-primary" data-group="2">B1</button>
-            <button type="button" class="textBook__btn-group_button btn btn-outline-primary" data-group="3">B2</button>
-            <button type="button" class="textBook__btn-group_button btn btn-outline-primary" data-group="4">C1</button>
-            <button type="button" class="textBook__btn-group_button btn btn-outline-primary" data-group="5">C2</button>
-            <button type="button" class="textBook__btn-group_button btn btn-outline-primary" data-group="6">HD</button>
-          </div>
+          <button type="button" class="textBook__btn-group_button btn btn-outline-primary active"
+            data-group="0">A1</button>
+          <button type="button" class="textBook__btn-group_button btn btn-outline-primary" data-group="1">A2</button>
+          <button type="button" class="textBook__btn-group_button btn btn-outline-primary" data-group="2">B1</button>
+          <button type="button" class="textBook__btn-group_button btn btn-outline-primary" data-group="3">B2</button>
+          <button type="button" class="textBook__btn-group_button btn btn-outline-primary" data-group="4">C1</button>
+          <button type="button" class="textBook__btn-group_button btn btn-outline-primary" data-group="5">C2</button>
+          <button type="button" class="textBook__btn-group_button btn btn-outline-primary" data-group="6">
+          Hard words</button>
         </div>
         <nav class="textBook__pagination" aria-label="Page navigation example">
           <ul class="textBook__pagination_list pagination justify-content-center">
@@ -43,24 +43,44 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
     <li class="textBook__words-list_word-card word-card" tabindex="0">
       <div class="word-card_visual-content-wrapper">
         <div class="word-card_img-wrapper">
-          <img class="word-card_img" src="${`${API.base  }/${ element.image}`}" alt="${element.word} image"></img>
+          <img class="word-card_img" src="${`${API.base}/${element.image}`}" alt="${element.word} image"></img>
         </div>
         <div class="word-card_information-wrapper">
-          <h2 class="word-card_word-name">${element.word}</h2>
-          <p class="word-card_word-transcription">${element.transcription}</p>
+          <h2 class="word-card_word-name">${element.word}
+          <span class="word-card_word-transcription"> ${element.transcription}</span></h2>
           <p class="word-card_word-name-translation">${element.wordTranslate}</p>
           <p class="word-card_word-meaning">${element.textMeaning}</p>
           <p class="word-card_word-meaning-translation">${element.textMeaningTranslate}</p>
           <p class="word-card_word-example">${element.textExample}</p>
           <p class="word-card_word-example-translation">${element.textExampleTranslate}</p>
+          <hr class="word-card_line">
+          <div class="word-card_status-wrapper">
+            <div class="word-card_status-checkbox-wrapper">
+              <input type="checkbox" class="word-card_status-checkbox" id="hard" value="yes" checked="checked">
+              <label for="hard"></label>
+              <p class="word-card_status-checkbox-text">Hard word</p>
+            </div>
+            <div class="word-card_status-checkbox-wrapper">
+              <input type="checkbox" class="word-card_status-checkbox" id="learned" value="yes">
+              <label for="learned"></label>
+              <p class="word-card_status-checkbox-text">Learned word</p>
+            </div>
+          </div>
+          <div class="word-card_counter-information">Guessed ${0} times</div>
         </div>
       </div>
       <div class="word-card_audio-content-wrapper">
         <button class="word-card_audio-button">
           <img class="word-card_audio-button-image" src="../../assets/volume.svg" alt="audio button"
+<<<<<<< HEAD
           data-audio="${`${API.base  }/${ element.audio}`}"
           data-audio-example="${`${API.base  }/${ element.audioExample}`}"
           data-audio-meaning="${`${API.base  }/${ element.audioMeaning}`}">
+=======
+          data-audio="${`${API.base}/${ element.audio}`}"
+          data-audio-example="${`${API.base}/${element.audioExample}`}"
+          data-audio-meaning="${`${API.base}/${element.audioMeaning}`}"></img>
+>>>>>>> develop
         </button>
       </div>
     </li>`
@@ -70,31 +90,47 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
 
 export const renderPagination = (pageNumber: number, totalPagesNumber: number  = storage.limitOfPages): void => {
   const pagination = document.querySelector('.textBook__pagination_list') as HTMLElement;
+  let maxNumberOfButtons = 3;
+  if (window.matchMedia("(min-width: 576px)").matches) {
+    maxNumberOfButtons = 5
+  }
+  if (window.matchMedia("(min-width: 768px)").matches) {
+    maxNumberOfButtons = 7
+  }
 
-  const maxNumberOfButtons = 8;
-
+  const currentPage = pageNumber + 1;
   let i = 1;
   let lastIndex = maxNumberOfButtons;
-  if (pageNumber > maxNumberOfButtons) {
-    i = pageNumber - maxNumberOfButtons + 1;
-    lastIndex = maxNumberOfButtons + i - 1;
+  if (currentPage > Math.ceil(maxNumberOfButtons / 2)) {
+    i = currentPage - Math.floor(maxNumberOfButtons / 2);
+    lastIndex = currentPage + Math.floor(maxNumberOfButtons / 2);
+  }
+  if (currentPage > storage.limitOfPages - Math.floor(maxNumberOfButtons / 2)) {
+    i = currentPage - maxNumberOfButtons + (storage.limitOfPages - currentPage) + 1;
   }
   let numButtonsHtml = '';
   for(; i <= totalPagesNumber && i <= lastIndex; i += 1) {
     let isActive = '';
-    if (i === pageNumber) {
+    if (i === currentPage) {
       isActive = 'active';
     }
     numButtonsHtml += `<li class="page-item"><button class="page-link textBook__pagination_page-number ${isActive}"
-    data-page="${i}">${i}</button></li>`;
+    data-page="${i - 1}">${i}</button></li>`;
   }
 
-  const html = `<li class="page-item textBook__pagination_prev-page disabled">
-    <button class="page-link"><</button>
+  const html = `
+    <li class="page-item">
+      <button class="page-link textBook__pagination_prev-ten-page"><<</button>
+    </li>
+    <li class="page-item">
+      <button class="page-link textBook__pagination_prev-page"><</button>
     </li>
     ${ numButtonsHtml }
     <li class="page-item">
       <button class="page-link textBook__pagination_next-page">></button>
+    </li>
+    <li class="page-item">
+      <button class="page-link textBook__pagination_next-ten-page">>></button>
     </li>`;
 
   pagination.innerHTML = html;
@@ -106,16 +142,6 @@ export const changePage = (groupNumber:number, pageNumber: number): void => {
   renderPagination(pageNumber);
 }
 
-export const playAllAudioFiles = (audioLinks: string[], index = 0): void => {
-  if (index < audioLinks.length) {
-    const audio = new Audio(audioLinks[index]);
-    audio.addEventListener("ended", () => {
-      playAllAudioFiles(audioLinks, index + 1);
-    });
-    audio.play();
-  }
-}
-
 export const addEventPagination = (): void => {
   const paginationArea = document.querySelector('.textBook__pagination_list') as HTMLElement;
   paginationArea.addEventListener('click', (event) => {
@@ -124,26 +150,43 @@ export const addEventPagination = (): void => {
       changePage(storage.wordsListCurrentGroup, pageNumber);
     }
     if ((event.target as HTMLElement).classList.contains('textBook__pagination_prev-page')) {
-      if (storage.wordsListCurrentPage > 1) {
+      if (storage.wordsListCurrentPage > 0) {
         changePage(storage.wordsListCurrentGroup, storage.wordsListCurrentPage - 1);
       }
     }
+    if ((event.target as HTMLElement).classList.contains('textBook__pagination_prev-ten-page')) {
+      if (storage.wordsListCurrentPage > 0) {
+        let nextPage = storage.wordsListCurrentPage - 10;
+        if (nextPage < 0) nextPage = 0;
+        else nextPage = storage.wordsListCurrentPage - 10;
+        changePage(storage.wordsListCurrentGroup, nextPage);
+      }
+    }
     if ((event.target as HTMLElement).classList.contains('textBook__pagination_next-page')) {
-      if (storage.wordsListCurrentPage < storage.limitOfPages) {
+      if (storage.wordsListCurrentPage < storage.limitOfPages - 1) {
         changePage(storage.wordsListCurrentGroup, storage.wordsListCurrentPage + 1);
+      }
+    }
+    if ((event.target as HTMLElement).classList.contains('textBook__pagination_next-ten-page')) {
+      if (storage.wordsListCurrentPage < storage.limitOfPages - 1) {
+        let nextPage = storage.wordsListCurrentPage + 10;
+        if (nextPage >= storage.limitOfPages) nextPage = storage.limitOfPages;
+        else nextPage = storage.wordsListCurrentPage + 10;
+        changePage(storage.wordsListCurrentGroup, nextPage - 1);
       }
     }
   })
 }
 
 export const addEventWordsGroup = (): void => {
-  const wordsGroupArea = document.querySelector('.btn-group') as HTMLElement;
+  const wordsGroupArea = document.querySelector('.textBook__btn-group-wrapper') as HTMLElement;
   wordsGroupArea.addEventListener('click', (event) => {
     if ((event.target as HTMLElement).classList.contains('btn')) {
       const groupNumber = Number((event.target as HTMLElement).getAttribute('data-group'));
       const buttonsList = Array.from(document.querySelectorAll('.textBook__btn-group_button'));
       deleteClassActive(buttonsList);
       (event.target as HTMLElement).classList.add('active');
+      storage.wordsListCurrentPage = 0;
       changePage(groupNumber, storage.wordsListCurrentPage);
     }
   })
