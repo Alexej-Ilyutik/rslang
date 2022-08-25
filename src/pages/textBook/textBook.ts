@@ -3,6 +3,7 @@ import { PageOfWordsInterface } from '../../shared/types';
 import { storage } from '../../shared/storage';
 import API from '../../services/api';
 import { deleteClassActive } from '../../services/deleteClassActive';
+import { playAllAudioFiles } from '../../services/audioButton';
 
 export const renderTextBook = (): void => {
   const textBook = `
@@ -133,33 +134,6 @@ export const changePage = (groupNumber:number, pageNumber: number): void => {
   storage.wordsListCurrentPage = pageNumber;
   renderTextBoxPage(groupNumber, pageNumber);
   renderPagination(pageNumber);
-}
-
-export const stopAllAudio = (): void => {
-  const allAudioFiles: HTMLAudioElement[] = Array.from(document.querySelectorAll('audio'));
-  allAudioFiles.forEach(el => {
-    el.pause();
-    el.remove();
-  })
-}
-
-export const playAllAudioFiles = (audioLinks: string[], index = 0): void => {
-  if (index === 0) {
-    stopAllAudio();
-  }
-  if (index < audioLinks.length) {
-    const audio = document.createElement('audio');
-    audio.style.display = "none";
-    audio.src = audioLinks[index];
-    audio.autoplay = true;
-    audio.onended = () => {
-      audio.remove();
-    };
-    document.body.appendChild(audio);
-    audio.addEventListener("ended", () => {
-      playAllAudioFiles(audioLinks, index + 1);
-    });
-  }
 }
 
 export const addEventPagination = (): void => {
