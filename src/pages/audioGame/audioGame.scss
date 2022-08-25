@@ -1,8 +1,17 @@
-
-.audiocall__btns{
-    text-align: center;
-    .btn{
-      min-width: 8rem;
-    }
+.audiocall__subtitle {
+  text-align: center;
 }
 
+.audiocall__voice{
+  margin: 0 auto;
+  width: 5rem;
+}
+
+.audiocall__btns {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  label {
+    min-width: 8rem;
+  }
+}
