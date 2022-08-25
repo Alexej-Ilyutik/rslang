@@ -1,0 +1,16 @@
+.word-card_audio-button {
+  margin: 0 auto;
+  border-radius: 50%;
+  border: 3px solid var(--bs-warning);
+  background-color: var(--bg-color);
+  &:hover {
+    background-color: var(--buttons-color);
+  }
+  &:active {
+    transform: scale(1.1);
+  }
+}
+
+.word-card_audio-button-image {
+  width: 3rem;
+}

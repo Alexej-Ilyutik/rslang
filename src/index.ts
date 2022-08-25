@@ -41,7 +41,7 @@ const onNavigate = (location: string): void => {
       break;
     case '#/book':
       renderTextBook();
-      renderTextBoxPage(0, 1);
+      renderTextBoxPage(storage.wordsListCurrentGroup, storage.wordsListCurrentPage);
       renderPagination(storage.wordsListCurrentPage);
       addTestBookEvents();
       break;
