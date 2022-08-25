@@ -3,7 +3,7 @@ import { PageOfWordsInterface } from '../../shared/types';
 import { storage } from '../../shared/storage';
 import API from '../../services/api';
 import { deleteClassActive } from '../../services/deleteClassActive';
-import { playAllAudioFiles } from '../../services/audioButton';
+import { playAllAudioFiles } from '../../components/audioButton/audioButton';
 
 export const renderTextBook = (): void => {
   const textBook = `

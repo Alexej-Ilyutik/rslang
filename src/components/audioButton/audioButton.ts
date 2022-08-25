@@ -1,3 +1,11 @@
+import './audioButton.scss';
+
+export const renderAudioButton = (): string => `
+<button class="word-card_audio-button">
+  <img class="word-card_audio-button-image" src="../../assets/volume.svg" alt="audio button"
+  </img>
+</button>`
+
 export const stopAllAudioFiles = (): void => {
   const allAudioFiles: HTMLAudioElement[] = Array.from(document.querySelectorAll('audio'));
   allAudioFiles.forEach(el => {
