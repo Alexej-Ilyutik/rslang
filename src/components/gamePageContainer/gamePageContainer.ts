@@ -7,7 +7,8 @@ export const renderGamePageContainer = (): void => {
         <aside class="audiocall__settings settings col-3">
           <h4 class="audiocall__title mb-4">Select the Level:</h4>
           <div class="settings__btns mb-5">
-            <input type="radio" class="btn-check setting__level" name="level" data-level="0" id="A1" autocomplete="off">
+            <input type="radio" class="btn-check setting__level" name="level" data-level="0" id="A1"
+            autocomplete="off" checked>
             <label class="btn btn-info" for="A1">A1</label>
 
             <input type="radio" class="btn-check setting__level" name="level" data-level="1" id="A2" autocomplete="off">
