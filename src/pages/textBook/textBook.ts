@@ -60,7 +60,7 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
           <img class="word-card_audio-button-image" src="../../assets/volume.svg" alt="audio button"
           data-audio="${`${API.base  }/${ element.audio}`}"
           data-audio-example="${`${API.base  }/${ element.audioExample}`}"
-          data-audio-meaning="${`${API.base  }/${ element.audioMeaning}`}"></img>
+          data-audio-meaning="${`${API.base  }/${ element.audioMeaning}`}">
         </button>
       </div>
     </li>`

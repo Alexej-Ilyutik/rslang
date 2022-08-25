@@ -11,7 +11,17 @@
   display: flex;
   gap: 2rem;
   justify-content: center;
+  flex-wrap: wrap;
   label {
     min-width: 8rem;
+    font-weight: 500;
+    color: var(--text-color);
   }
 }
+
+  .audiocall__img{
+    display: block;
+    width: 75%;
+    margin: 0 auto;
+  }
+

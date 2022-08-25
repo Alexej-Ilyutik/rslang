@@ -12,6 +12,7 @@
   "plugins": ["prettier", "import","@typescript-eslint"],
   "ignorePatterns": ["*.config.js", "node_modules/", "dist/"],
   "rules": {
+    "no-param-reassign": 0,
     "max-len": ["warn", { "code": 120 }],
     "indent": [
       "warn",
