@@ -1,5 +1,5 @@
 import './textBook.scss';
-import { pageOfWordsInterface } from '../../shared/types';
+import { PageOfWordsInterface } from '../../shared/types';
 import { storage } from '../../shared/storage';
 import API from '../../services/api';
 import { deleteClassActive } from '../../services/deleteClassActive';
@@ -35,7 +35,7 @@ export const renderTextBook = (): void => {
 
 export const renderTextBoxPage = async (groupNumber: number, pageNumber: number): Promise<void> => {
   storage.wordsListCurrentGroup = groupNumber;
-  const arrayOfWords: pageOfWordsInterface = await API.getWords(storage.wordsListCurrentGroup, pageNumber)
+  const arrayOfWords: PageOfWordsInterface = await API.getWords(storage.wordsListCurrentGroup, pageNumber)
 
   const wordsList = document.querySelector('.textBook__words-list') as HTMLElement;
   storage.wordsListCurrentPage = pageNumber; // update page number

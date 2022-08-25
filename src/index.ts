@@ -11,11 +11,15 @@ import { loginForm, loginHandler } from './components/loginForm/loginForm';
 import { registerForm, registerHandler } from './components/registerForm/registerForm';
 import { isLogin } from './services/isLogin';
 import { switchLoginMode } from './services/switchLoginMode';
-import { renderGamePage } from './pages/games/game';
+import { renderGamePage } from './pages/game/game';
+import { renderAudioPage } from './pages/audioGame/audioGame';
+import { renderGamePageContainer } from './components/gamePageContainer/gamePageContainer';
 
 const renderPage = (): void => {
   renderHeader();
-  renderMain();
+  // renderMain();
+  renderGamePageContainer();
+  renderAudioPage();
   renderFooter();
 };
 
@@ -58,7 +62,8 @@ const onNavigate = (location: string): void => {
       main.innerHTML = `<h1>Sprint</h1>`;
       break;
     case '#/audio':
-      main.innerHTML = `<h1>Audio</h1>`;
+      renderGamePageContainer();
+      renderAudioPage();
       break;
     default:
       main.innerHTML = `<h1>Main</h1>`;
