@@ -84,16 +84,22 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
 
 export const renderPagination = (pageNumber: number, totalPagesNumber: number  = storage.limitOfPages): void => {
   const pagination = document.querySelector('.textBook__pagination_list') as HTMLElement;
+  let maxNumberOfButtons = 3;
+  if (window.matchMedia("(min-width: 576px)").matches) {
+    maxNumberOfButtons = 5
+  }
+  if (window.matchMedia("(min-width: 768px)").matches) {
+    maxNumberOfButtons = 7
+  }
 
-  const maxNumberOfButtons = 7;
   const currentPage = pageNumber + 1;
   let i = 1;
   let lastIndex = maxNumberOfButtons;
-  if (currentPage > 4) {
-    i = currentPage - 3;
-    lastIndex = currentPage + 3;
+  if (currentPage > Math.ceil(maxNumberOfButtons / 2)) {
+    i = currentPage - Math.floor(maxNumberOfButtons / 2);
+    lastIndex = currentPage + Math.floor(maxNumberOfButtons / 2);
   }
-  if (currentPage > storage.limitOfPages - 3) {
+  if (currentPage > storage.limitOfPages - Math.floor(maxNumberOfButtons / 2)) {
     i = currentPage - maxNumberOfButtons + (storage.limitOfPages - currentPage) + 1;
   }
   let numButtonsHtml = '';
@@ -107,11 +113,11 @@ export const renderPagination = (pageNumber: number, totalPagesNumber: number  =
   }
 
   const html = `
-    <li class="page-item textBook__pagination_prev-ten-page disabled">
-      <button class="page-link"><<</button>
+    <li class="page-item">
+      <button class="page-link textBook__pagination_prev-ten-page"><<</button>
     </li>
-    <li class="page-item textBook__pagination_prev-page disabled">
-      <button class="page-link"><</button>
+    <li class="page-item">
+      <button class="page-link textBook__pagination_prev-page"><</button>
     </li>
     ${ numButtonsHtml }
     <li class="page-item">
