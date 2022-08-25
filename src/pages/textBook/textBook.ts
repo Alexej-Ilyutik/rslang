@@ -46,8 +46,8 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
           <img class="word-card_img" src="${`${API.base}/${element.image}`}" alt="${element.word} image"></img>
         </div>
         <div class="word-card_information-wrapper">
-          <h2 class="word-card_word-name">${element.word}</h2>
-          <p class="word-card_word-transcription">${element.transcription}</p>
+          <h2 class="word-card_word-name">${element.word}
+          <span class="word-card_word-transcription"> ${element.transcription}</span></h2>
           <p class="word-card_word-name-translation">${element.wordTranslate}</p>
           <p class="word-card_word-meaning">${element.textMeaning}</p>
           <p class="word-card_word-meaning-translation">${element.textMeaningTranslate}</p>
@@ -65,8 +65,8 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
               <label for="learned"></label>
               <p class="word-card_status-checkbox-text">Learned word</p>
             </div>
-            <p class="word-card_counter-information">Guessed ${0} times</p>
           </div>
+          <div class="word-card_counter-information">Guessed ${0} times</div>
         </div>
       </div>
       <div class="word-card_audio-content-wrapper">
