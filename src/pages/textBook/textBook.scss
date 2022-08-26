@@ -61,6 +61,8 @@ nav {
 .textBook__pagination_list {
   gap: 0.2rem;
   .page-link {
+    width: 40px;
+    padding: 0.3rem 0.5rem;
     color: var(--text-basic);
     border-radius: 0.5rem;
     border: 3px solid var(--bs-warning);
