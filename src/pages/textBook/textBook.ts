@@ -111,22 +111,29 @@ export const renderPagination = (pageNumber: number, totalPagesNumber: number  =
     numButtonsHtml += `<li class="page-item"><button class="page-link textBook__pagination_page-number ${isActive}"
     data-page="${i - 1}">${i}</button></li>`;
   }
+  let prevButtonsStatus = '';
+  let nextButtonsStatus = '';
+  if (currentPage === 1) {
+    prevButtonsStatus = 'disabled';
+  }
+  if (currentPage === storage.limitOfPages) {
+    nextButtonsStatus = 'disabled';
+  }
 
   const html = `
     <li class="page-item">
-      <button class="page-link textBook__pagination_prev-ten-page"><<</button>
+      <button class="page-link textBook__pagination_prev-ten-page ${prevButtonsStatus}"><<</button>
     </li>
     <li class="page-item">
-      <button class="page-link textBook__pagination_prev-page"><</button>
+      <button class="page-link textBook__pagination_prev-page ${prevButtonsStatus}"><</button>
     </li>
     ${ numButtonsHtml }
     <li class="page-item">
-      <button class="page-link textBook__pagination_next-page">></button>
+      <button class="page-link textBook__pagination_next-page ${nextButtonsStatus}">></button>
     </li>
     <li class="page-item">
-      <button class="page-link textBook__pagination_next-ten-page">>></button>
+      <button class="page-link textBook__pagination_next-ten-page ${nextButtonsStatus}">>></button>
     </li>`;
-
   pagination.innerHTML = html;
 }
 

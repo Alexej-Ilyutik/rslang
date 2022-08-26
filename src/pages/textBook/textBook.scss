@@ -74,6 +74,9 @@ nav {
     background-color: var(--buttons-color);
     color: white;
   }
+  .disabled {
+    border: 3px solid var(--secondary-color);
+  }
 }
 
 @media (min-width: 768px) {
