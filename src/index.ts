@@ -14,7 +14,8 @@ import { renderGamePage } from './pages/games/game';
 
 const renderPage = (): void => {
   renderHeader();
-  renderMain();
+  // renderMain();
+  renderTextBook();
   renderFooter();
 };
 

@@ -25,6 +25,20 @@ export const renderTextBookNavigation = (): void => {
           <ul class="textBook__pagination_list pagination justify-content-center">
           </ul>
         </nav>
+        <div class="textBook__games">
+          <button class="textBook__games_game-button">
+            <img src="../../assets/sprint-icon.svg" class="textBook__games_game-img" alt="game image"></img>
+            <h2 class="textBook__games_game-name">Sprint</h2>
+          </button>
+          <button class="textBook__games_game-button">
+            <img src="../../assets/audio-icon.svg" class="textBook__games_game-img" alt="game image"></img>
+            <h2 class="textBook__games_game-name">Audio-game</h2>
+          </button>
+          <ul class="textBook__games_information-wrapper">
+            <li class="textBook__games_information">Page: Has learned ${0}/${20} words</li>
+            <li class="textBook__games_information">Groupe: Has learned ${0}/${600} words</li>
+          </ul>
+        </div>
         <ul class="textBook__words-list">
         </ul>
       </div>
@@ -66,7 +80,7 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
               <p class="word-card_status-checkbox-text">Learned word</p>
             </div>
           </div>
-          <div class="word-card_counter-information">Guessed ${0} times</div>
+          <h3 class="word-card_counter-information">Guessed ${0} times</h3>
         </div>
       </div>
       <div class="word-card_audio-content-wrapper">
