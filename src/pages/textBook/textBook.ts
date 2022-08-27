@@ -70,13 +70,15 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
           <hr class="word-card_line">
           <div class="word-card_status-wrapper">
             <div class="word-card_status-checkbox-wrapper">
-              <input type="checkbox" class="word-card_status-checkbox" id="hard" value="yes" checked="checked">
-              <label for="hard"></label>
+              <input type="checkbox" class="word-card_status-checkbox" id="${element.id}Hard" value="yes"
+              data-id="${element.id}">
+              <label class="word-card_status-checkbox-body" for="${element.id}Hard"></label>
               <p class="word-card_status-checkbox-text">Hard word</p>
             </div>
             <div class="word-card_status-checkbox-wrapper">
-              <input type="checkbox" class="word-card_status-checkbox" id="learned" value="yes">
-              <label for="learned"></label>
+              <input type="checkbox" class="word-card_status-checkbox" id="${element.id}Learned" value="yes"
+              data-id="${element.id}">
+              <label class="word-card_status-checkbox-body" for="${element.id}Learned"></label>
               <p class="word-card_status-checkbox-text">Learned word</p>
             </div>
           </div>
@@ -207,9 +209,9 @@ export const addEventWordsGroup = (): void => {
   })
 }
 
-export const addEventAudioButton = (): void => {
+export const addEventWords = (): void => {
   const wordsArea = document.querySelector('.textBook__words-list') as HTMLElement;
-  wordsArea.addEventListener('click', (event) => {
+  wordsArea.addEventListener('click', async (event) => {
     if ((event.target as HTMLElement).classList.contains('word-card_audio-button-image')) {
       const audioLinkWord = (event.target as HTMLElement).getAttribute('data-audio') || '';
       const audioLinkExample = (event.target as HTMLElement).getAttribute('data-audio-example') || '';
@@ -223,7 +225,7 @@ export const addEventAudioButton = (): void => {
 export const addTestBookEvents = (): void => {
   addEventWordsGroup();
   addEventPagination();
-  addEventAudioButton();
+  addEventWords();
 }
 
 export const renderTextBook = (): void => {
