@@ -5,7 +5,7 @@ import API from '../../services/api';
 import { deleteClassActive } from '../../services/deleteClassActive';
 import { playAllAudioFiles } from '../../components/audioButton/audioButton';
 
-export const renderTextBook = (): void => {
+export const renderTextBookNavigation = (): void => {
   const textBook = `
     <div class="textBook container">
       <h2 class="textBook__title">Text book</h2>
@@ -210,4 +210,11 @@ export const addTestBookEvents = (): void => {
   addEventWordsGroup();
   addEventPagination();
   addEventAudioButton();
+}
+
+export const renderTextBook = (): void => {
+  renderTextBookNavigation();
+  renderTextBoxPage(storage.wordsListCurrentGroup, storage.wordsListCurrentPage);
+  renderPagination(storage.wordsListCurrentPage);
+  addTestBookEvents();
 }
