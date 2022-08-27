@@ -71,15 +71,15 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
           <hr class="word-card_line">
           <div class="word-card_status-wrapper">
             <div class="word-card_status-checkbox-wrapper">
-              <input type="checkbox" class="word-card_status-checkbox" id="${element.id}Hard" value="yes"
-              data-id="${element.id}">
-              <label class="word-card_status-checkbox-body" for="${element.id}Hard"></label>
+              <input type="checkbox" class="word-card_status-checkbox hard-checkbox"
+              id="${element.id}Hard" value="yes" data-id="${element.id}">
+              <label for="${element.id}Hard"></label>
               <p class="word-card_status-checkbox-text">Hard word</p>
             </div>
             <div class="word-card_status-checkbox-wrapper">
-              <input type="checkbox" class="word-card_status-checkbox" id="${element.id}Learned" value="yes"
-              data-id="${element.id}">
-              <label class="word-card_status-checkbox-body" for="${element.id}Learned"></label>
+              <input type="checkbox" class="word-card_status-checkbox learned-checkbox"
+              id="${element.id}Learned" value="yes" data-id="${element.id}">
+              <label for="${element.id}Learned"></label>
               <p class="word-card_status-checkbox-text">Learned word</p>
             </div>
           </div>
@@ -97,6 +97,11 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
     </li>`
   ).join('');
   wordsList.innerHTML = html;
+
+  const showWordStatus = (): void => {
+
+  }
+  showWordStatus();
 }
 
 export const renderPagination = (pageNumber: number, totalPagesNumber: number  = storage.limitOfPages): void => {
@@ -220,15 +225,16 @@ export const addEventWords = (): void => {
       const audioArray = [audioLinkWord, audioLinkMeaning, audioLinkExample];
       playAllAudioFiles(audioArray);
     }
-    if ((event.target as HTMLInputElement).classList.contains('word-card_status-checkbox')) {
+    if ((event.target as HTMLInputElement).classList.contains('hard-checkbox')) {
       const wordId = (event.target as HTMLInputElement).getAttribute('data-id')?.toString() || '';
       if ((event.target as HTMLInputElement).checked) {
-        console.log('check');
         API.createUserWord(wordId, 'hard');
       } else {
-        console.log('uncheck');
         API.deleteUserWord(wordId);
       }
+    }
+    if ((event.target as HTMLInputElement).classList.contains('learned-checkbox')) {
+      console.log('TODO learned words');
     }
   })
 }

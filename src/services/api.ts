@@ -142,9 +142,12 @@ class API {
         'Authorization': `Bearer ${token}`
       },
     });
-    const content = await response.json();
-    console.log(content);
-    return content;
+    if (response.status !== 404) {
+      const content = await response.json();
+      console.log(content);
+      return content;
+    }
+    return false;
   }
 
   static async updateUserWord(wordId: string, difficulty: string) {
@@ -172,7 +175,7 @@ class API {
       },
     });
     const content = await response.status;
-    console.log(`Server responce with status: ${content}`);
+    console.log(`Server response with status: ${content}`);
   }
 
   // USERS/AGGREGATED WORDS:
