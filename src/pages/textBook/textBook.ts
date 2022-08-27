@@ -49,6 +49,7 @@ export const renderTextBookNavigation = (): void => {
 
 export const renderTextBoxPage = async (groupNumber: number, pageNumber: number): Promise<void> => {
   storage.wordsListCurrentGroup = groupNumber;
+  const arrayOfUserWords = await API.getAggregatedWords();
   const arrayOfWords: PageOfWordsInterface = await API.getWords(storage.wordsListCurrentGroup, pageNumber)
 
   const wordsList = document.querySelector('.textBook__words-list') as HTMLElement;
@@ -211,13 +212,23 @@ export const addEventWordsGroup = (): void => {
 
 export const addEventWords = (): void => {
   const wordsArea = document.querySelector('.textBook__words-list') as HTMLElement;
-  wordsArea.addEventListener('click', async (event) => {
+  wordsArea.addEventListener('click', (event) => {
     if ((event.target as HTMLElement).classList.contains('word-card_audio-button-image')) {
       const audioLinkWord = (event.target as HTMLElement).getAttribute('data-audio') || '';
       const audioLinkExample = (event.target as HTMLElement).getAttribute('data-audio-example') || '';
       const audioLinkMeaning = (event.target as HTMLElement).getAttribute('data-audio-meaning') || '';
       const audioArray = [audioLinkWord, audioLinkMeaning, audioLinkExample];
       playAllAudioFiles(audioArray);
+    }
+    if ((event.target as HTMLInputElement).classList.contains('word-card_status-checkbox')) {
+      const wordId = (event.target as HTMLInputElement).getAttribute('data-id')?.toString() || '';
+      if ((event.target as HTMLInputElement).checked) {
+        console.log('check');
+        API.createUserWord(wordId, 'hard');
+      } else {
+        console.log('uncheck');
+        API.deleteUserWord(wordId);
+      }
     }
   })
 }

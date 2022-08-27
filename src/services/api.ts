@@ -171,8 +171,8 @@ class API {
         'Authorization': `Bearer ${token}`,
       },
     });
-    const content = await response.json();
-    console.log(content);
+    const content = await response.status;
+    console.log(`Server responce with status: ${content}`);
   }
 
   // USERS/AGGREGATED WORDS:
