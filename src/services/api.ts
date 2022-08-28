@@ -192,8 +192,9 @@ class API {
       },
     });
     const content = await response.json();
-    console.log(content);
-    return content;
+    console.log(content[0].paginatedResults);
+    // return content;
+    return content[0].paginatedResults;
   }
 
   static async getAggregatedWord(wordId:string) {

@@ -1,5 +1,5 @@
 import './textBook.scss';
-import { PageOfWordsInterface } from '../../shared/types';
+import { PageOfWordsInterface, WordInterface } from '../../shared/types';
 import { storage } from '../../shared/storage';
 import API from '../../services/api';
 import { deleteClassActive } from '../../services/deleteClassActive';
@@ -49,7 +49,17 @@ export const renderTextBookNavigation = (): void => {
 
 export const renderTextBoxPage = async (groupNumber: number, pageNumber: number): Promise<void> => {
   storage.wordsListCurrentGroup = groupNumber;
-  const arrayOfWords: PageOfWordsInterface = await API.getWords(storage.wordsListCurrentGroup, pageNumber)
+
+  const getWords = async (_groupNumber: number, _pageNumber: number): PageOfWordsInterface => {
+    if (_groupNumber === 6) {
+      const arrayOfWords: PageOfWordsInterface = await API.getAggregatedWords();
+      return arrayOfWords;
+    }
+    const arrayOfWords: PageOfWordsInterface = await API.getWords(_groupNumber, _pageNumber);
+    return arrayOfWords;
+  }
+  // const arrayOfWords: PageOfWordsInterface = await API.getWords(storage.wordsListCurrentGroup, pageNumber)
+  const arrayOfWords: PageOfWordsInterface = getWords(groupNumber, pageNumber);
 
   const wordsList = document.querySelector('.textBook__words-list') as HTMLElement;
   storage.wordsListCurrentPage = pageNumber; // update page number
