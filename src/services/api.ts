@@ -15,14 +15,13 @@ class API {
     const content = await response.json();
     // console.log(content);
     return content;
-  };
+  }
 
   static async getWord(wordId: string) {
     const response = await fetch(`${API.words}/${wordId}`);
     const content = await response.json();
-    console.log(content);
     return content;
-  };
+  }
 
   // USER:
 
@@ -30,10 +29,10 @@ class API {
     const response = await fetch(API.users, {
       method: 'POST',
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ "name": `${name}`, "email": `${email}`, "password": `${password}` })
+      body: JSON.stringify({ name: `${name}`, email: `${email}`, password: `${password}` }),
     });
 
     if (response.status === 417) {
@@ -51,95 +50,99 @@ class API {
     const content = await response.json();
     console.log(content);
     return content;
-  };
+  }
 
   static async getUser() {
-    const {userId, token} = API.getJwt();
+    const { userId, token } = API.getJwt();
     const response = await fetch(`${API.users}/${userId}`, {
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
     const content = await response.json();
     console.log('getUser', content);
     return content;
-  };
+  }
 
   static async updateUser(email: string, password: string) {
-    const {userId, token} = API.getJwt();
+    const { userId, token } = API.getJwt();
     const response = await fetch(`${API.users}/${userId}`, {
       method: 'PUT',
       headers: {
-        'Authorization': `Bearer ${token}`,
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ "email": `${email}`, "password": `${password}` })
+      body: JSON.stringify({ email: `${email}`, password: `${password}` }),
     });
     const content = await response.json();
     console.log(content);
-  };
+  }
 
   static async deleteUser() {
-    const {userId, token} = API.getJwt();
+    const { userId, token } = API.getJwt();
     await fetch(`${API.users}/${userId}`, {
       method: 'DELETE',
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
     localStorage.removeItem('userAuthenticationData');
-  };
+  }
 
   static async getNewToken() {
-    const {userId, refreshToken} = API.getJwt();
+    const { userId, refreshToken } = API.getJwt();
     const response = await fetch(`${API.users}/${userId}/tokens`, {
       headers: {
-        'Authorization': `Bearer ${refreshToken}`,
+        Authorization: `Bearer ${refreshToken}`,
       },
     });
     const content = await response.json();
     localStorage.setItem('userAuthenticationData', JSON.stringify(content));
     console.log(content);
     return content;
-  };
+  }
 
   // USER/WORDS:
 
   static async getUserWords() {
-    const {userId, token} = API.getJwt();
+    const { userId, token } = API.getJwt();
     const response = await fetch(`${API.users}/${userId}/words`, {
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
     const content = await response.json();
     console.log(content);
     return content;
-  };
+  }
+
 
   static async createUserWord(wordId: string, difficulty: string, guessCounter: number) {
     const {userId, token} = API.getJwt();
+
     const response = await fetch(`${API.users}/${userId}/words/${wordId}`, {
       method: 'POST',
       // credentials: 'include',
       headers: {
-        'Authorization': `Bearer ${token}`,
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
+
       body: JSON.stringify({ "difficulty": `${difficulty}`, "optional": {guessCounter} })
+
     });
     const content = await response.json();
     console.log(content);
     return content;
-  };
+  }
 
   static async getUserWord(wordId: string) {
-    const {userId, token} = API.getJwt();
+    const { userId, token } = API.getJwt();
     const response = await fetch(`${API.users}/${userId}/words/${wordId}`, {
       headers: {
-        'Authorization': `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
     });
     if (response.status !== 404) {
@@ -158,11 +161,13 @@ class API {
     const response = await fetch(`${API.users}/${userId}/words/${wordId}`, {
       method: 'PUT',
       headers: {
-        'Authorization': `Bearer ${token}`,
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
+
       body: JSON.stringify({ "difficulty": `${difficulty}`, "optional": {guessCounter} })
+
     });
     const content = await response.json();
     console.log(content);
@@ -170,11 +175,11 @@ class API {
   }
 
   static async deleteUserWord(wordId: string) {
-    const {userId, token} = API.getJwt();
+    const { userId, token } = API.getJwt();
     const response = await fetch(`${API.users}/${userId}/words/${wordId}`, {
       method: 'DELETE',
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
     const content = response.status;
@@ -184,11 +189,11 @@ class API {
   // USERS/AGGREGATED WORDS:
 
   static async getAggregatedWords() {
-    const {userId, token} = API.getJwt();
+    const { userId, token } = API.getJwt();
     const filter = '?wordsPerPage=3600&filter={"userWord.difficulty":"hard"}';
     const response = await fetch(`${API.users}/${userId}/aggregatedWords${filter}`, {
       headers: {
-        'Authorization': `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
     });
     const content = await response.json();
@@ -197,11 +202,11 @@ class API {
     return content[0].paginatedResults;
   }
 
-  static async getAggregatedWord(wordId:string) {
-    const {userId, token} = API.getJwt();
+  static async getAggregatedWord(wordId: string) {
+    const { userId, token } = API.getJwt();
     const response = await fetch(`${API.users}/${userId}/aggregatedWords/${wordId}`, {
       headers: {
-        'Authorization': `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
     });
     const content = await response.json();
@@ -212,10 +217,10 @@ class API {
   // USERS/STATISTICS:
 
   static async getStatistics() {
-    const {userId, token} = API.getJwt();
+    const { userId, token } = API.getJwt();
     const response = await fetch(`${API.users}/${userId}/statistics`, {
       headers: {
-        'Authorization': `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
     });
     const content = await response.json();
@@ -224,13 +229,13 @@ class API {
   }
 
   static async upsertStatistics() {
-    const {userId, token} = API.getJwt();
+    const { userId, token } = API.getJwt();
     const response = await fetch(`${API.users}/${userId}/statistics`, {
       method: 'PUT',
       headers: {
-        'Authorization': `Bearer ${token}`,
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
     });
     const content = await response.json();
@@ -241,10 +246,10 @@ class API {
   // USERS/SETTINGS:
 
   static async getSettings() {
-    const {userId, token} = API.getJwt();
+    const { userId, token } = API.getJwt();
     const response = await fetch(`${API.users}/${userId}/settings`, {
       headers: {
-        'Authorization': `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
     });
     const content = await response.json();
@@ -253,13 +258,13 @@ class API {
   }
 
   static async upsertSettings() {
-    const {userId, token} = API.getJwt();
+    const { userId, token } = API.getJwt();
     const response = await fetch(`${API.users}/${userId}/settings`, {
       method: 'PUT',
       headers: {
-        'Authorization': `Bearer ${token}`,
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
     });
     const content = await response.json();
@@ -273,10 +278,10 @@ class API {
     const response = await fetch(`${API.base}/signin`, {
       method: 'POST',
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ "email": `${email}`, "password": `${password}` })
+      body: JSON.stringify({ email: `${email}`, password: `${password}` }),
     });
 
     if (response.status === 404) {
@@ -295,7 +300,7 @@ class API {
     console.log(content);
     localStorage.setItem('userAuthenticationData', JSON.stringify(content));
     return content;
-  };
+  }
 }
 
 export default API;
