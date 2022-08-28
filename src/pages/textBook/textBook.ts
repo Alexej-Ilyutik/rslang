@@ -49,7 +49,6 @@ export const renderTextBookNavigation = (): void => {
 
 export const renderTextBoxPage = async (groupNumber: number, pageNumber: number): Promise<void> => {
   storage.wordsListCurrentGroup = groupNumber;
-  const arrayOfUserWords = await API.getAggregatedWords();
   const arrayOfWords: PageOfWordsInterface = await API.getWords(storage.wordsListCurrentGroup, pageNumber)
 
   const wordsList = document.querySelector('.textBook__words-list') as HTMLElement;
@@ -98,10 +97,13 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
   ).join('');
   wordsList.innerHTML = html;
 
-  const showWordStatus = (): void => {
-
-  }
-  showWordStatus();
+  // const allCheckboxesHard = Array.from(document.querySelectorAll('hard-checkbox'));
+  (await arrayOfWords).forEach(async element => {
+    const isWordHard = await API.getUserWord(element.id)
+    if (isWordHard) {
+      (document.getElementById(`${element.id}Hard`) as HTMLInputElement).checked = true;
+    }
+  });
 }
 
 export const renderPagination = (pageNumber: number, totalPagesNumber: number  = storage.limitOfPages): void => {

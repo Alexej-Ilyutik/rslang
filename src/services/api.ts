@@ -148,6 +148,9 @@ class API {
       return content;
     }
     return false;
+    // const content = await response.json();
+    // console.log(content);
+    // return content;
   }
 
   static async updateUserWord(wordId: string, difficulty: string) {
@@ -174,7 +177,7 @@ class API {
         'Authorization': `Bearer ${token}`,
       },
     });
-    const content = await response.status;
+    const content = response.status;
     console.log(`Server response with status: ${content}`);
   }
 
