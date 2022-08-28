@@ -117,8 +117,10 @@ class API {
     return content;
   }
 
-  static async createUserWord(wordId: string, difficulty: string) {
-    const { userId, token } = API.getJwt();
+
+  static async createUserWord(wordId: string, difficulty: string, guessCounter: number) {
+    const {userId, token} = API.getJwt();
+
     const response = await fetch(`${API.users}/${userId}/words/${wordId}`, {
       method: 'POST',
       // credentials: 'include',
@@ -127,7 +129,9 @@ class API {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ difficulty: `${difficulty}`, optional: {} }),
+
+      body: JSON.stringify({ "difficulty": `${difficulty}`, "optional": {guessCounter} })
+
     });
     const content = await response.json();
     console.log(content);
@@ -141,13 +145,19 @@ class API {
         Authorization: `Bearer ${token}`,
       },
     });
-    const content = await response.json();
-    console.log(content);
-    return content;
+    if (response.status !== 404) {
+      const content = await response.json();
+      console.log(content);
+      return content;
+    }
+    return false;
+    // const content = await response.json();
+    // console.log(content);
+    // return content;
   }
 
-  static async updateUserWord(wordId: string, difficulty: string) {
-    const { userId, token } = API.getJwt();
+  static async updateUserWord(wordId: string, difficulty: string, guessCounter: number) {
+    const {userId, token} = API.getJwt();
     const response = await fetch(`${API.users}/${userId}/words/${wordId}`, {
       method: 'PUT',
       headers: {
@@ -155,7 +165,9 @@ class API {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ difficulty: `${difficulty}`, optional: {} }),
+
+      body: JSON.stringify({ "difficulty": `${difficulty}`, "optional": {guessCounter} })
+
     });
     const content = await response.json();
     console.log(content);
@@ -170,8 +182,8 @@ class API {
         Authorization: `Bearer ${token}`,
       },
     });
-    const content = await response.json();
-    console.log(content);
+    const content = response.status;
+    console.log(`Server response with status: ${content}`);
   }
 
   // USERS/AGGREGATED WORDS:
@@ -185,8 +197,9 @@ class API {
       },
     });
     const content = await response.json();
-    console.log(content);
-    return content;
+    console.log(content[0].paginatedResults);
+    // return content;
+    return content[0].paginatedResults;
   }
 
   static async getAggregatedWord(wordId: string) {

@@ -3,10 +3,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { renderHeader } from './components/header/header';
 import { renderFooter } from './components/footer/footer';
 import { renderMain } from './pages/main/main';
-import { storage } from './shared/storage';
 import { deleteClassActive } from './services/deleteClassActive';
 import './style.scss';
-import { renderTextBook, renderTextBoxPage, renderPagination, addTestBookEvents } from './pages/textBook/textBook';
+import { renderTextBook } from './pages/textBook/textBook';
 import { loginForm, loginHandler } from './components/loginForm/loginForm';
 import { registerForm, registerHandler } from './components/registerForm/registerForm';
 import { isLogin } from './services/isLogin';
@@ -17,7 +16,8 @@ import { renderGamePageContainer } from './components/gamePageContainer/gamePage
 
 const renderPage = (): void => {
   renderHeader();
-  renderMain();
+  // renderMain();
+  renderTextBook();
   renderFooter();
 };
 
@@ -43,9 +43,6 @@ const onNavigate = (location: string): void => {
       break;
     case '#/book':
       renderTextBook();
-      renderTextBoxPage(storage.wordsListCurrentGroup, storage.wordsListCurrentPage);
-      renderPagination(storage.wordsListCurrentPage);
-      addTestBookEvents();
       break;
     case '#/games':
       renderGamePage();
