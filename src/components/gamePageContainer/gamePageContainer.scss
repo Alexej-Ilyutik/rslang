@@ -1,6 +1,5 @@
 .audiocall {
   background-color: var(--bg-second);
-  height: 65vh;
   box-shadow: 0 4px 21px -12px rgb(0 0 0 / 66%);
   border-radius: 0.5rem;
   .audiocall__container {
@@ -53,12 +52,15 @@
   }
 }
 
+.audiocall__content {
+  padding: 2rem;
+  gap: 2rem;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+}
+
 @media (max-width: 584px) {
-  .audiocall {
-    .audiocall__container {
-      flex-direction: column;
-    }
-  }
   .settings {
     border-right: none;
     border-bottom: 0.5rem solid var(--bg-color);
@@ -69,11 +71,9 @@
       max-width: 8rem;
     }
   }
-}
 
-.audiocall__content {
-  padding: 2rem 1rem 3rem 1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  .audiocall__content {
+    padding: 1rem 0;
+    gap: 1.5rem;
+  }
 }

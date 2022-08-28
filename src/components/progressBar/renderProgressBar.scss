@@ -1,4 +1,4 @@
-.progressbar__container{
+.progressbar__container {
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -6,12 +6,30 @@
 }
 
 .progressbar__line {
-  width: 40rem;
+  width: 85%;
   background-color: var(--bg-color);
   --bs-progress-height: 2rem;
   .progress-bar {
     --bs-progress-bar-bg: var(--bs-teal);
     font-weight: 500;
     font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .progressbar__line {
+    .progress-bar {
+      font-size: 1rem;
+    }
+  }
+}
+
+@media (max-width: 584px) {
+  .progressbar__line {
+    width: 95%;
+    .progress-bar {
+      font-weight: 300;
+      font-size: .6rem;
+    }
   }
 }

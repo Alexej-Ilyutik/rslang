@@ -10,9 +10,11 @@
 
 .audiocall__btns {
   display: flex;
-  gap: 2rem;
+  gap: 1rem 2rem;
   justify-content: center;
   flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+  margin-top: 2rem;
   label {
     min-width: 8rem;
     font-weight: 500;
@@ -59,6 +61,8 @@
     display: flex;
     align-items: center;
     gap: 1rem;
+    width: 80%;
+    margin: 0 auto;
     .audiocall__figure-btn {
       margin: 0;
       .audiocall__figure-img {
@@ -72,10 +76,7 @@
 }
 
 .result__container {
-  width: 90%;
-  min-height: 75%;
-  max-height: 75%;
-  overflow-y: auto;
+  width: 100%;
   display: flex;
   flex-direction: column;
   margin: 3rem auto;
@@ -110,7 +111,7 @@
     }
   }
   .result__btn-play {
-    min-width: 15rem;
+    min-width: 35%;
     margin: 0 auto;
   }
 }
@@ -118,8 +119,12 @@
 .result__answer-container {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
   margin: 0 auto 1rem auto;
   gap: 2rem;
+  .result__answer {
+    min-width: 10rem;
+  }
 }
 
 .result__block {
@@ -139,5 +144,23 @@
   padding-left: 0;
   .result__item {
     margin-bottom: 0.8rem;
+  }
+}
+
+@media (max-width: 584px) {
+  .result__container {
+    margin: 1rem auto;
+    padding: 1rem 1rem;
+    border-radius: 0.5rem;
+  }
+
+  .audiocall__btns {
+    margin-top: 7rem;
+  }
+
+  .audiocall__figure-container {
+    .audiocall__figure-content {
+      width: 95%;
+    }
   }
 }
