@@ -1,0 +1,17 @@
+.progressbar__container{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+.progressbar__line {
+  width: 40rem;
+  background-color: var(--bg-color);
+  --bs-progress-height: 2rem;
+  .progress-bar {
+    --bs-progress-bar-bg: var(--bs-teal);
+    font-weight: 500;
+    font-size: 1.5rem;
+  }
+}
