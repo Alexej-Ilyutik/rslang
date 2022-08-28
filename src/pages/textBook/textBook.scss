@@ -61,6 +61,8 @@ nav {
 .textBook__pagination_list {
   gap: 0.2rem;
   .page-link {
+    width: 40px;
+    padding: 0.3rem 0.5rem;
     color: var(--text-basic);
     border-radius: 0.5rem;
     border: 3px solid var(--bs-warning);
@@ -73,6 +75,9 @@ nav {
   .active {
     background-color: var(--buttons-color);
     color: white;
+  }
+  .disabled {
+    border: 3px solid var(--secondary-color);
   }
 }
 
@@ -236,5 +241,52 @@ nav {
 
 .word-card_audio-button-image {
   width: 3rem;
+}
+
+.textBook__games {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  padding: 1rem;
+  margin-top: 1rem;
+  box-shadow: 5px 5px 18px var(--bs-gray);
+  border-radius: 30px;
+}
+
+.textBook__games_game-img {
+  width: 5rem;
+}
+
+.textBook__games_game-button {
+  display: block;
+  padding-right: 1rem;
+  // border-radius: 1rem;
+  // border: 5px solid var(--bs-warning);
+  // background-color: var(--bg-color);
+  background-color: var(--bg-color);
+  border: 5px solid var(--bg-color);
+  border-radius: 1rem;
+  &:hover {
+    background-color: var(--buttons-color);
+    border: 5px solid var(--bs-warning);
+    h2 {
+      color: white;
+    }
+  }
+  &:active {
+    transform: scale(0.9);
+  }
+}
+.textBook__games_game-name {
+  display: inline-block;
+}
+
+.textBook__games_information-wrapper {
+  margin: 0;
+  font-size: 2rem;
+  li {
+    list-style-type: square;
+  }
 }
 //min-width: 1200, 992, 768, 576, 320
