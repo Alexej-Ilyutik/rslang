@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import './textBook.scss';
 import { PageOfWordsInterface, WordInterface } from '../../shared/types';
 import { storage } from '../../shared/storage';
@@ -81,8 +82,8 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
           <div class="word-card_status-wrapper">
             <div class="word-card_status-checkbox-wrapper">
               <input type="checkbox" class="word-card_status-checkbox hard-checkbox"
-              id="${element.id}Hard" value="yes" data-id="${element.id}">
-              <label for="${element.id}Hard"></label>
+              id="${element.id || element._id}Hard" value="yes" data-id="${element.id || element._id}">
+              <label for="${element.id || element._id}Hard"></label>
               <p class="word-card_status-checkbox-text">Hard word</p>
             </div>
             <div class="word-card_status-checkbox-wrapper">
@@ -109,9 +110,13 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
 
   // const allCheckboxesHard = Array.from(document.querySelectorAll('hard-checkbox'));
   (await arrayOfWords).forEach(async element => {
-    const isWordHard = await API.getUserWord(element.id)
-    if (isWordHard) {
-      (document.getElementById(`${element.id}Hard`) as HTMLInputElement).checked = true;
+    if (storage.wordsListCurrentGroup === 6) {
+      (document.getElementById(`${element._id}Hard`) as HTMLInputElement).checked = true;
+    } else {
+      const isWordHard = await API.getUserWord(element.id)
+      if (isWordHard) {
+        (document.getElementById(`${element.id}Hard`) as HTMLInputElement).checked = true;
+      }
     }
   });
 }
