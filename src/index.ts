@@ -10,10 +10,7 @@ import { loginForm, loginHandler } from './components/loginForm/loginForm';
 import { registerForm, registerHandler } from './components/registerForm/registerForm';
 import { isLogin } from './services/isLogin';
 import { switchLoginMode } from './services/switchLoginMode';
-import { renderGamePage } from './pages/game/game';
-import { renderAudioPage } from './pages/audioGame/audioGame';
-import { renderGamePageContainer } from './components/gamePageContainer/gamePageContainer';
-import { renderSprint, sprintGame } from './pages/sprint/sprint';
+import { renderGamePage } from './pages/games/game';
 
 const renderPage = (): void => {
   renderHeader();
