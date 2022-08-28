@@ -233,8 +233,6 @@ const addEventStartAudioGame = (block: HTMLElement): void => {
       const itemListFalse = document.querySelector('.result__list-false') as HTMLElement;
       renderListItem(itemListTrue, trueAnswerArr);
       renderListItem(itemListFalse, falseAnswerArr);
-      console.log(trueAnswerArr);
-      console.log(falseAnswerArr);
 
     }
   }

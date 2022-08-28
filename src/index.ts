@@ -16,8 +16,7 @@ import { renderGamePageContainer } from './components/gamePageContainer/gamePage
 
 const renderPage = (): void => {
   renderHeader();
-  // renderMain();
-  renderTextBook();
+  renderMain();
   renderFooter();
 };
 
