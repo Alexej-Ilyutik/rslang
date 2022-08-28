@@ -5,6 +5,9 @@ import { setAttrDisabled } from '../../services/setAttrDisabled';
 import { renderProgressBar, rerenderProgressBar } from '../../components/progressBar/renderProgressBar';
 import API from '../../services/api';
 
+const trueAnswer = new Audio('../../assets/success.mp3');
+const falseAnswer = new Audio('../../assets/error.mp3');
+
 const getWordsTemp = async (diff: number) => {
   const result = [];
 
@@ -39,8 +42,21 @@ const renderContentAudioPage = async (
 ): Promise<void> => {
   const mainBlock = `
     <h3 class="audiocall__subtitle">Game: Audio challenge</h3>
+    <figure class="figure audiocall__figure-container">
+      <img src="${`${API.base}/${mainWord.image}`}" class="figure-img img-fluid rounded" alt="${`${mainWord.word}`}">
+      <div class="audiocall__figure-content">
+        <button class="word-card_audio-button audiocall__figure-btn">
+          <img class="audiocall__figure-img voice__audio" src="../../assets/volume.svg" alt="audio button"
+          data-audio="${`${API.base}/${mainWord.audio}`}"
+          data-name ="${`${mainWord.wordTranslate}`}">
+        </button>
+        <figcaption class="figure-caption">${`${mainWord.word}`} ${`${mainWord.transcription}`} -
+        ${`${mainWord.wordTranslate}`}</figcaption>
+      </div>
+
+    </figure>
     <div class="audiocall__voice">
-       <button class="word-card_audio-button">
+        <button class="word-card_audio-button">
           <img class="word-card_audio-button-image voice__audio" src="../../assets/volume.svg" alt="audio button"
           data-audio="${`${API.base}/${mainWord.audio}`}"
           data-name ="${`${mainWord.wordTranslate}`}">
@@ -61,6 +77,14 @@ const renderContentAudioPage = async (
     </div>
     <button type="button" class="btn btn-info audiocall__next">I don't know</button>
     <div class="progressbar__container">${renderProgressBar(progress)}</div>
+  `;
+  block.innerHTML = mainBlock;
+};
+
+export const renderResultAudioPage = async (block: HTMLElement): Promise<void> => {
+  const mainBlock = `
+    <h3 class="audiocall__subtitle">Result</h3>
+    <img class="audiocall__img" src="../../assets/audio-img.png" alt="audio" alt="Image Title" />
   `;
   block.innerHTML = mainBlock;
 };
@@ -88,6 +112,7 @@ const addEventStartAudioGame = (block: HTMLElement): void => {
     }
 
     if (target.classList.contains('btn__start-audio-game')) {
+      progress = 0;
       renderContentAudioPage(block, mainWord, arrOptions, progress);
 
       const btnVoice = document.querySelector('.voice__audio') as HTMLElement;
@@ -101,6 +126,8 @@ const addEventStartAudioGame = (block: HTMLElement): void => {
 
     const ProgressContainer = document.querySelector('.progressbar__container') as HTMLElement;
     const btnNext = document.querySelector('.audiocall__next') as HTMLElement;
+    const answerContainer = document.querySelector('.audiocall__figure-container') as HTMLElement;
+    const btnVoiceContainer = document.querySelector('.audiocall__voice') as HTMLElement;
     const btnsOption = Array.from(document.getElementsByClassName('audiocall__check'));
 
     if (target.classList.contains('audiocall__btn-option')) {
@@ -108,13 +135,21 @@ const addEventStartAudioGame = (block: HTMLElement): void => {
       const value = target.innerHTML.slice(3);
       if (value === btnVoice.getAttribute('data-name')) {
         target.classList.add('audiocall__btn-true');
+        trueAnswer.play();
         progress += 10;
         rerenderProgressBar(ProgressContainer, progress);
         btnNext.innerHTML = 'Next';
+        answerContainer.style.display = 'flex';
+        btnVoiceContainer.style.display = 'none';
         setAttrDisabled(btnsOption);
       } else {
         target.classList.add('audiocall__btn-false');
+        falseAnswer.play();
+        progress += 10;
+        rerenderProgressBar(ProgressContainer, progress);
         btnNext.innerHTML = 'Next';
+        answerContainer.style.display = 'flex';
+        btnVoiceContainer.style.display = 'none';
         setAttrDisabled(btnsOption);
       }
     }
@@ -123,6 +158,10 @@ const addEventStartAudioGame = (block: HTMLElement): void => {
       renderContentAudioPage(block, mainWord, arrOptions, progress);
       const btnVoice = document.querySelector('.voice__audio') as HTMLElement;
       playAllAudioFiles([btnVoice.getAttribute('data-audio') || '']);
+    }
+
+    if (progress === 100) {
+      renderResultAudioPage(block);
     }
   }
 

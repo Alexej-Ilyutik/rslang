@@ -4,7 +4,8 @@
 
 .audiocall__voice {
   margin: 0 auto;
-  width: 5rem;
+  height: 13rem;
+  padding-top: 4rem;
 }
 
 .audiocall__btns {
@@ -22,7 +23,7 @@
 .audiocall__img {
   display: block;
   width: 75%;
-  margin: 0 auto;
+  margin: 0 auto 3rem auto;
 }
 
 .audiocall__next {
@@ -41,4 +42,29 @@
 .audiocall__btn-false {
   --bs-btn-active-bg: var(--bs-red);
   --bs-btn-active-border-color: var(--bs-red);
+}
+
+.audiocall__figure-container {
+  margin: 0 auto;
+  height: 13rem;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  .figure-img {
+    width: 15rem;
+  }
+  .audiocall__figure-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    .audiocall__figure-btn {
+      margin: 0;
+      .audiocall__figure-img {
+        width: 1.5rem;
+      }
+    }
+    .figure-caption{
+      font-size: 1.8rem;
+    }
+  }
 }
