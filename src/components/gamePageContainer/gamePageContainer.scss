@@ -2,11 +2,12 @@
   background-color: var(--bg-second);
   height: 65vh;
   box-shadow: 0 4px 21px -12px rgb(0 0 0 / 66%);
-  border-radius: .5rem;
+  border-radius: 0.5rem;
   .audiocall__container {
     display: flex;
     flex-wrap: wrap;
     height: 100%;
+    overflow: hidden;
   }
 }
 

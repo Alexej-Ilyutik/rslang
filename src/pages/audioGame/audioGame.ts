@@ -5,8 +5,8 @@ import { setAttrDisabled } from '../../services/setAttrDisabled';
 import { renderProgressBar, rerenderProgressBar } from '../../components/progressBar/renderProgressBar';
 import API from '../../services/api';
 
-const trueAnswer = new Audio('../../assets/success.mp3');
-const falseAnswer = new Audio('../../assets/error.mp3');
+const trueAnswerAudio = new Audio('../../assets/success.mp3');
+const falseAnswerAudio = new Audio('../../assets/error.mp3');
 
 const getWordsTemp = async (diff: number) => {
   const result = [];
@@ -48,7 +48,8 @@ const renderContentAudioPage = async (
         <button class="word-card_audio-button audiocall__figure-btn">
           <img class="audiocall__figure-img voice__audio" src="../../assets/volume.svg" alt="audio button"
           data-audio="${`${API.base}/${mainWord.audio}`}"
-          data-name ="${`${mainWord.wordTranslate}`}">
+          data-name ="${`${mainWord.wordTranslate}`}"
+          data-id="${`${mainWord.id}`}">
         </button>
         <figcaption class="figure-caption">${`${mainWord.word}`} ${`${mainWord.transcription}`} -
         ${`${mainWord.wordTranslate}`}</figcaption>
@@ -59,7 +60,8 @@ const renderContentAudioPage = async (
         <button class="word-card_audio-button">
           <img class="word-card_audio-button-image voice__audio" src="../../assets/volume.svg" alt="audio button"
           data-audio="${`${API.base}/${mainWord.audio}`}"
-          data-name ="${`${mainWord.wordTranslate}`}">
+          data-name ="${`${mainWord.wordTranslate}`}"
+          data-id="${`${mainWord.id}`}">
         </button>
     </div>
     <div class="audiocall__btns">
@@ -81,12 +83,62 @@ const renderContentAudioPage = async (
   block.innerHTML = mainBlock;
 };
 
-export const renderResultAudioPage = async (block: HTMLElement): Promise<void> => {
+export const renderResultAudioPage = (
+  block: HTMLElement,
+  accuracy: number,
+  trueAnswer: number,
+  falseAnswer: number,
+): void => {
   const mainBlock = `
-    <h3 class="audiocall__subtitle">Result</h3>
-    <img class="audiocall__img" src="../../assets/audio-img.png" alt="audio" alt="Image Title" />
+    <div class="result__container">
+      <h3 class="audiocall__subtitle">Result</h3>
+      <h4 class="result__subtitle">Accuracy: <span>${accuracy}%</span></h4>
+
+      <div class="result__answer-container">
+
+        <div class="result__answer">
+          <div class="result__description">
+            <div class="result__marker green-marker"></div>
+            <div class="result__content">Right answers: <span>${trueAnswer}</span></div>
+          </div>
+          <ul class="result__list-true">
+          </ul>
+        </div>
+
+        <div class="result__answer">
+          <div class="result__description">
+            <div class="result__marker red-marker"></div>
+            <div class="result__content">Wrong answers: <span>${falseAnswer}</span></div>
+          </div>
+          <ul class="result__list-false">
+          </ul>
+        </div>
+
+      </div>
+
+      <button type="button" class="btn btn-success result__btn-play">Play again</button>
+    </div>
   `;
   block.innerHTML = mainBlock;
+};
+
+
+const renderListItem = (block: HTMLElement, wordArr: WordInterface[]): void => {
+  for (let i = 0; i < wordArr.length; i += 1) {
+    const item = document.createElement('li');
+    item.className = 'result__item';
+    item.innerHTML = `
+             <div class="result__block">
+              <button class="word-card_audio-button result__block-btn">
+                <img class="audiocall__figure-img voice__audio" src="../../assets/volume.svg" alt="audio button"
+                data-audio="${`${API.base}/${wordArr[i].audio}`}">
+              </button>
+              <div class="result__text">${`${wordArr[i].word}`} ${`${wordArr[i].transcription}`} -
+              ${`${wordArr[i].wordTranslate}`}</div>
+            </div>
+        `;
+    block.appendChild(item);
+  }
 };
 
 let level = 0;
@@ -97,13 +149,18 @@ const addEventStartAudioGame = (block: HTMLElement): void => {
 
   btnStart.classList.add('btn__start-audio-game');
   let progress = 0;
+  let trueAnswer = 0;
+  let falseAnswer = 0;
+  let trueAnswerArr: WordInterface[] = [];
+  let falseAnswerArr: WordInterface[] = [];
+
   async function rerenderAudioGame(event: Event) {
     const target = event.target as HTMLInputElement;
     const arrWords = await getWordsTemp(level);
     const arrOptions = getArrOptions(arrWords);
     const addWordsToAudioGame = (): WordInterface => {
-      const mainWord = arrOptions[getRandomArbitrary(0, 3)];
-      return mainWord;
+      const word = arrOptions[getRandomArbitrary(0, 3)];
+      return word;
     };
     const mainWord = addWordsToAudioGame();
 
@@ -111,8 +168,12 @@ const addEventStartAudioGame = (block: HTMLElement): void => {
       level = Number(target.getAttribute('data-level'));
     }
 
-    if (target.classList.contains('btn__start-audio-game')) {
+    if (target.classList.contains('btn__start-audio-game') || target.classList.contains('result__btn-play')) {
       progress = 0;
+      trueAnswer = 0;
+      falseAnswer = 0;
+      trueAnswerArr = [];
+      falseAnswerArr = [];
       renderContentAudioPage(block, mainWord, arrOptions, progress);
 
       const btnVoice = document.querySelector('.voice__audio') as HTMLElement;
@@ -133,35 +194,48 @@ const addEventStartAudioGame = (block: HTMLElement): void => {
     if (target.classList.contains('audiocall__btn-option')) {
       const btnVoice = document.querySelector('.voice__audio') as HTMLElement;
       const value = target.innerHTML.slice(3);
+      const getIdWord = btnVoice.getAttribute('data-id') || '';
+      const currentWord: WordInterface = await API.getWord(getIdWord);
+
       if (value === btnVoice.getAttribute('data-name')) {
         target.classList.add('audiocall__btn-true');
-        trueAnswer.play();
+        trueAnswerAudio.play();
         progress += 10;
+        trueAnswer += 1;
         rerenderProgressBar(ProgressContainer, progress);
         btnNext.innerHTML = 'Next';
         answerContainer.style.display = 'flex';
         btnVoiceContainer.style.display = 'none';
         setAttrDisabled(btnsOption);
+        trueAnswerArr.push(currentWord);
       } else {
         target.classList.add('audiocall__btn-false');
-        falseAnswer.play();
+        falseAnswerAudio.play();
         progress += 10;
+        falseAnswer += 1;
         rerenderProgressBar(ProgressContainer, progress);
         btnNext.innerHTML = 'Next';
         answerContainer.style.display = 'flex';
         btnVoiceContainer.style.display = 'none';
         setAttrDisabled(btnsOption);
+        falseAnswerArr.push(currentWord);
       }
     }
 
-    if (target.classList.contains('audiocall__next')) {
+    if (target.classList.contains('audiocall__next') && progress !== 100) {
       renderContentAudioPage(block, mainWord, arrOptions, progress);
       const btnVoice = document.querySelector('.voice__audio') as HTMLElement;
       playAllAudioFiles([btnVoice.getAttribute('data-audio') || '']);
-    }
+    } else if (target.classList.contains('audiocall__next') && progress === 100) {
+      const accuracy = trueAnswer * 10;
+      renderResultAudioPage(block, accuracy, trueAnswer, falseAnswer);
+      const itemListTrue = document.querySelector('.result__list-true') as HTMLElement;
+      const itemListFalse = document.querySelector('.result__list-false') as HTMLElement;
+      renderListItem(itemListTrue, trueAnswerArr);
+      renderListItem(itemListFalse, falseAnswerArr);
+      console.log(trueAnswerArr);
+      console.log(falseAnswerArr);
 
-    if (progress === 100) {
-      renderResultAudioPage(block);
     }
   }
 
