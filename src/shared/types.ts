@@ -18,3 +18,12 @@ export interface WordInterface {
 };
 
 export type PageOfWordsInterface = Promise<WordInterface[]>;
+
+export interface UserWordInterface {
+  difficulty: string,
+  id: string,
+  optional: {guessCounter: number},
+  wordId: string,
+}
+
+// export type WordDifficulty = 'hard' | 'easy';

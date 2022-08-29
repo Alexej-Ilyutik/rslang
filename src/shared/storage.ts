@@ -1,11 +1,12 @@
-import { WordInterface } from './types';
+import { UserWordInterface, WordInterface } from './types';
 
 interface StorageInterface {
   wordsListCurrentPage: number;
   wordsListCurrentGroup: number;
   limitOfPages: number; // delete it
   maxGuessNumber: number;
-  userWords: WordInterface[];
+  userWords: UserWordInterface[];
+  currentPageWords: WordInterface[];
 }
 
 export const storage: StorageInterface = {
@@ -14,4 +15,5 @@ export const storage: StorageInterface = {
   limitOfPages: 30,
   maxGuessNumber: 5,
   userWords: [],
+  currentPageWords: [],
 };
