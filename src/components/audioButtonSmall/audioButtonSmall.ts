@@ -1,4 +1,4 @@
-import './smallAudioButton.scss';
+import './audioButtonSmall.scss';
 
 export const renderSmallAudioButton = (): string => `
 <button class="word-card_sm-audio-button">

@@ -32,7 +32,7 @@
   align-items: center;
 }
 
-.progress-bar {
+.sprint-progress-bar {
   stroke-width: 2;
   stroke: #000;
   fill: transparent;
@@ -65,15 +65,8 @@
   background: gray;
   border-radius: 50%;
 }
-//  .gray-color {
-//   background: gray;
-//  }
 
-//  .green-color {
-//   background: green;
-//  }
-
- .modal-body {
+ .modal-game {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -89,19 +82,50 @@
     }
  }
 
- .words {
+ .result-words {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 5px;
  }
 
- .words__container {
+ .result-words__container {
   display: flex;
   gap: 5px;
  }
 
- .words__translate {
+ .result-words__translate, .sprint__word-translate {
   font-weight: 300;
+ }
+
+ .sprint__buttons {
+  width: 172px;
+  display: flex;
+  justify-content: space-between;
+ }
+
+ .sprint-btn {
+  width: 80px;
+  position: relative;
+ }
+
+ .sprint-btn:first-child:after {
+  content: "<<";
+  position: absolute;
+  left: 32px;
+  bottom: -32px;
+  color: #343a40;
+ }
+
+ .sprint-btn:last-child:after {
+  content: ">>";
+  position: absolute;
+  left: 32px;
+  bottom: -32px;
+  color: #343a40;
+ }
+
+ .sprint__score {
+  font-size: 2rem;
  }
 

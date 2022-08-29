@@ -4,7 +4,7 @@ import { getAllGroupWords } from "../../services/getAllGroupWords";
 import { getRandomNumber } from "../../services/getRandomNumber";
 import { renderGamePage } from "../game/game";
 import { WordInterface } from "../../shared/types";
-import { renderSmallAudioButton } from "../../components/audioButton/smallAudioButton";
+import { renderSmallAudioButton } from "../../components/audioButtonSmall/audioButtonSmall";
 import API from "../../services/api";
 
 export const renderSprint = (): void => {
@@ -12,10 +12,10 @@ export const renderSprint = (): void => {
   <div class="sprint">
     <div class="sprint__wrapper container-sm">
       <div class="progress-timer">
-        <svg class="progress-bar" width="60" height="60">
-          <circle class="progress-bar__circle hidden-element" cx="30" cy="30" r="28" id="sprint-circle"></circle>
+        <svg class="sprint-progress-bar" width="60" height="60">
+          <circle cx="30" cy="30" r="28" id="sprint-circle"></circle>
         </svg>
-        <div class="sprint__timer hidden-element" id="sprint-timer"></div>
+        <div class="sprint__timer" id="sprint-timer"></div>
       </div>
       <div class="sprint__strike">
         <div class="sprint__strike-bar">
@@ -25,15 +25,14 @@ export const renderSprint = (): void => {
         </div>
         <div class="sprint__reward"></div>
       </div>
-      <button type="button" class="btn btn-warning" id="sprint-start-btn">Start</button>
-      <div class="sprint__score hidden-element" id="sprint-score"></div>
-      <div class="sprint__words">
+      <div class="sprint__score" id="sprint-score">0</div>
+      <div class="sprint__words mb-3">
         <div class="sprint__word"></div>
         <div class="sprint__word-translate"></div>
       </div>
       <div class="sprint__buttons">
-        <button type="button" class="btn btn-danger hidden-element" id="sprint-wrong-btn">Wrong</button>
-        <button type="button" class="btn btn-success hidden-element" id="sprint-right-btn">Right</button>
+        <button type="button" class="btn btn-danger sprint-btn" id="sprint-wrong-btn">Wrong</button>
+        <button type="button" class="btn btn-success sprint-btn" id="sprint-right-btn">Right</button>
       </div>
     </div>
     <div class="modal" tabindex="-1" id="game-modal">
@@ -46,14 +45,14 @@ export const renderSprint = (): void => {
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body" id="modal-body">
+          <div class="modal-body modal-game" id="modal-body">
             <div class="answers">
               <h4 id="correct-answers-count"></h4>
-              <div class="words" id="correct-answers"></div>
+              <div class="result-words" id="correct-answers"></div>
             </div>
             <div class="answers">
               <h4 id="incorrect-answers-count"></h4>
-              <div class="words" id="incorrect-answers"></div>
+              <div class="result-words" id="incorrect-answers"></div>
             </div>
           </div>
           <div class="modal-footer">
@@ -65,11 +64,11 @@ export const renderSprint = (): void => {
     </div>
   </div>`;
 
-  const main = document.getElementById('main') as HTMLElement;
+  const main = document.querySelector('.audiocall__content') as HTMLElement;
   main.innerHTML = sprint;
 }
 
-const words = await getAllGroupWords(0); // TODO: make words as a sprintGame's param
+let sprintWords: WordInterface[];
 const storage: {correct: WordInterface[], incorrect: WordInterface[], score: number} = {
   correct: [],
   incorrect: [],
@@ -77,6 +76,7 @@ const storage: {correct: WordInterface[], incorrect: WordInterface[], score: num
 };
 let strike = 0;
 let reward = 10;
+let level = 0;
 
 const nextReward = () => {
   if (reward === 10) return 20;
@@ -87,17 +87,6 @@ const nextReward = () => {
 const getRandom = () => Math.round(Math.random());
 
 let isTranslateRight = getRandom();
-
-const primaryWordNumber = getRandomNumber(0, words.length - 1);
-let wordTranslateNumber = primaryWordNumber;
-
-const getOtherWordNumber = (compareNum: number): number => {
-  const result = getRandomNumber(0, words.length - 1);
-  if (result !== compareNum) {
-    return result;
-  }
-  return getOtherWordNumber(primaryWordNumber);
-}
 
 const setStrike = () => {
   const rewardElem = <HTMLElement>document.querySelector('.sprint__reward');
@@ -114,7 +103,7 @@ const setStrike = () => {
     reward = 80;
     storage.score += reward;
   }
-  rewardElem.innerText = strike > 2 ? `+${nextReward()} очков за слово` : '';
+  rewardElem.innerText = strike > 2 ? `+${nextReward()} points per word` : '';
 }
 
 const setStrikeRoundFill = () => {
@@ -128,15 +117,15 @@ const setStrikeRoundFill = () => {
     round3.style.background = 'gray';
   }
   if (strike === 1 || strike === 5 || strike === 9) {
-    round1.style.background = 'green';
+    round1.style.background = '#198754';
     round2.style.background = 'gray';
     round3.style.background = 'gray';
   }
   if (strike === 2 || strike === 6 || strike === 10) {
-    round2.style.background = 'green';
+    round2.style.background = '#198754';
   }
   if (strike === 3 || strike === 7 || strike === 11) {
-    round3.style.background = 'green';
+    round3.style.background = '#198754';
   }
   if (strike > 11) {
     round1.style.background = 'transparent';
@@ -149,6 +138,34 @@ const play = (elem: HTMLElement) => {
   audio.play();
 }
 
+const renderModal = () => {
+  const correctAnswers = <HTMLElement>document.getElementById('correct-answers');
+  const incorrectAnswers = <HTMLElement>document.getElementById('incorrect-answers');
+
+  correctAnswers.innerHTML = '';
+  incorrectAnswers.innerHTML = '';
+
+  storage.correct.forEach((_, i) => {
+    const audio = new Audio(`${API.base}/${storage.correct[i].audio}`);
+    audio.preload = 'none';
+    correctAnswers.insertAdjacentHTML('beforeend', `<div class="result-words__container">
+    ${audio.outerHTML}
+    ${renderSmallAudioButton()}
+    <span class="result-words__origin">${storage.correct[i].word}</span>
+    <span class="result-words__translate">- ${storage.correct[i].wordTranslate}</span></div>`);
+  });
+
+  storage.incorrect.forEach((_, i) => {
+    const audio = new Audio(`${API.base}/${storage.incorrect[i].audio}`);
+    audio.preload = 'none';
+    incorrectAnswers.insertAdjacentHTML('beforeend', `<div class="result-words__container">
+    ${audio.outerHTML}
+    ${renderSmallAudioButton()}
+    <span class="result-words__origin">${storage.incorrect[i].word}</span>
+    <span class="result-words__translate">- ${storage.incorrect[i].wordTranslate}</span></div>`);
+  });
+}
+
 const finishGame = async () => {
   const gameModal = <HTMLElement>document.getElementById('game-modal');
   if (!gameModal) return;
@@ -156,35 +173,11 @@ const finishGame = async () => {
   const playAgain = <HTMLButtonElement>document.getElementById('play-again-btn');
   const finishScore = <HTMLElement>document.getElementById('finish-score');
   const finishAccuracy = <HTMLElement>document.getElementById('finish-accuracy');
-  const correctAnswers = <HTMLElement>document.getElementById('correct-answers');
-  const incorrectAnswers = <HTMLElement>document.getElementById('incorrect-answers');
   const correctAnswersCount = <HTMLElement>document.getElementById('correct-answers-count');
   const incorrectAnswersCount = <HTMLElement>document.getElementById('incorrect-answers-count');
+
   const victorySound = new Audio('./assets/victory.mp3');
   victorySound.play();
-
-  correctAnswers.innerHTML = '';
-  incorrectAnswers.innerHTML = '';
-
-  storage.correct.forEach((x, i) => {
-    const audio = new Audio(`${API.base}/${storage.correct[i].audio}`);
-    audio.preload = 'none';
-    correctAnswers.insertAdjacentHTML('beforeend', `<div class="words__container">
-    ${audio.outerHTML}
-    ${renderSmallAudioButton()}
-    <span class="words__origin">${storage.correct[i].word}</span>
-    <span class="words__translate">- ${storage.correct[i].wordTranslate}</span></div>`);
-  });
-
-  storage.incorrect.forEach((x, i) => {
-    const audio = new Audio(`${API.base}/${storage.incorrect[i].audio}`);
-    audio.preload = 'none';
-    incorrectAnswers.insertAdjacentHTML('beforeend', `<div class="words__container">
-    ${audio.outerHTML}
-    ${renderSmallAudioButton()}
-    <span class="words__origin">${storage.incorrect[i].word}</span>
-    <span class="words__translate">- ${storage.incorrect[i].wordTranslate}</span></div>`);
-  });
 
   modalBody.addEventListener('click', (e) => {
     const target = <HTMLElement>e.target;
@@ -218,14 +211,15 @@ const finishGame = async () => {
   });
 
   playAgain.addEventListener('click', () => {
+    const btnStart = <HTMLButtonElement>document.body.querySelector('.settings__start');
     flagPlayAgain = true;
-    const fakeClick = new Event('click');
+    const fakeClick = new Event('click', {bubbles: true});
     modal.hide();
-    (<HTMLButtonElement>document.getElementById('sprint-start-btn')).dispatchEvent(fakeClick);
+    btnStart.dispatchEvent(fakeClick);
   });
 }
 
-function setCircleProgress(second: number) {
+const setCircleProgress = (second: number) => {
   const circle = <SVGCircleElement>document.querySelector('#sprint-circle');
   if (circle) {
     const radius = circle.r.baseVal.value;
@@ -248,94 +242,112 @@ const startTimer = (elem:HTMLElement, time: number) => {
     const seconds = Math.floor((distance % (1000 * 60)) / 1000) + 1;
     element.innerText = seconds.toString();
     setCircleProgress(60 - Math.round(distance / 1000));
+
     if (!circle) {
       clearInterval(timerId);
     }
-    if (distance < 0) {
+
+    if (distance < 0 || !sprintWords.length) {
       clearInterval(timerId);
       finishGame();
+      renderModal();
     }
-  }, 1000);
+  }, 500);
 }
 
-export const sprintGame = () => {
-  const startBtn = <HTMLButtonElement>document.getElementById('sprint-start-btn');
+export const sprintGame = async () => {
+  sprintWords = await getAllGroupWords(level);
+  const sprintContent = <HTMLElement>document.querySelector('.audiocall__content');
   const wrongBtn = <HTMLButtonElement>document.getElementById('sprint-wrong-btn');
   const rightBtn = <HTMLButtonElement>document.getElementById('sprint-right-btn');
   const timer = <HTMLElement>document.getElementById('sprint-timer');
   const score = <HTMLElement>document.getElementById('sprint-score');
   const word = <HTMLElement>document.querySelector('.sprint__word');
   const wordTranslate = <HTMLElement>document.querySelector('.sprint__word-translate');
-  const circle = <SVGCircleElement>document.querySelector('#sprint-circle');
+
   const correctAnswerSound = new Audio('./assets/success.mp3');
   const incorrectAnswerSound = new Audio('./assets/error.mp3');
 
-  const getNextPair = () => {
-    word.innerText = words[primaryWordNumber].word;
+  let primaryWordNumber = getRandomNumber(0, sprintWords.length - 1);
+  let wordTranslateNumber = primaryWordNumber;
 
-    if (isTranslateRight) {
-      wordTranslate.innerText = words[primaryWordNumber].wordTranslate;
-    } else {
-      wordTranslateNumber = getOtherWordNumber(primaryWordNumber);
-      wordTranslate.innerText = words[wordTranslateNumber].wordTranslate;
+  const getOtherWordNumber = (compareNum: number): number => {
+    const result = getRandomNumber(0, sprintWords.length - 1);
+    if (result !== compareNum) {
+      return result;
     }
-
-    words.splice(primaryWordNumber, 1);
-    score.innerText = String(storage.score);
-    setStrikeRoundFill();
+    return getOtherWordNumber(primaryWordNumber);
   }
 
-  startBtn.addEventListener('click', () => {
-    [wrongBtn, rightBtn, score, timer, circle].forEach((x) => x.classList.remove('hidden-element'));
-    startBtn.disabled = true;
-    storage.correct = [];
-    storage.incorrect = [];
-    storage.score = 0;
-    strike = 0;
-    reward = 10;
-    getNextPair();
-    timer.innerText = '60';
-    startTimer(timer, 60000);
+  const getNextPair = () => {
+    word.innerText = sprintWords[primaryWordNumber].word;
+
+    if (isTranslateRight) {
+      wordTranslate.innerText = sprintWords[primaryWordNumber].wordTranslate;
+    } else {
+      wordTranslateNumber = getOtherWordNumber(primaryWordNumber);
+      wordTranslate.innerText = sprintWords[wordTranslateNumber].wordTranslate;
+    }
+  }
+
+  storage.correct = [];
+  storage.incorrect = [];
+  storage.score = 0;
+  strike = 0;
+  reward = 10;
+  getNextPair();
+  timer.innerText = '60';
+  startTimer(timer, 60000);
+
+  sprintContent.addEventListener('click', (e) => {
+    const target = <HTMLElement>e.target;
+
+    if (target === wrongBtn) {
+      if(isTranslateRight) {
+        incorrectAnswerSound.currentTime = 0;
+        incorrectAnswerSound.play();
+        strike = 0;
+        storage.incorrect.push(sprintWords[primaryWordNumber]);
+      } else {
+        correctAnswerSound.currentTime = 0;
+        correctAnswerSound.play();
+        strike += 1;
+        storage.correct.push(sprintWords[primaryWordNumber]);
+      }
+    }
+
+    if (target === rightBtn) {
+      if(isTranslateRight) {
+        correctAnswerSound.currentTime = 0;
+        correctAnswerSound.play();
+        strike += 1;
+        storage.correct.push(sprintWords[primaryWordNumber]);
+      } else {
+        incorrectAnswerSound.currentTime = 0;
+        incorrectAnswerSound.play();
+        strike = 0;
+        storage.incorrect.push(sprintWords[primaryWordNumber]);
+      }
+    }
+
+    if (target === wrongBtn || target === rightBtn) {
+      setStrike();
+      setStrikeRoundFill();
+      score.innerText = String(storage.score);
+      sprintWords.splice(primaryWordNumber, 1);
+      isTranslateRight = sprintWords.length > 1 ? getRandom(): 1;
+      primaryWordNumber = getRandomNumber(0, sprintWords.length - 1);
+      if (sprintWords.length === 0) {
+        return;
+      }
+      getNextPair();
+    }
   });
 
-  wrongBtn.addEventListener('click', () => {
-    if(isTranslateRight) {
-      incorrectAnswerSound.currentTime = 0;
-      incorrectAnswerSound.play();
-      strike = 0;
-      storage.incorrect.push(words[primaryWordNumber]);
-    } else {
-      correctAnswerSound.currentTime = 0;
-      correctAnswerSound.play();
-      strike += 1;
-      storage.correct.push(words[primaryWordNumber]);
-    }
-    setStrike();
-    isTranslateRight = getRandom();
-    getNextPair();
-  });
-
-  rightBtn.addEventListener('click', () => {
-    if(isTranslateRight) {
-      correctAnswerSound.currentTime = 0;
-      correctAnswerSound.play();
-      strike += 1;
-      storage.correct.push(words[primaryWordNumber]);
-    } else {
-      incorrectAnswerSound.currentTime = 0;
-      incorrectAnswerSound.play();
-      strike = 0;
-      storage.incorrect.push(words[primaryWordNumber]);
-    }
-    setStrike();
-    isTranslateRight = getRandom();
-    getNextPair();
-  });
+  const fakeClick = new Event('click', {bubbles: true});
 
   document.body.addEventListener('keydown', (e) => {
-    if (e.repeat) return;
-
-    const fakeClick = new Event('click');
+    if (e.repeat || !sprintWords.length) return;
 
     if (e.key === 'ArrowLeft') {
       wrongBtn.dispatchEvent(fakeClick);
@@ -345,3 +357,26 @@ export const sprintGame = () => {
     }
   });
 }
+
+export const startSprint = async (): Promise<void> => {
+  const gameContainer = document.querySelector('.audiocall__container') as HTMLElement;
+  const sprintContent = document.querySelector('.audiocall__content') as HTMLElement;
+  sprintContent.innerHTML = `
+  <h3 class="audiocall__subtitle">Game: Sprint</h3>
+  <img class="audiocall__img" src="../../assets/sprint-img.png" alt="audio" alt="Image Title" />
+  `;
+
+
+  gameContainer.addEventListener('click', (e) => {
+    const target = <HTMLButtonElement>e.target;
+
+    if (target.classList.contains('setting__level')) {
+      level = Number(target.getAttribute('data-level'));
+    }
+    if (target.classList.contains('settings__start')) {
+      renderSprint();
+      sprintGame();
+      target.disabled = true;
+    }
+  });
+};
