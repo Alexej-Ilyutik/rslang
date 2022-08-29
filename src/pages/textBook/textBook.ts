@@ -48,19 +48,34 @@ export const renderTextBookNavigation = (): void => {
   main.innerHTML = textBook;
 }
 
+export const getAllUserWords = async (): Promise<void> => {
+  const arrayOfWords: PageOfWordsInterface = API.getUserWords();
+  storage.userWords = await arrayOfWords;
+}
+
 export const checkWordStatus = async (wordId: string):
 Promise<{ isHard: boolean, isLearned: boolean, guessCounter: number }> => {
   let isHardStatus = false;
   let isLearnedStatus = false;
   let guessCounterStatus = 0;
 
-  const wordStatus = await API.getUserWord(wordId);
-  if (wordStatus) {
-    if (wordStatus.difficulty === 'hard') isHardStatus = true;
-    if (wordStatus.optional >= storage.maxGuessNumber) isLearnedStatus = true;
-    guessCounterStatus = wordStatus.optional.guessCounter;
-  }
-  return {isHard: isHardStatus, isLearned: isLearnedStatus, guessCounter: guessCounterStatus };
+  // eslint-disable-next-line consistent-return
+  storage.userWords.forEach((element) => {
+    if ((element._id === wordId) && (element.userWord !== undefined)) {
+      if (element.userWord.difficulty === 'hard') isHardStatus = true;
+      if (element.userWord.optional.guessCounter >= storage.maxGuessNumber) isLearnedStatus = true;
+      guessCounterStatus = element.userWord.optional.guessCounter;
+      return {isHard: isHardStatus, isLearned: isLearnedStatus, guessCounter: guessCounterStatus };
+    }
+  })
+  return {isHard: isHardStatus, isLearned: isLearnedStatus, guessCounter: guessCounterStatus }
+  // const wordStatus = await API.getUserWord(wordId);
+  // if (wordStatus) {
+  //   if (wordStatus.difficulty === 'hard') isHardStatus = true;
+  //   if (wordStatus.optional >= storage.maxGuessNumber) isLearnedStatus = true;
+  //   guessCounterStatus = wordStatus.optional.guessCounter;
+  // }
+  // return {isHard: isHardStatus, isLearned: isLearnedStatus, guessCounter: guessCounterStatus };
 }
 
 export const setWordsStatus = async (arrayOfWords: PageOfWordsInterface): Promise<void> => {
@@ -86,6 +101,7 @@ export const setWordsStatus = async (arrayOfWords: PageOfWordsInterface): Promis
 // }
 
 export const renderTextBoxPage = async (groupNumber: number, pageNumber: number): Promise<void> => {
+  getAllUserWords();
   storage.wordsListCurrentGroup = groupNumber;
 
   const getWords = async (_groupNumber: number, _pageNumber: number): PageOfWordsInterface => {
