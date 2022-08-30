@@ -5,6 +5,7 @@ import { getAllGroupWords } from '../../services/getAllGroupWords';
 import { getRandomNumber } from '../../services/getRandomNumber';
 import { playAllAudioFiles } from '../../components/audioButton/audioButton';
 import { setAttrDisabled } from '../../services/setAttrDisabled';
+import { shuffle } from '../../services/shuffleArray';
 import { renderGamePage } from '../game/game';
 import { renderProgressBar, rerenderProgressBar } from '../../components/progressBar/renderProgressBar';
 import API from '../../services/api';
@@ -22,6 +23,19 @@ function getArrOptions(array: WordInterface[]) {
     uniqueArray = [...new Set(arr)];
   }
   return uniqueArray;
+}
+
+function getGuessWord(currentPage: string | null, arr: WordInterface[]) {
+  let guessWordCur: WordInterface;
+  if (currentPage === 'Book') {
+    guessWordCur = storage.currentPageWords[getRandomNumber(0, 19)];
+    console.log(storage.currentPageWords);
+  } else {
+    guessWordCur = arr[getRandomNumber(0, 599)];
+    console.log(arr);
+  }
+
+  return guessWordCur;
 }
 
 const renderContentAudioPage = async (
@@ -148,25 +162,27 @@ const addEventStartAudioGame = (block: HTMLElement): void => {
     const target = event.target as HTMLInputElement;
     const arrWords = await getAllGroupWords(level);
     const currentPage = localStorage.getItem('currentPage');
-    let guessWord: WordInterface;
 
     const arrOptions = getArrOptions(arrWords);
 
-    if (currentPage === 'Book') {
-      guessWord = storage.currentPageWords[getRandomNumber(0, 19)];
-      console.log(storage.currentPageWords);
-    } else {
-      guessWord = arrWords[getRandomNumber(0, 599)];
-      console.log(arrWords);
-    }
+    const guessWord = getGuessWord(currentPage, arrWords);
+    console.log(guessWord);
 
     arrOptions.push(guessWord);
+    console.log(arrOptions);
 
-    const addWordsToAudioGame = (): WordInterface => {
-      const word = arrOptions[getRandomNumber(0, 3)];
-      return word;
-    };
-    const mainWord = addWordsToAudioGame();
+    const newArr = shuffle(arrOptions);
+
+    console.log(newArr);
+
+
+
+    // const addWordsToAudioGame = (): WordInterface => {
+    //   const word = arrOptions[getRandomNumber(0, 3)];
+    //   return word;
+    // };
+
+    const mainWord = guessWord;
 
     if (target.classList.contains('setting__level')) {
       level = Number(target.getAttribute('data-level'));

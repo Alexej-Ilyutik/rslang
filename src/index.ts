@@ -64,14 +64,14 @@ const onNavigate = (location: string): void => {
       renderAudioPage();
       break;
     default:
-      main.innerHTML = `<h1>Main</h1>`;
+      renderMain();
       break;
   }
 };
 
 window.addEventListener('click', (e: Event) => {
   const target = e.target as HTMLAnchorElement;
-  const link = target.closest('a');
+  const link = target.closest('.link-direction') as HTMLAnchorElement | null;
 
   if (!link) return;
 
@@ -85,4 +85,3 @@ window.addEventListener('click', (e: Event) => {
   });
   onNavigate(location);
 });
-

@@ -9,7 +9,7 @@ export const renderFooter = (): void => {
         <div class="row">
           <!-- Grid column -->
           <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
-            <a class="footer__brand" href="#/main">
+            <a class="footer__brand link-direction" href="#/main">
             <img src="./assets/flag-UK.svg" alt="logo" width="60" height="40" />
             <p>RS Lang</p>
           </a>
@@ -27,19 +27,19 @@ export const renderFooter = (): void => {
           <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
             <h6 class="footer__title text-uppercase mb-4 font-weight-bold">Navigation</h6>
             <p>
-              <a class="text-white nav-link" href="#/main">Home</a>
+              <a class="text-white nav-link link-direction" href="#/main">Home</a>
             </p>
             <p>
-              <a class="text-white nav-link" href="#/book">Book</a>
+              <a class="text-white nav-link link-direction" href="#/book">Book</a>
             </p>
             <p>
-              <a class="text-white nav-link" href="#/games">Games</a>
+              <a class="text-white nav-link link-direction" href="#/games">Games</a>
             </p>
             <p>
-              <a class="text-white nav-link" href="#/statistic">Statistics</a>
+              <a class="text-white nav-link link-direction" href="#/statistic">Statistics</a>
             </p>
             <p>
-              <a class="text-white nav-link" href="#/command">Team</a>
+              <a class="text-white nav-link link-direction" href="#/command">Team</a>
             </p>
 
           </div>
