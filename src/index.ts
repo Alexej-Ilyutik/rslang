@@ -17,8 +17,7 @@ import { startSprint } from './pages/sprint/sprint';
 
 const renderPage = (): void => {
   renderHeader();
-  // renderMain();
-  renderTextBook();
+  renderMain();
   renderFooter();
 };
 

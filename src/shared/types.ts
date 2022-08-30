@@ -14,6 +14,16 @@ export interface WordInterface {
   wordTranslate: string,
   textMeaningTranslate: string,
   textExampleTranslate: string,
+  userWord?: { difficulty: string, optional: { guessCounter: number }}
 };
 
 export type PageOfWordsInterface = Promise<WordInterface[]>;
+
+export interface UserWordInterface {
+  difficulty: string,
+  id: string,
+  optional: {guessCounter: number},
+  wordId: string,
+}
+
+// export type WordDifficulty = 'hard' | 'easy';
