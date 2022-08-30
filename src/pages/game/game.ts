@@ -33,7 +33,11 @@ export const renderGamePage = (): void => {
 			<div class="postcard__text t-dark">
 				<h2 class="postcard__title green"><a class="game__link" href="#">Other games</a></h2>
 				<div class="postcard__bar"></div>
-				<div class="postcard__preview-txt">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi, fugiat asperiores inventore beatae accusamus odit minima enim, commodi quia, doloribus eius! Ducimus nemo accusantium maiores velit corrupti tempora reiciendis molestiae repellat vero. Eveniet ipsam adipisci illo iusto quibusdam, sunt neque nulla unde ipsum dolores nobis enim quidem excepturi, illum quos!</div>
+				<div class="postcard__preview-txt">Lorem ipsum dolor sit amet consectetur adipisicing elit.
+        Eligendi, fugiat asperiores inventore beatae accusamus odit minima enim, commodi quia,
+        doloribus eius! Ducimus nemo accusantium maiores velit corrupti tempora reiciendis
+        molestiae repellat vero. Eveniet ipsam adipisci illo iusto quibusdam,
+        sunt neque nulla unde ipsum dolores nobis enim quidem excepturi, illum quos!</div>
 				<a href="#/audio" class="game__btn btn btn-warning" role="button">Play game</a>
 			</div>
 		</article>
@@ -45,7 +49,11 @@ export const renderGamePage = (): void => {
 				<h2 class="postcard__title yellow"><a class="game__link" href="#">Other games</a></h2>
 
 				<div class="postcard__bar"></div>
-				<div class="postcard__preview-txt">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi, fugiat asperiores inventore beatae accusamus odit minima enim, commodi quia, doloribus eius! Ducimus nemo accusantium maiores velit corrupti tempora reiciendis molestiae repellat vero. Eveniet ipsam adipisci illo iusto quibusdam, sunt neque nulla unde ipsum dolores nobis enim quidem excepturi, illum quos!</div>
+				<div class="postcard__preview-txt">Lorem ipsum dolor sit amet consectetur adipisicing elit.
+        Eligendi, fugiat asperiores inventore beatae accusamus odit minima enim, commodi quia,
+        doloribus eius! Ducimus nemo accusantium maiores velit corrupti tempora reiciendis
+        molestiae repellat vero. Eveniet ipsam adipisci illo iusto quibusdam, sunt neque nulla
+        unde ipsum dolores nobis enim quidem excepturi, illum quos!</div>
 			<a href="#/audio" class="game__btn btn btn-warning" role="button">Play game</a>
 			</div>
 		</article>

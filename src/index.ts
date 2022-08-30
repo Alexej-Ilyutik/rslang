@@ -17,7 +17,9 @@ import { startSprint } from './pages/sprint/sprint';
 
 const renderPage = (): void => {
   renderHeader();
-  renderMain();
+  // renderMain();
+  renderGamePageContainer();
+  renderAudioPage();
   renderFooter();
 };
 
@@ -67,35 +69,22 @@ const onNavigate = (location: string): void => {
   }
 };
 
+let location = '';
+
 window.addEventListener('click', (e: Event) => {
   const target = e.target as HTMLAnchorElement;
+  const link = target.closest('a');
 
-  if (target.classList.contains('nav-link') || target.classList.contains('game__link')) {
-    deleteClassActive(navLinks);
+  if (!link) return;
 
-    const location = target.href.split('/').slice(-2).join('/');
-    navLinks.forEach(el => {
-      if (el.innerHTML === target.innerHTML) {
-        el.classList.add('active');
-      }
-    });
+  deleteClassActive(navLinks);
 
-    onNavigate(location);
-  }
+  location = link.href.split('/').slice(-2).join('/');
+  navLinks.forEach(el => {
+    if (el.innerHTML === target.innerHTML) {
+      el.classList.add('active');
+    }
+  });
+  onNavigate(location);
 });
 
-const brand = document.querySelector('.navbar-brand') as HTMLElement;
-const footerBrand = document.querySelector('.footer__brand') as HTMLElement;
-
-function changeLinkActiveLogo(e: Event) {
-  deleteClassActive(navLinks);
-  const curTarget = e.currentTarget as HTMLAnchorElement;
-  const location = curTarget.href.split('/').slice(-2).join('/');
-
-  mainLink.classList.add('active');
-  onNavigate(location);
-}
-
-brand.addEventListener('click', changeLinkActiveLogo);
-
-footerBrand.addEventListener('click', changeLinkActiveLogo);
