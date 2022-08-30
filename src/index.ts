@@ -34,7 +34,6 @@ registerHandler();
 if (isLogin()) switchLoginMode();
 
 const main = document.getElementById('main') as HTMLElement;
-const mainLink = document.querySelector('.main-link') as HTMLElement;
 
 const navLinks = Array.from(document.getElementsByClassName('nav-link'));
 
@@ -69,8 +68,6 @@ const onNavigate = (location: string): void => {
   }
 };
 
-let location = '';
-
 window.addEventListener('click', (e: Event) => {
   const target = e.target as HTMLAnchorElement;
   const link = target.closest('a');
@@ -79,7 +76,7 @@ window.addEventListener('click', (e: Event) => {
 
   deleteClassActive(navLinks);
 
-  location = link.href.split('/').slice(-2).join('/');
+  const location = link.href.split('/').slice(-2).join('/');
   navLinks.forEach(el => {
     if (el.innerHTML === target.innerHTML) {
       el.classList.add('active');

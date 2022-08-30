@@ -27,11 +27,11 @@ export const renderTextBookNavigation = (): void => {
           </ul>
         </nav>
         <div class="textBook__games">
-          <a href="#/sprint" class="textBook__games_game-button book__game-link1">
+          <a href="#/sprint" class="textBook__games_game-button">
             <img src="../../assets/sprint-icon.svg" class="textBook__games_game-img" alt="game image"></img>
             <h2 class="textBook__games_game-name">Sprint</h2>
           </a>
-          <a href="#/audio" class="textBook__games_game-button book__game-link">
+          <a href="#/audio" class="textBook__games_game-button">
             <img src="../../assets/audio-icon.svg" class="textBook__games_game-img" alt="game image"></img>
             <h2 class="textBook__games_game-name">Audio-game</h2>
           </a>
