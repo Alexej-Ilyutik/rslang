@@ -113,7 +113,7 @@ class API {
       },
     });
     const content = await response.json();
-    console.log(content);
+    // console.log(content);
     return content;
   }
 
@@ -134,7 +134,7 @@ class API {
 
     });
     const content = await response.json();
-    console.log(content);
+    // console.log(content, 'create');
     return content;
   }
 
@@ -170,7 +170,7 @@ class API {
 
     });
     const content = await response.json();
-    console.log(content);
+    // console.log(content, 'updated');
     return content;
   }
 
@@ -197,7 +197,7 @@ class API {
       },
     });
     const content = await response.json();
-    console.log(content[0].paginatedResults);
+    // console.log(content[0].paginatedResults);
     // return content;
     return content[0].paginatedResults;
   }
