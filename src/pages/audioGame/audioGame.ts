@@ -15,7 +15,7 @@ const falseAnswerAudio = new Audio('../../assets/error.mp3');
 function getArrOptions(array: WordInterface[]) {
   const arr: WordInterface[] = [];
   let uniqueArray: WordInterface[] = [];
-  while (uniqueArray.length < 4) {
+  while (uniqueArray.length < 3) {
     const el = array[getRandomNumber(0, 599)];
 
     arr.push(el);
@@ -147,7 +147,21 @@ const addEventStartAudioGame = (block: HTMLElement): void => {
   async function rerenderAudioGame(event: Event) {
     const target = event.target as HTMLInputElement;
     const arrWords = await getAllGroupWords(level);
+    const currentPage = localStorage.getItem('currentPage');
+    let guessWord: WordInterface;
+
     const arrOptions = getArrOptions(arrWords);
+
+    if (currentPage === 'Book') {
+      guessWord = storage.currentPageWords[getRandomNumber(0, 19)];
+      console.log(storage.currentPageWords);
+    } else {
+      guessWord = arrWords[getRandomNumber(0, 599)];
+      console.log(arrWords);
+    }
+
+    arrOptions.push(guessWord);
+
     const addWordsToAudioGame = (): WordInterface => {
       const word = arrOptions[getRandomNumber(0, 3)];
       return word;
@@ -166,7 +180,6 @@ const addEventStartAudioGame = (block: HTMLElement): void => {
       falseAnswerArr = [];
       renderContentAudioPage(block, mainWord, arrOptions, progress);
       target.disabled = true;
-      console.log(storage.currentPageWords);
 
       const btnVoice = document.querySelector('.voice__audio') as HTMLElement;
 
