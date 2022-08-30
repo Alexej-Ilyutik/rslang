@@ -282,11 +282,14 @@ nav {
   display: inline-block;
 }
 
-.textBook__games_information-wrapper {
+.textBook__games_information {
+  display: flex;
+  align-items: center;
   margin: 0;
   font-size: 2rem;
-  li {
-    list-style-type: square;
+  p {
+    margin: 0;
   }
 }
+
 //min-width: 1200, 992, 768, 576, 320

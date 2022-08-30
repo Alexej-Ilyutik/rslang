@@ -35,10 +35,9 @@ export const renderTextBookNavigation = (): void => {
             <img src="../../assets/audio-icon.svg" class="textBook__games_game-img" alt="game image"></img>
             <h2 class="textBook__games_game-name">Audio-game</h2>
           </button>
-          <ul class="textBook__games_information-wrapper">
-            <li class="textBook__games_information">Page: Has learned ${0}/${20} words</li>
-            <li class="textBook__games_information">Groupe: Has learned ${0}/${600} words</li>
-          </ul>
+          <div class="textBook__games_information">
+            <p>Learned 0/20 words on page</p>
+          </div>
         </div>
         <ul class="textBook__words-list">
         </ul>
@@ -63,6 +62,7 @@ export const isUserWord = (wordId: string): number | null => {
 
 export const setWordsStatus = async (arrayOfWords: WordInterface[]): Promise<void> => {
   await getAllUserWords();
+  let learnedWordsOnPage = 0;
   arrayOfWords.forEach(async element => {
     const wordId = element.id || element._id;
     const hardCheckbox = document.getElementById(`${wordId}Hard`) as HTMLInputElement;
@@ -73,6 +73,7 @@ export const setWordsStatus = async (arrayOfWords: WordInterface[]): Promise<voi
     let difficulty = 'easy';
     let guessCounter = 0;
     if (userWordIndex || userWordIndex === 0) {
+      if (storage.userWords[userWordIndex].optional.guessCounter >= 5) learnedWordsOnPage += 1;
       difficulty = storage.userWords[userWordIndex].difficulty;
       guessCounter = storage.userWords[userWordIndex].optional.guessCounter;
     }
@@ -81,6 +82,9 @@ export const setWordsStatus = async (arrayOfWords: WordInterface[]): Promise<voi
     guessCounterSign.setAttribute('data-guessCounter', guessCounter.toString());
     guessCounterSign.innerHTML = `Guessed ${guessCounter.toString()} times`;
   });
+
+  const learnedWordsCounter = document.querySelector('.textBook__games_information') as HTMLElement;
+  learnedWordsCounter.innerHTML = `<p>Learned ${learnedWordsOnPage}/20 words on page</p>`
 }
 
 export const renderTextBoxPage = async (groupNumber: number, pageNumber: number): Promise<void> => {
