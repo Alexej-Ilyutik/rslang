@@ -49,9 +49,6 @@ const onNavigate = (location: string): void => {
     case '#/statistic':
       main.innerHTML = `<h1>Statistic</h1>`;
       break;
-    case '#/command':
-      main.innerHTML = `<h1>Command</h1>`;
-      break;
     case '#/sprint':
       renderGamePageContainer();
       startSprint();

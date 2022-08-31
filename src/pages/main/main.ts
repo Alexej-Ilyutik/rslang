@@ -10,7 +10,8 @@ export const renderMain = (): void => {
         <p class="card-text main__text">Memorizing English words can be fun and challenging.
         Play games, listen to pronunciation, improve your knowledge.
         With our app, learning is a joy.</p>
-        <p class="card-text card-btn"><button type="button" class="btn btn-warning">Let's start</button></p>
+        <p class="card-text card-btn"><a class = "link-direction" href="#/games">
+        <button type="button" class="btn btn-warning">Let's start</button></a></p>
       </div>
     </section>
     <section class="card card__advantage">
@@ -57,36 +58,49 @@ export const renderMain = (): void => {
             </div>
             <div class="row people">
                 <div class="col-md-6 col-lg-4 item">
-                    <div class="box"><img class="rounded-circle" src="../../../assets/ava.png" alt="ava">
-                        <h3 class="name">Ben Johnson</h3>
-                        <p class="title">Musician</p>
-                        <p class="description">Aenean tortor est, vulputate quis leo in, vehicula rhoncus lacus.
-                        Praesent aliquam in tellus eu gravida. Aliquam varius finibus est,
-                        et interdum justo suscipit id. Etiam dictum feugiat tellus, a semper massa. </p>
-                        <div class="social"><a href="#"><i class="fa fa-facebook-official"></i></a><a href="#">
-                        <i class="fa fa-twitter"></i></a><a href="#"><i class="fa fa-instagram"></i></a></div>
+                    <div class="box"><img class="rounded-circle" src="../../../assets/Alexej.jpg" alt="ava">
+                        <a href="https://alexej-ilyutik.github.io/rsschool-cv/" target="_blank">
+                        <h3 class="name">Alexej Ilyutik</h3></a>
+                        <p class="title">Frontend developer</p>
+                        <p class="description">Did basic project settings, initial layout, router setup.
+                        Designed the main page of the application.
+                        Created the game "Audio Challenge".</p>
+                        <div class="social">
+                        <a href="https://www.linkedin.com/in/alexej-ilyutik/" target="_blank">
+                        <i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://github.com/Alexej-Ilyutik" target="_blank">
+                        <i class="fa fa-github fa-x"></i></a>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4 item">
                     <div class="box"><img class="rounded-circle" src="../../../assets/ava.png" alt="ava">
-                        <h3 class="name">Emily Clark</h3>
-                        <p class="title">Artist</p>
-                        <p class="description">Aenean tortor est, vulputate quis leo in, vehicula rhoncus lacus.
-                        Praesent aliquam in tellus eu gravida. Aliquam varius finibus est,
-                        et interdum justo suscipit id.Etiam dictum feugiat tellus, a semper massa. </p>
-                        <div class="social"><a href="#"><i class="fa fa-facebook-official"></i></a><a href="#">
-                        <i class="fa fa-twitter"></i></a><a href="#"><i class="fa fa-instagram"></i></a></div>
+                        <a href="#" target="_blank">
+                        <h3 class="name">Anton Korobov</h3></a>
+                        <p class="title">Frontend developer</p>
+                        <p class="description">Created application design. Developed the TextBook page.
+                        Helped to think over the logic of the application.</p>
+                        <div class="social">
+                        <a href="#" target="_blank">
+                        <i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://github.com/NewAnton" target="_blank">
+                        <i class="fa fa-github fa-x"></i></a>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4 item">
                     <div class="box"><img class="rounded-circle" src="../../../assets/ava.png" alt="ava">
-                        <h3 class="name">Carl Kent</h3>
-                        <p class="title">Stylist</p>
-                        <p class="description">Aenean tortor est, vulputate quis leo in, vehicula rhoncus lacus.
-                        Praesent aliquam in tellus eu gravida. Aliquam varius finibus est,
-                        et interdum justo suscipit id. Etiam dictum feugiat tellus, a semper massa. </p>
-                        <div class="social"><a href="#"><i class="fa fa-facebook-official"></i></a><a href="#">
-                        <i class="fa fa-twitter"></i></a><a href="#"><i class="fa fa-instagram"></i></a></div>
+                        <a href="#" target="_blank">
+                        <h3 class="name">Vadim</h3></a>
+                        <p class="title">Frontend developer</p>
+                        <p class="description">Created the game "Sprint". Created a registration form.
+                        Set up the backend.</p>
+                        <div class="social">
+                        <a href="#" target="_blank">
+                        <i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://github.com/EJ252" target="_blank">
+                        <i class="fa fa-github fa-x"></i></a>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -42,10 +42,6 @@ export const renderHeader = (): void => {
                 <a class="nav-link fw-bolder fs-5 link-direction" href="#/statistic"
                 >Statistics</a>
               </li>
-              <li class="nav-item mx-3">
-                <a class="nav-link fw-bolder fs-5 link-direction" href="#/command"
-                >Team</a>
-              </li>
             </ul>
             <ul class="navbar-nav mb-2 mb-lg-0 navbar-btn-group">
               <li class="nav-item">
