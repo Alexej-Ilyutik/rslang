@@ -95,20 +95,26 @@ export const renderFooter = (): void => {
           <!-- Grid column -->
           <div class="col-md-5 col-lg-4 ml-lg-0 text-center text-md-end">
            <a
-               class="btn btn-outline-light btn-floating m-1 footer__github"
+               href="https://github.com/Alexej-Ilyutik" target="_blank"
+               class="btn btn-outline-light btn-floating mx-2 footer__github"
                class="text-white"
+               data-title="Alexej"
                role="button"
                ><i class="fa fa-github fa-2x"></i
               ></a>
             <a
-               class="btn btn-outline-light btn-floating m-1 footer__github"
+              href="https://github.com/NewAnton" target="_blank"
+               class="btn btn-outline-light btn-floating mx-2 footer__github"
                class="text-white"
+               data-title="Anton"
                role="button"
                ><i class="fa fa-github fa-2x"></i
               ></a>
             <a
-               class="btn btn-outline-light btn-floating m-1 footer__github"
+              href="https://github.com/EJ252" target="_blank"
+               class="btn btn-outline-light btn-floating mx-2 footer__github"
                class="text-white"
+               data-title="Vadim"
                role="button"
                ><i class="fa fa-github fa-2x"></i
               ></a>

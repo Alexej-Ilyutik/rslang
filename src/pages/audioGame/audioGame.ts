@@ -165,6 +165,9 @@ const addEventStartAudioGame = (block: HTMLElement): void => {
   let falseAnswerArr: WordInterface[] = [];
 
   async function rerenderAudioGame(event: Event) {
+    // const keyboardEvent = <KeyboardEvent>event;
+    // console.log(keyboardEvent.key);
+
     const target = event.target as HTMLInputElement;
     const arrWords = await getAllGroupWords(level);
 
@@ -177,7 +180,6 @@ const addEventStartAudioGame = (block: HTMLElement): void => {
     const newArrOptions = getUniqueArray(arrOptions);
 
     shuffle(newArrOptions);
-    console.log(newArrOptions);
 
     const mainWord = guessWord;
 
@@ -208,6 +210,10 @@ const addEventStartAudioGame = (block: HTMLElement): void => {
     const answerContainer = document.querySelector('.audiocall__figure-container') as HTMLElement;
     const btnVoiceContainer = document.querySelector('.audiocall__voice') as HTMLElement;
     const btnsOption = Array.from(document.getElementsByClassName('audiocall__check'));
+
+    // if (keyboardEvent.key==='1') {
+
+    // }
 
     if (target.classList.contains('audiocall__btn-option')) {
       const btnVoice = document.querySelector('.voice__audio') as HTMLElement;
@@ -258,6 +264,7 @@ const addEventStartAudioGame = (block: HTMLElement): void => {
   }
 
   GameContainer.addEventListener('click', rerenderAudioGame);
+  document.addEventListener('keydown', rerenderAudioGame);
 };
 
 export const renderAudioPage = async (): Promise<void> => {
