@@ -16,7 +16,7 @@ const falseAnswerAudio = new Audio('../../assets/error.mp3');
 function getArrOptions(array: WordInterface[]) {
   const arr: WordInterface[] = [];
   let uniqueArray: WordInterface[] = [];
-  while (uniqueArray.length < 3) {
+  while (uniqueArray.length < 4) {
     const el = array[getRandomNumber(0, 599)];
 
     arr.push(el);
@@ -25,14 +25,20 @@ function getArrOptions(array: WordInterface[]) {
   return uniqueArray;
 }
 
+function getUniqueArray(array: WordInterface[]) {
+  const uniqueArray = [...new Set(array)];
+  if (uniqueArray.length > 3) {
+    uniqueArray.shift();
+  }
+  return uniqueArray;
+}
+
 function getGuessWord(currentPage: string | null, arr: WordInterface[]) {
   let guessWordCur: WordInterface;
   if (currentPage === 'Book') {
     guessWordCur = storage.currentPageWords[getRandomNumber(0, 19)];
-    console.log(storage.currentPageWords);
   } else {
     guessWordCur = arr[getRandomNumber(0, 599)];
-    console.log(arr);
   }
 
   return guessWordCur;
@@ -161,26 +167,17 @@ const addEventStartAudioGame = (block: HTMLElement): void => {
   async function rerenderAudioGame(event: Event) {
     const target = event.target as HTMLInputElement;
     const arrWords = await getAllGroupWords(level);
-    const currentPage = localStorage.getItem('currentPage');
 
     const arrOptions = getArrOptions(arrWords);
 
-    const guessWord = getGuessWord(currentPage, arrWords);
-    console.log(guessWord);
+    const guessWord = getGuessWord(storage.currentPage, arrWords);
 
     arrOptions.push(guessWord);
-    console.log(arrOptions);
 
-    const newArr = shuffle(arrOptions);
+    const newArrOptions = getUniqueArray(arrOptions);
 
-    console.log(newArr);
-
-
-
-    // const addWordsToAudioGame = (): WordInterface => {
-    //   const word = arrOptions[getRandomNumber(0, 3)];
-    //   return word;
-    // };
+    shuffle(newArrOptions);
+    console.log(newArrOptions);
 
     const mainWord = guessWord;
 
@@ -194,7 +191,7 @@ const addEventStartAudioGame = (block: HTMLElement): void => {
       falseAnswer = 0;
       trueAnswerArr = [];
       falseAnswerArr = [];
-      renderContentAudioPage(block, mainWord, arrOptions, progress);
+      renderContentAudioPage(block, mainWord, newArrOptions, progress);
       target.disabled = true;
 
       const btnVoice = document.querySelector('.voice__audio') as HTMLElement;
@@ -244,7 +241,7 @@ const addEventStartAudioGame = (block: HTMLElement): void => {
     }
 
     if (target.classList.contains('audiocall__next') && progress !== 100) {
-      renderContentAudioPage(block, mainWord, arrOptions, progress);
+      renderContentAudioPage(block, mainWord, newArrOptions, progress);
       const btnVoice = document.querySelector('.voice__audio') as HTMLElement;
       playAllAudioFiles([btnVoice.getAttribute('data-audio') || '']);
     } else if (target.classList.contains('audiocall__next') && progress === 100) {

@@ -19,7 +19,6 @@ const renderPage = (): void => {
   renderHeader();
   renderMain();
   renderFooter();
-  localStorage.clear();
 };
 
 renderPage();
@@ -43,11 +42,9 @@ const onNavigate = (location: string): void => {
       break;
     case '#/book':
       renderTextBook();
-      localStorage.setItem('currentPage', 'Book');
       break;
     case '#/games':
       renderGamePage();
-      localStorage.setItem('currentPage', 'Game');
       break;
     case '#/statistic':
       main.innerHTML = `<h1>Statistic</h1>`;

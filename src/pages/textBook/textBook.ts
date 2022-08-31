@@ -315,4 +315,5 @@ export const renderTextBook = (): void => {
   renderTextBoxPage(storage.wordsListCurrentGroup, storage.wordsListCurrentPage);
   renderPagination(storage.wordsListCurrentPage);
   addTestBookEvents();
+  storage.currentPage = 'Book';
 };

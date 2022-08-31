@@ -1,4 +1,5 @@
 import './game.scss';
+import { storage } from '../../shared/storage';
 
 export const renderGamePage = (): void => {
   const mainBlock = `
@@ -62,4 +63,5 @@ export const renderGamePage = (): void => {
 `;
   const main = document.getElementById('main') as HTMLElement;
   main.innerHTML = mainBlock;
+  storage.currentPage = 'Game';
 };
