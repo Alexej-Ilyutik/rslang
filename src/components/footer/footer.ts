@@ -109,7 +109,7 @@ export const renderFooter = (): void => {
               href="https://github.com/EJ252" target="_blank"
                class="btn btn-outline-light btn-floating mx-2 footer__github"
                class="text-white"
-               data-title="Vadim"
+               data-title="Vadzim"
                role="button"
                ><i class="fa fa-github fa-2x"></i
               ></a>

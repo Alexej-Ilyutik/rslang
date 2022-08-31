@@ -74,14 +74,15 @@ export const renderMain = (): void => {
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4 item">
-                    <div class="box"><img class="rounded-circle" src="../../../assets/ava.png" alt="ava">
-                        <a href="#" target="_blank">
+                    <div class="box"><img class="rounded-circle" src="../../../assets/Anton.jpg" alt="ava">
+                        <a href="https://github.com/NewAnton/rsschool-cv/blob/main/cv.md" target="_blank">
                         <h3 class="name">Anton Korobov</h3></a>
                         <p class="title">Frontend developer</p>
                         <p class="description">Created application design. Developed the TextBook page.
                         Helped to think over the logic of the application.</p>
                         <div class="social">
-                        <a href="#" target="_blank">
+                        <a href="http://www.linkedin.com/in/%D0%B0%D0%BD%D1%82%D0%BE%D0%BD-%D0%BA%D0%BE%D1%80%D0%BE%D0%B1%D0%BE%D0%B2-a2a619221"
+                        target="_blank">
                         <i class="fab fa-linkedin-in"></i></a>
                         <a href="https://github.com/NewAnton" target="_blank">
                         <i class="fa fa-github fa-x"></i></a>
@@ -89,14 +90,14 @@ export const renderMain = (): void => {
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4 item">
-                    <div class="box"><img class="rounded-circle" src="../../../assets/ava.png" alt="ava">
-                        <a href="#" target="_blank">
-                        <h3 class="name">Vadim</h3></a>
+                    <div class="box"><img class="rounded-circle" src="../../../assets/vadzim.jpg" alt="ava">
+                        <a href="https://ej252.github.io/rsschool-cv/" target="_blank">
+                        <h3 class="name">Vadzim Embala</h3></a>
                         <p class="title">Frontend developer</p>
                         <p class="description">Created the game "Sprint". Created a registration form.
                         Set up the backend.</p>
                         <div class="social">
-                        <a href="#" target="_blank">
+                        <a href="https://www.linkedin.com/in/vadzim-embala-65021b200/" target="_blank">
                         <i class="fab fa-linkedin-in"></i></a>
                         <a href="https://github.com/EJ252" target="_blank">
                         <i class="fa fa-github fa-x"></i></a>

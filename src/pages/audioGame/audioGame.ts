@@ -9,6 +9,7 @@ import { shuffle } from '../../services/shuffleArray';
 import { renderGamePage } from '../game/game';
 import { renderProgressBar, rerenderProgressBar } from '../../components/progressBar/renderProgressBar';
 import API from '../../services/api';
+// import { renderPreLoader } from '../../components/preLoader/preLoader';
 
 const trueAnswerAudio = new Audio('../../assets/success.mp3');
 const falseAnswerAudio = new Audio('../../assets/error.mp3');
@@ -268,6 +269,12 @@ const addEventStartAudioGame = (block: HTMLElement): void => {
 };
 
 export const renderAudioPage = async (): Promise<void> => {
+  // renderPreLoader();
+  // window.onload = (): void => {
+  //   const preloader = document.getElementById('preloader') as HTMLElement;
+  //   preloader.style.display = 'none';
+  // };
+
   const audioContent = document.querySelector('.audiocall__content') as HTMLElement;
 
   addEventStartAudioGame(audioContent);
