@@ -1,37 +1,47 @@
 import './audioGame.scss';
 import { WordInterface } from '../../shared/types';
+import { storage } from '../../shared/storage';
+import { getAllGroupWords } from '../../services/getAllGroupWords';
+import { getRandomNumber } from '../../services/getRandomNumber';
 import { playAllAudioFiles } from '../../components/audioButton/audioButton';
 import { setAttrDisabled } from '../../services/setAttrDisabled';
+import { shuffle } from '../../services/shuffleArray';
+import { renderGamePage } from '../game/game';
 import { renderProgressBar, rerenderProgressBar } from '../../components/progressBar/renderProgressBar';
 import API from '../../services/api';
 
 const trueAnswerAudio = new Audio('../../assets/success.mp3');
 const falseAnswerAudio = new Audio('../../assets/error.mp3');
 
-const getWordsTemp = async (diff: number) => {
-  const result = [];
-
-  for (let i = 0; i <= 29; i += 1) {
-    result.push(API.getWords(diff, i));
-  }
-
-  return (await Promise.all(result)).flat();
-};
-
-function getRandomArbitrary(min: number, max: number) {
-  const rand = min + Math.random() * (max + 1 - min);
-  return Math.floor(rand);
-}
-
 function getArrOptions(array: WordInterface[]) {
   const arr: WordInterface[] = [];
   let uniqueArray: WordInterface[] = [];
   while (uniqueArray.length < 4) {
-    const el = array[getRandomArbitrary(0, 599)];
+    const el = array[getRandomNumber(0, 599)];
+
     arr.push(el);
     uniqueArray = [...new Set(arr)];
   }
   return uniqueArray;
+}
+
+function getUniqueArray(array: WordInterface[]) {
+  const uniqueArray = [...new Set(array)];
+  if (uniqueArray.length > 3) {
+    uniqueArray.shift();
+  }
+  return uniqueArray;
+}
+
+function getGuessWord(currentPage: string | null, arr: WordInterface[]) {
+  let guessWordCur: WordInterface;
+  if (currentPage === 'Book') {
+    guessWordCur = storage.currentPageWords[getRandomNumber(0, 19)];
+  } else {
+    guessWordCur = arr[getRandomNumber(0, 599)];
+  }
+
+  return guessWordCur;
 }
 
 const renderContentAudioPage = async (
@@ -93,6 +103,7 @@ export const renderResultAudioPage = (
     <div class="result__container">
       <h3 class="audiocall__subtitle">Result</h3>
       <h4 class="result__subtitle">Accuracy: <span>${accuracy}%</span></h4>
+      <button type="button" class="btn-close result__close" aria-label="Close"></button>
 
       <div class="result__answer-container">
 
@@ -121,7 +132,6 @@ export const renderResultAudioPage = (
   `;
   block.innerHTML = mainBlock;
 };
-
 
 const renderListItem = (block: HTMLElement, wordArr: WordInterface[]): void => {
   for (let i = 0; i < wordArr.length; i += 1) {
@@ -155,14 +165,23 @@ const addEventStartAudioGame = (block: HTMLElement): void => {
   let falseAnswerArr: WordInterface[] = [];
 
   async function rerenderAudioGame(event: Event) {
+    // const keyboardEvent = <KeyboardEvent>event;
+    // console.log(keyboardEvent.key);
+
     const target = event.target as HTMLInputElement;
-    const arrWords = await getWordsTemp(level);
+    const arrWords = await getAllGroupWords(level);
+
     const arrOptions = getArrOptions(arrWords);
-    const addWordsToAudioGame = (): WordInterface => {
-      const word = arrOptions[getRandomArbitrary(0, 3)];
-      return word;
-    };
-    const mainWord = addWordsToAudioGame();
+
+    const guessWord = getGuessWord(storage.currentPage, arrWords);
+
+    arrOptions.push(guessWord);
+
+    const newArrOptions = getUniqueArray(arrOptions);
+
+    shuffle(newArrOptions);
+
+    const mainWord = guessWord;
 
     if (target.classList.contains('setting__level')) {
       level = Number(target.getAttribute('data-level'));
@@ -174,7 +193,8 @@ const addEventStartAudioGame = (block: HTMLElement): void => {
       falseAnswer = 0;
       trueAnswerArr = [];
       falseAnswerArr = [];
-      renderContentAudioPage(block, mainWord, arrOptions, progress);
+      renderContentAudioPage(block, mainWord, newArrOptions, progress);
+      target.disabled = true;
 
       const btnVoice = document.querySelector('.voice__audio') as HTMLElement;
 
@@ -190,6 +210,10 @@ const addEventStartAudioGame = (block: HTMLElement): void => {
     const answerContainer = document.querySelector('.audiocall__figure-container') as HTMLElement;
     const btnVoiceContainer = document.querySelector('.audiocall__voice') as HTMLElement;
     const btnsOption = Array.from(document.getElementsByClassName('audiocall__check'));
+
+    // if (keyboardEvent.key==='1') {
+
+    // }
 
     if (target.classList.contains('audiocall__btn-option')) {
       const btnVoice = document.querySelector('.voice__audio') as HTMLElement;
@@ -223,7 +247,7 @@ const addEventStartAudioGame = (block: HTMLElement): void => {
     }
 
     if (target.classList.contains('audiocall__next') && progress !== 100) {
-      renderContentAudioPage(block, mainWord, arrOptions, progress);
+      renderContentAudioPage(block, mainWord, newArrOptions, progress);
       const btnVoice = document.querySelector('.voice__audio') as HTMLElement;
       playAllAudioFiles([btnVoice.getAttribute('data-audio') || '']);
     } else if (target.classList.contains('audiocall__next') && progress === 100) {
@@ -233,13 +257,14 @@ const addEventStartAudioGame = (block: HTMLElement): void => {
       const itemListFalse = document.querySelector('.result__list-false') as HTMLElement;
       renderListItem(itemListTrue, trueAnswerArr);
       renderListItem(itemListFalse, falseAnswerArr);
-      console.log(trueAnswerArr);
-      console.log(falseAnswerArr);
-
+    }
+    if (target.classList.contains('result__close')) {
+      renderGamePage();
     }
   }
 
   GameContainer.addEventListener('click', rerenderAudioGame);
+  document.addEventListener('keydown', rerenderAudioGame);
 };
 
 export const renderAudioPage = async (): Promise<void> => {
