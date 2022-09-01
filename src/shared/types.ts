@@ -26,7 +26,7 @@ export interface UserWordInterface {
   id: string,
   optional: {
     guessCounter: number,
-    firstShowedDate?: Date, // When create new user's word put current Date here.
+    firstShowedDate: Date, // When create new user's word put current Date here.
   },
   wordId: string,
 }

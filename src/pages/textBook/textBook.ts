@@ -5,6 +5,7 @@ import { storage } from '../../shared/storage';
 import API from '../../services/api';
 import { deleteClassActive } from '../../services/deleteClassActive';
 import { playAllAudioFiles } from '../../components/audioButton/audioButton';
+import { updateWordProperties } from '../../services/updateWordProperties';
 
 export const renderTextBookNavigation = (): void => {
   const textBook = `
@@ -50,6 +51,7 @@ export const renderTextBookNavigation = (): void => {
 export const getAllUserWords = async (): Promise<void> => {
   const arrayOfWords: Promise<UserWordInterface[]> = API.getUserWords();
   storage.userWords = await arrayOfWords;
+  console.log(storage.userWords);
 }
 
 export const isUserWord = (wordId: string): number | null => {
@@ -273,18 +275,20 @@ export const addEventWords = (): void => {
     }
     if ((event.target as HTMLInputElement).classList.contains('hard-checkbox')) {
       const wordId = (event.target as HTMLInputElement).getAttribute('data-id')?.toString() || '';
-      const userWordIndex = isUserWord(wordId);
-      if (userWordIndex || userWordIndex === 0) {
-        let {difficulty} = storage.userWords[userWordIndex];
-        if (((event.target as HTMLInputElement)).checked === true) difficulty = 'hard';
-        else difficulty = 'easy';
-        const {guessCounter} = storage.userWords[userWordIndex].optional;
-        await API.updateUserWord(wordId, difficulty, guessCounter);
-      } else {
-        let difficulty = 'easy';
-        if (((event.target as HTMLInputElement)).checked === true) difficulty = 'hard';
-        await API.createUserWord(wordId, difficulty, 0);
-      }
+      // const userWordIndex = isUserWord(wordId);
+      // if (userWordIndex || userWordIndex === 0) {
+      //   let {difficulty} = storage.userWords[userWordIndex];
+      //   if (((event.target as HTMLInputElement)).checked === true) difficulty = 'hard';
+      //   else difficulty = 'easy';
+      //   const {guessCounter} = storage.userWords[userWordIndex].optional;
+      //   await API.updateUserWord(wordId, difficulty, guessCounter);
+      // } else {
+      //   let difficulty = 'easy';
+      //   if (((event.target as HTMLInputElement)).checked === true) difficulty = 'hard';
+      //   await API.createUserWord(wordId, difficulty, 0);
+      // }
+      await updateWordProperties(wordId, true);
+      getAllUserWords();
       setWordsStatus(storage.currentPageWords);
     }
     if ((event.target as HTMLInputElement).classList.contains('learned-checkbox')) {
