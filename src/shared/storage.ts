@@ -7,6 +7,7 @@ interface StorageInterface {
   maxGuessNumber: number;
   userWords: UserWordInterface[];
   currentPageWords: WordInterface[];
+  currentPage: string;
 }
 
 export const storage: StorageInterface = {
@@ -16,4 +17,5 @@ export const storage: StorageInterface = {
   maxGuessNumber: 5,
   userWords: [],
   currentPageWords: [],
+  currentPage: '',
 };
