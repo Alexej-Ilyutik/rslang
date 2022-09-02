@@ -5,6 +5,9 @@ import { storage } from '../../shared/storage';
 import API from '../../services/api';
 import { deleteClassActive } from '../../services/deleteClassActive';
 import { playAllAudioFiles } from '../../components/audioButton/audioButton';
+import { renderGamePageContainer } from '../../components/gamePageContainer/gamePageContainer';
+import { startSprintFromTextBook } from '../sprint/sprint';
+// import { renderAudioPage } from '../audioGame/audioGame';
 
 export const renderTextBookNavigation = (): void => {
   const textBook = `
@@ -27,10 +30,10 @@ export const renderTextBookNavigation = (): void => {
           </ul>
         </nav>
         <div class="textBook__games">
-          <a href="#/sprint" class="textBook__games_game-button link-direction">
+          <button class="textBook__games_game-button" id="start-sprint-text-book">
             <img src="../../assets/sprint-icon.svg" class="textBook__games_game-img" alt="game image"></img>
             <h2 class="textBook__games_game-name">Sprint</h2>
-          </a>
+          </button>
           <a href="#/audio" class="textBook__games_game-button link-direction">
             <img src="../../assets/audio-icon.svg" class="textBook__games_game-img" alt="game image"></img>
             <h2 class="textBook__games_game-name">Audio-game</h2>
@@ -304,11 +307,29 @@ export const addEventWords = (): void => {
   });
 };
 
+const addEventGames = () => {
+  const textBookGames = <HTMLButtonElement>document.querySelector('.textBook__games');
+  const sprintStartBtn = <HTMLButtonElement>document.getElementById('start-sprint-text-book');
+  // const AudioGameStartBtn = <HTMLButtonElement>document.getElementById('start-audio-game-text-book');
+  textBookGames.addEventListener('click', (e) => {
+    const target = <HTMLElement>e.target;
+    if (sprintStartBtn.contains(target)) {
+      renderGamePageContainer();
+      startSprintFromTextBook();
+    }
+    // if (AudioGameStartBtn.contains(target)) {
+    //   renderGamePageContainer();
+    //   renderAudioPage();
+    // }
+  });
+}
+
 export const addTestBookEvents = (): void => {
   addEventWordsGroup();
   addEventPagination();
   addEventWords();
-};
+  addEventGames();
+}
 
 export const renderTextBook = (): void => {
   renderTextBookNavigation();
