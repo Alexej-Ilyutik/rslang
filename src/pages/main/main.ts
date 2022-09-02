@@ -58,7 +58,7 @@ export const renderMain = (): void => {
             </div>
             <div class="row people">
                 <div class="col-md-6 col-lg-4 item">
-                    <div class="box"><img class="rounded-circle" src="../../../assets/Alexej.jpg" alt="ava">
+                    <div class="box"><img class="rounded border border-light" src="../../../assets/Alexej.jpg" alt="ava">
                         <a href="https://alexej-ilyutik.github.io/rsschool-cv/" target="_blank">
                         <h3 class="name">Alexej Ilyutik</h3></a>
                         <p class="title">Frontend developer</p>
@@ -74,7 +74,7 @@ export const renderMain = (): void => {
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4 item">
-                    <div class="box"><img class="rounded-circle" src="../../../assets/Anton.jpg" alt="ava">
+                    <div class="box"><img class="rounded border border-light" src="../../../assets/Anton.jpg" alt="ava">
                         <a href="https://github.com/NewAnton/rsschool-cv/blob/main/cv.md" target="_blank">
                         <h3 class="name">Anton Korobov</h3></a>
                         <p class="title">Frontend developer</p>
@@ -90,7 +90,7 @@ export const renderMain = (): void => {
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4 item">
-                    <div class="box"><img class="rounded-circle" src="../../../assets/vadzim.jpg" alt="ava">
+                    <div class="box"><img class="rounded border border-light" src="../../../assets/vadzim.jpg" alt="ava">
                         <a href="https://ej252.github.io/rsschool-cv/" target="_blank">
                         <h3 class="name">Vadzim Embala</h3></a>
                         <p class="title">Frontend developer</p>

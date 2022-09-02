@@ -18,7 +18,9 @@ import { startSprint } from './pages/sprint/sprint';
 
 const renderPage = (): void => {
   renderHeader();
-  renderMain();
+  // renderMain();
+  renderGamePageContainer();
+  renderAudioPage();
   renderFooter();
 };
 

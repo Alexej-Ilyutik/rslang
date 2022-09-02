@@ -4,6 +4,7 @@ import { storage } from '../../shared/storage';
 import { getAllGroupWords } from '../../services/getAllGroupWords';
 import { getRandomNumber } from '../../services/getRandomNumber';
 import { playAllAudioFiles } from '../../components/audioButton/audioButton';
+import { renderSpinner, stopRenderSpinner } from '../../components/spinner/spinner';
 import { setAttrDisabled } from '../../services/setAttrDisabled';
 import { shuffle } from '../../services/shuffleArray';
 import { renderGamePage } from '../game/game';
@@ -170,7 +171,14 @@ const addEventStartAudioGame = (block: HTMLElement): void => {
     // console.log(keyboardEvent.key);
 
     const target = event.target as HTMLInputElement;
+
+    const audioContent = document.querySelector('.audiocall__content') as HTMLElement;
+
+    renderSpinner(audioContent);
+
     const arrWords = await getAllGroupWords(level);
+    
+    stopRenderSpinner(audioContent);
 
     const arrOptions = getArrOptions(arrWords);
 
@@ -265,7 +273,7 @@ const addEventStartAudioGame = (block: HTMLElement): void => {
   }
 
   GameContainer.addEventListener('click', rerenderAudioGame);
-  document.addEventListener('keydown', rerenderAudioGame);
+  // document.addEventListener('keydown', rerenderAudioGame);
 };
 
 export const renderAudioPage = async (): Promise<void> => {
