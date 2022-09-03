@@ -1,3 +1,5 @@
+export type WordDifficulty = 'hard' | 'easy' | 'normal';
+
 export interface WordInterface {
   id: string,
   _id?: string,
@@ -14,16 +16,17 @@ export interface WordInterface {
   wordTranslate: string,
   textMeaningTranslate: string,
   textExampleTranslate: string,
-  userWord?: { difficulty: string, optional: { guessCounter: number }}
+  userWord?: { difficulty?: WordDifficulty, optional: { guessCounter: number, firstShowedDate?: Date }}
 };
 
 export type PageOfWordsInterface = Promise<WordInterface[]>;
 
 export interface UserWordInterface {
-  difficulty: string,
+  difficulty: WordDifficulty,
   id: string,
-  optional: {guessCounter: number},
+  optional: {
+    guessCounter: number,
+    firstShowedDate: Date, // When create new user's word put current Date here.
+  },
   wordId: string,
 }
-
-// export type WordDifficulty = 'hard' | 'easy';
