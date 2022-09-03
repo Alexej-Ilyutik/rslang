@@ -76,6 +76,7 @@ export const setWordsStatus = async (arrayOfWords: WordInterface[]): Promise<voi
 export const updateLearnWordsCounter = async (): Promise<void> => {
   const learnedWordsCounter = document.querySelector('.textBook__games_information') as HTMLElement;
   const learnedWordArray = await API.getAggregatedWords('easy');
+  storage.learnedWordsOnPage = learnedWordArray;
   learnedWordsCounter.innerHTML = `<p>Learned ${learnedWordArray.length - 1}/20 words on page</p>`;
 }
 

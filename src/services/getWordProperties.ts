@@ -1,5 +1,5 @@
 /* eslint-disable no-await-in-loop */
-import { UserWordInterface, WordDifficulty } from "../shared/types"
+import { WordDifficulty } from "../shared/types"
 import API from './api';
 
 export const getWordProperties = async (wordId: string)
