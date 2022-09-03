@@ -40,7 +40,7 @@ export const renderTextBookNavigation = (): void => {
             <h2 class="textBook__games_game-name">Audio-game</h2>
           </a>
           <div class="textBook__games_information">
-            <p>Learned 0/20 words on page</p>
+            <p>Learned ?/20 words on page</p>
           </div>
         </div>
         <ul class="textBook__words-list">
@@ -52,6 +52,7 @@ export const renderTextBookNavigation = (): void => {
 };
 
 export const setWordsStatus = async (arrayOfWords: WordInterface[]): Promise<void> => {
+  const learnedWordsCounter = document.querySelector('.textBook__games_information') as HTMLElement;
   let learnedWordsOnPage = 0;
 
   arrayOfWords.forEach(async element => {
@@ -62,6 +63,7 @@ export const setWordsStatus = async (arrayOfWords: WordInterface[]): Promise<voi
     const { difficultyValue, guessCounterValue } = await getWordProperties(wordId);
     if (guessCounterValue >= 5 || difficultyValue === 'easy') {
       learnedWordsOnPage += 1;
+      learnedWordsCounter.innerHTML = `<p>Learned ${learnedWordsOnPage}/20 words on page</p>`
       learnedCheckbox.checked = true;
     }
     if (difficultyValue === 'hard') {
@@ -72,9 +74,6 @@ export const setWordsStatus = async (arrayOfWords: WordInterface[]): Promise<voi
     guessCounterSign.setAttribute('data-guessCounter', guessCounterValue.toString());
     guessCounterSign.innerHTML = `Guessed ${guessCounterValue.toString()} times`;
   });
-
-  const learnedWordsCounter = document.querySelector('.textBook__games_information') as HTMLElement;
-  learnedWordsCounter.innerHTML = `<p>Learned ${learnedWordsOnPage}/20 words on page</p>`
 }
 
 export const renderTextBoxPage = async (groupNumber: number, pageNumber: number): Promise<void> => {
@@ -139,7 +138,6 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
     )
     .join('');
   wordsList.innerHTML = html;
-
   setWordsStatus(await arrayOfWords);
 };
 

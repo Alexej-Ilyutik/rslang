@@ -1,4 +1,5 @@
 /* eslint-disable no-await-in-loop */
+import { storage } from "../shared/storage";
 import { UserWordInterface, WordDifficulty } from "../shared/types"
 import API from './api';
 
