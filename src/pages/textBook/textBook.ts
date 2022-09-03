@@ -51,29 +51,32 @@ export const renderTextBookNavigation = (): void => {
   main.innerHTML = textBook;
 };
 
-export const setWordsStatus = async (arrayOfWords: WordInterface[]): Promise<void> => {
-  const learnedWordsCounter = document.querySelector('.textBook__games_information') as HTMLElement;
-  let learnedWordsOnPage = 0;
+export const setWordStatus = async (wordId: string): Promise<void> => {
+  const learnedCheckbox = document.getElementById(`${wordId}Learned`) as HTMLInputElement;
+  const hardCheckbox = document.getElementById(`${wordId}Hard`) as HTMLInputElement;
+  const guessCounterSign = document.getElementById(`${wordId}Counter`) as HTMLElement;
+  const { difficultyValue, guessCounterValue } = await getWordProperties(wordId);
+  if (guessCounterValue >= 5 || difficultyValue === 'easy') {
+    learnedCheckbox.checked = true;
+    hardCheckbox.checked = false;
+  } else if (difficultyValue === 'hard') {
+    hardCheckbox.checked = true;
+    learnedCheckbox.checked = false;
+  }
+  guessCounterSign.setAttribute('data-guessCounter', guessCounterValue.toString());
+  guessCounterSign.innerHTML = `Guessed ${guessCounterValue.toString()} times`;
+}
 
+export const setWordsStatus = async (arrayOfWords: WordInterface[]): Promise<void> => {
   arrayOfWords.forEach(async element => {
-    const wordId = element.id;
-    const learnedCheckbox = document.getElementById(`${wordId}Learned`) as HTMLInputElement;
-    const hardCheckbox = document.getElementById(`${wordId}Hard`) as HTMLInputElement;
-    const guessCounterSign = document.getElementById(`${wordId}Counter`) as HTMLElement;
-    const { difficultyValue, guessCounterValue } = await getWordProperties(wordId);
-    if (guessCounterValue >= 5 || difficultyValue === 'easy') {
-      learnedWordsOnPage += 1;
-      learnedWordsCounter.innerHTML = `<p>Learned ${learnedWordsOnPage}/20 words on page</p>`
-      learnedCheckbox.checked = true;
-    }
-    if (difficultyValue === 'hard') {
-      hardCheckbox.checked = true;
-      learnedCheckbox.checked = false;
-    }
-    if (difficultyValue === 'easy' ||  difficultyValue === 'normal') hardCheckbox.checked = false;
-    guessCounterSign.setAttribute('data-guessCounter', guessCounterValue.toString());
-    guessCounterSign.innerHTML = `Guessed ${guessCounterValue.toString()} times`;
+    await setWordStatus(element.id);
   });
+}
+
+export const updateLearnWordsCounter = async (): Promise<void> => {
+  const learnedWordsCounter = document.querySelector('.textBook__games_information') as HTMLElement;
+  const learnedWordArray = await API.getAggregatedWords('easy');
+  learnedWordsCounter.innerHTML = `<p>Learned ${learnedWordArray.length - 1}/20 words on page</p>`;
 }
 
 export const renderTextBoxPage = async (groupNumber: number, pageNumber: number): Promise<void> => {
@@ -81,7 +84,7 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
 
   const getWords = async (_groupNumber: number, _pageNumber: number): PageOfWordsInterface => {
     if (_groupNumber === 6) {
-      const arrayOfWords: PageOfWordsInterface = await API.getAggregatedWords();
+      const arrayOfWords: PageOfWordsInterface = await API.getAggregatedWords('hard');
       return arrayOfWords;
     }
     const arrayOfWords: PageOfWordsInterface = await API.getWords(_groupNumber, _pageNumber);
@@ -138,6 +141,7 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
     )
     .join('');
   wordsList.innerHTML = html;
+  updateLearnWordsCounter();
   setWordsStatus(await arrayOfWords);
 };
 
@@ -266,19 +270,24 @@ export const addEventWords = (): void => {
       const wordId = (event.target as HTMLInputElement).getAttribute('data-id')?.toString() || '';
       if (((event.target as HTMLInputElement)).checked === true) {
         await updateWordProperties(wordId, undefined, 'hard');
+        setWordStatus(wordId);
+        updateLearnWordsCounter();
       } else {
         await updateWordProperties(wordId, undefined, 'normal');
+        setWordStatus(wordId);
       }
-      await setWordsStatus(storage.currentPageWords);
     }
     if ((event.target as HTMLInputElement).classList.contains('learned-checkbox')) {
       const wordId = (event.target as HTMLInputElement).getAttribute('data-id')?.toString() || '';
       if (((event.target as HTMLInputElement)).checked === true) {
         await updateWordProperties(wordId, undefined, 'easy');
+        setWordStatus(wordId);
+        updateLearnWordsCounter();
       } else {
         await updateWordProperties(wordId, undefined, 'normal');
+        setWordStatus(wordId);
+        updateLearnWordsCounter();
       }
-      await setWordsStatus(storage.currentPageWords);
     }
   });
 };

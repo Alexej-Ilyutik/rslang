@@ -1,3 +1,5 @@
+import { WordDifficulty } from "../shared/types";
+
 class API {
   static base = 'https://be-rs-lang.herokuapp.com';
 
@@ -182,9 +184,9 @@ class API {
 
   // USERS/AGGREGATED WORDS:
 
-  static async getAggregatedWords() {
+  static async getAggregatedWords(difficulty: WordDifficulty) {
     const { userId, token } = API.getJwt();
-    const filter = '?wordsPerPage=3600&filter={"userWord.difficulty":"hard"}';
+    const filter = `?wordsPerPage=3600&filter={"userWord.difficulty":"${difficulty}"}`;
     const response = await fetch(`${API.users}/${userId}/aggregatedWords${filter}`, {
       headers: {
         Authorization: `Bearer ${token}`,

@@ -1,11 +1,11 @@
 /* eslint-disable no-await-in-loop */
-import { UserWordInterface, WordDifficulty } from "../shared/types"
+import { WordDifficulty } from "../shared/types"
 import API from './api';
 
 export const updateWordProperties = async (wordId: string, isGuessed: boolean | undefined,
   difficultyValue: WordDifficulty | undefined)
 : Promise<void> => {
-  const arrayOfWords: Promise<UserWordInterface[]> = API.getUserWords();
+  const arrayOfWords = await API.getUserWords();
   let wordIndex: number | null = null;
   for (let i = 0; i < (await arrayOfWords).length; i += 1) {
     if ((await arrayOfWords)[i].wordId === wordId) {
@@ -25,7 +25,7 @@ export const updateWordProperties = async (wordId: string, isGuessed: boolean | 
 
     const {firstShowedDate} = (await arrayOfWords)[wordIndex].optional;
 
-    API.updateUserWord(wordId, difficulty, guessCounter, firstShowedDate);
+    await API.updateUserWord(wordId, difficulty, guessCounter, firstShowedDate);
   } else {
     let difficulty = 'normal';
     if (difficultyValue) difficulty = difficultyValue;
@@ -35,6 +35,6 @@ export const updateWordProperties = async (wordId: string, isGuessed: boolean | 
 
     const currentDate = new Date();
 
-    API.createUserWord(wordId, difficulty, guessCounter, currentDate);
+    await API.createUserWord(wordId, difficulty, guessCounter, currentDate);
   }
 }
