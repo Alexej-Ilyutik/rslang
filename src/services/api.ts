@@ -145,15 +145,9 @@ class API {
         Authorization: `Bearer ${token}`,
       },
     });
-    if (response.status !== 404) {
-      const content = await response.json();
-      console.log(content);
-      return content;
-    }
-    return false;
-    // const content = await response.json();
-    // console.log(content);
-    // return content;
+    const content = await response.json();
+    console.log(content);
+    return content;
   }
 
   static async updateUserWord(wordId: string, difficulty: string, guessCounter: number, firstShowedDate: Date) {
