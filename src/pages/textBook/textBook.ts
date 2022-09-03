@@ -69,7 +69,8 @@ export const setWordStatus = async (wordId: string): Promise<void> => {
 
 export const setWordsStatus = async (arrayOfWords: WordInterface[]): Promise<void> => {
   arrayOfWords.forEach(async element => {
-    await setWordStatus(element.id);
+    const wordId = element.id || element._id;
+    await setWordStatus(wordId || '');
   });
 }
 
