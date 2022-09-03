@@ -9,8 +9,12 @@ import { updateWordProperties } from '../../services/updateWordProperties';
 import { getWordProperties } from '../../services/getWordProperties';
 import { renderGamePageContainer } from '../../components/gamePageContainer/gamePageContainer';
 import { startSprintFromTextBook } from '../sprint/sprint';
+import { isLogin } from '../../services/isLogin';
+import { hideElement } from '../../services/hideElement';
+
 
 export const renderTextBookNavigation = (): void => {
+
   const textBook = `
     <div class="textBook container">
       <h2 class="textBook__title">Text book</h2>
@@ -23,14 +27,15 @@ export const renderTextBookNavigation = (): void => {
           <button type="button" class="textBook__btn-group_button btn btn-outline-primary" data-group="3">B2</button>
           <button type="button" class="textBook__btn-group_button btn btn-outline-primary" data-group="4">C1</button>
           <button type="button" class="textBook__btn-group_button btn btn-outline-primary" data-group="5">C2</button>
-          <button type="button" class="textBook__btn-group_button btn btn-outline-primary" data-group="6">
+          <button type="button" class="textBook__btn-group_button btn btn-outline-primary" data-group="6"
+          ${hideElement(storage.isLogin)}>
           Hard words</button>
         </div>
         <nav class="textBook__pagination" aria-label="Page navigation example">
           <ul class="textBook__pagination_list pagination justify-content-center">
           </ul>
         </nav>
-        <div class="textBook__games">
+        <div class="textBook__games" ${hideElement(storage.isLogin)}>
           <a href="#/sprint" class="textBook__games_game-button link-direction">
             <img src="../../assets/sprint-icon.svg" class="textBook__games_game-img" alt="game image"></img>
             <h2 class="textBook__games_game-name">Sprint</h2>
@@ -81,7 +86,8 @@ export const updateLearnWordsCounter = async (): Promise<void> => {
   learnedWordsCounter.innerHTML = `<p>Learned ${learnedWordArray.length - 1}/20 words on page</p>`;
 }
 
-export const renderTextBoxPage = async (groupNumber: number, pageNumber: number): Promise<void> => {
+export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
+: Promise<void> => {
   storage.wordsListCurrentGroup = groupNumber;
 
   const getWords = async (_groupNumber: number, _pageNumber: number): PageOfWordsInterface => {
@@ -113,8 +119,8 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
           <p class="word-card_word-meaning-translation">${element.textMeaningTranslate}</p>
           <p class="word-card_word-example">${element.textExample}</p>
           <p class="word-card_word-example-translation">${element.textExampleTranslate}</p>
-          <hr class="word-card_line">
-          <div class="word-card_status-wrapper">
+          <hr class="word-card_line" ${hideElement(storage.isLogin)}>
+          <div class="word-card_status-wrapper" ${hideElement(storage.isLogin)}>
             <div class="word-card_status-checkbox-wrapper">
               <input type="checkbox" class="word-card_status-checkbox hard-checkbox"
               id="${element.id || element._id}Hard" value="yes" data-id="${element.id || element._id}">
@@ -128,7 +134,8 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
               <p class="word-card_status-checkbox-text">Learned word</p>
             </div>
           </div>
-          <h3 class="word-card_counter-information" id="${element.id || element._id}Counter">Guessed 0 times</h3>
+          <h3 class="word-card_counter-information" ${hideElement(storage.isLogin)}
+          id="${element.id || element._id}Counter">Guessed 0 times</h3>
         </div>
       </div>
       <div class="word-card_audio-content-wrapper">
@@ -319,6 +326,9 @@ export const addTestBookEvents = (): void => {
 }
 
 export const renderTextBook = (): void => {
+  storage.isLogin = isLogin(); // Check
+  console.log(storage.isLogin);
+
   renderTextBookNavigation();
   renderTextBoxPage(0, 0);
   renderPagination(0);
