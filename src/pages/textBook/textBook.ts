@@ -7,6 +7,8 @@ import { deleteClassActive } from '../../services/deleteClassActive';
 import { playAllAudioFiles } from '../../components/audioButton/audioButton';
 import { updateWordProperties } from '../../services/updateWordProperties';
 import { getWordProperties } from '../../services/getWordProperties';
+import { renderGamePageContainer } from '../../components/gamePageContainer/gamePageContainer';
+import { startSprintFromTextBook } from '../sprint/sprint';
 
 export const renderTextBookNavigation = (): void => {
   const textBook = `
@@ -29,14 +31,14 @@ export const renderTextBookNavigation = (): void => {
           </ul>
         </nav>
         <div class="textBook__games">
-          <button class="textBook__games_game-button">
+          <a href="#/sprint" class="textBook__games_game-button link-direction">
             <img src="../../assets/sprint-icon.svg" class="textBook__games_game-img" alt="game image"></img>
             <h2 class="textBook__games_game-name">Sprint</h2>
           </button>
-          <button class="textBook__games_game-button">
+          <a href="#/audio" class="textBook__games_game-button link-direction">
             <img src="../../assets/audio-icon.svg" class="textBook__games_game-img" alt="game image"></img>
             <h2 class="textBook__games_game-name">Audio-game</h2>
-          </button>
+          </a>
           <div class="textBook__games_information">
             <p>Learned 0/20 words on page</p>
           </div>
@@ -47,7 +49,7 @@ export const renderTextBookNavigation = (): void => {
     </div>`;
   const main = document.getElementById('main') as HTMLElement;
   main.innerHTML = textBook;
-}
+};
 
 export const setWordsStatus = async (arrayOfWords: WordInterface[]): Promise<void> => {
   let learnedWordsOnPage = 0;
@@ -85,13 +87,15 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
     }
     const arrayOfWords: PageOfWordsInterface = await API.getWords(_groupNumber, _pageNumber);
     return arrayOfWords;
-  }
+  };
   const arrayOfWords: PageOfWordsInterface = getWords(groupNumber, pageNumber);
   storage.currentPageWords = await arrayOfWords;
 
   const wordsList = document.querySelector('.textBook__words-list') as HTMLElement;
   storage.wordsListCurrentPage = pageNumber; // update page number
-  const html = (await arrayOfWords).map((element) => `
+  const html = (await arrayOfWords)
+    .map(
+      element => `
     <li class="textBook__words-list_word-card word-card" tabindex="0">
       <div class="word-card_visual-content-wrapper">
         <div class="word-card_img-wrapper">
@@ -126,26 +130,27 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
       <div class="word-card_audio-content-wrapper">
         <button class="word-card_audio-button">
           <img class="word-card_audio-button-image" src="../../assets/volume.svg" alt="audio button"
-          data-audio="${`${API.base}/${ element.audio}`}"
+          data-audio="${`${API.base}/${element.audio}`}"
           data-audio-example="${`${API.base}/${element.audioExample}`}"
           data-audio-meaning="${`${API.base}/${element.audioMeaning}`}"></img>
         </button>
       </div>
-    </li>`
-  ).join('');
+    </li>`,
+    )
+    .join('');
   wordsList.innerHTML = html;
 
   setWordsStatus(await arrayOfWords);
-}
+};
 
-export const renderPagination = (pageNumber: number, totalPagesNumber: number  = storage.limitOfPages): void => {
+export const renderPagination = (pageNumber: number, totalPagesNumber: number = storage.limitOfPages): void => {
   const pagination = document.querySelector('.textBook__pagination_list') as HTMLElement;
   let maxNumberOfButtons = 3;
-  if (window.matchMedia("(min-width: 576px)").matches) {
-    maxNumberOfButtons = 5
+  if (window.matchMedia('(min-width: 576px)').matches) {
+    maxNumberOfButtons = 5;
   }
-  if (window.matchMedia("(min-width: 768px)").matches) {
-    maxNumberOfButtons = 7
+  if (window.matchMedia('(min-width: 768px)').matches) {
+    maxNumberOfButtons = 7;
   }
 
   const currentPage = pageNumber + 1;
@@ -159,7 +164,7 @@ export const renderPagination = (pageNumber: number, totalPagesNumber: number  =
     i = currentPage - maxNumberOfButtons + (storage.limitOfPages - currentPage) + 1;
   }
   let numButtonsHtml = '';
-  for(; i <= totalPagesNumber && i <= lastIndex; i += 1) {
+  for (; i <= totalPagesNumber && i <= lastIndex; i += 1) {
     let isActive = '';
     if (i === currentPage) {
       isActive = 'active';
@@ -183,7 +188,7 @@ export const renderPagination = (pageNumber: number, totalPagesNumber: number  =
     <li class="page-item">
       <button class="page-link textBook__pagination_prev-page ${prevButtonsStatus}"><</button>
     </li>
-    ${ numButtonsHtml }
+    ${numButtonsHtml}
     <li class="page-item">
       <button class="page-link textBook__pagination_next-page ${nextButtonsStatus}">></button>
     </li>
@@ -191,17 +196,17 @@ export const renderPagination = (pageNumber: number, totalPagesNumber: number  =
       <button class="page-link textBook__pagination_next-ten-page ${nextButtonsStatus}">>></button>
     </li>`;
   pagination.innerHTML = html;
-}
+};
 
-export const changePage = (groupNumber:number, pageNumber: number): void => {
+export const changePage = (groupNumber: number, pageNumber: number): void => {
   storage.wordsListCurrentPage = pageNumber;
   renderTextBoxPage(groupNumber, pageNumber);
   renderPagination(pageNumber);
-}
+};
 
 export const addEventPagination = (): void => {
   const paginationArea = document.querySelector('.textBook__pagination_list') as HTMLElement;
-  paginationArea.addEventListener('click', (event) => {
+  paginationArea.addEventListener('click', event => {
     if ((event.target as HTMLElement).classList.contains('textBook__pagination_page-number')) {
       const pageNumber = Number((event.target as HTMLElement).getAttribute('data-page'));
       changePage(storage.wordsListCurrentGroup, pageNumber);
@@ -232,12 +237,12 @@ export const addEventPagination = (): void => {
         changePage(storage.wordsListCurrentGroup, nextPage - 1);
       }
     }
-  })
-}
+  });
+};
 
 export const addEventWordsGroup = (): void => {
   const wordsGroupArea = document.querySelector('.textBook__btn-group-wrapper') as HTMLElement;
-  wordsGroupArea.addEventListener('click', (event) => {
+  wordsGroupArea.addEventListener('click', event => {
     if ((event.target as HTMLElement).classList.contains('btn')) {
       const groupNumber = Number((event.target as HTMLElement).getAttribute('data-group'));
       const buttonsList = Array.from(document.querySelectorAll('.textBook__btn-group_button'));
@@ -246,12 +251,12 @@ export const addEventWordsGroup = (): void => {
       storage.wordsListCurrentPage = 0;
       changePage(groupNumber, storage.wordsListCurrentPage);
     }
-  })
-}
+  });
+};
 
 export const addEventWords = (): void => {
   const wordsArea = document.querySelector('.textBook__words-list') as HTMLElement;
-  wordsArea.addEventListener('click', async (event) => {
+  wordsArea.addEventListener('click', async event => {
     if ((event.target as HTMLElement).classList.contains('word-card_audio-button-image')) {
       const audioLinkWord = (event.target as HTMLElement).getAttribute('data-audio') || '';
       const audioLinkExample = (event.target as HTMLElement).getAttribute('data-audio-example') || '';
@@ -277,13 +282,31 @@ export const addEventWords = (): void => {
       }
       await setWordsStatus(storage.currentPageWords);
     }
-  })
+  });
+};
+
+const addEventGames = () => {
+  const textBookGames = <HTMLButtonElement>document.querySelector('.textBook__games');
+  const sprintStartBtn = <HTMLButtonElement>document.getElementById('start-sprint-text-book');
+  // const AudioGameStartBtn = <HTMLButtonElement>document.getElementById('start-audio-game-text-book');
+  textBookGames.addEventListener('click', (e) => {
+    const target = <HTMLElement>e.target;
+    if (sprintStartBtn.contains(target)) {
+      renderGamePageContainer();
+      startSprintFromTextBook();
+    }
+    // if (AudioGameStartBtn.contains(target)) {
+    //   renderGamePageContainer();
+    //   renderAudioPage();
+    // }
+  });
 }
 
 export const addTestBookEvents = (): void => {
   addEventWordsGroup();
   addEventPagination();
   addEventWords();
+  addEventGames();
 }
 
 export const renderTextBook = (): void => {
@@ -291,4 +314,5 @@ export const renderTextBook = (): void => {
   renderTextBoxPage(storage.wordsListCurrentGroup, storage.wordsListCurrentPage);
   renderPagination(storage.wordsListCurrentPage);
   addTestBookEvents();
-}
+  storage.currentPage = 'Book';
+};

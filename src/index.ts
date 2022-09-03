@@ -32,7 +32,6 @@ registerHandler();
 if (isLogin()) switchLoginMode();
 
 const main = document.getElementById('main') as HTMLElement;
-const mainLink = document.querySelector('.main-link') as HTMLElement;
 
 const navLinks = Array.from(document.getElementsByClassName('nav-link'));
 
@@ -50,9 +49,6 @@ const onNavigate = (location: string): void => {
     case '#/statistic':
       main.innerHTML = `<h1>Statistic</h1>`;
       break;
-    case '#/command':
-      main.innerHTML = `<h1>Command</h1>`;
-      break;
     case '#/sprint':
       renderGamePageContainer();
       startSprint();
@@ -62,40 +58,24 @@ const onNavigate = (location: string): void => {
       renderAudioPage();
       break;
     default:
-      main.innerHTML = `<h1>Main</h1>`;
+      renderMain();
       break;
   }
 };
 
 window.addEventListener('click', (e: Event) => {
   const target = e.target as HTMLAnchorElement;
+  const link = target.closest('.link-direction') as HTMLAnchorElement | null;
 
-  if (target.classList.contains('nav-link') || target.classList.contains('game__link')) {
-    deleteClassActive(navLinks);
+  if (!link) return;
 
-    const location = target.href.split('/').slice(-2).join('/');
-    navLinks.forEach(el => {
-      if (el.innerHTML === target.innerHTML) {
-        el.classList.add('active');
-      }
-    });
-
-    onNavigate(location);
-  }
-});
-
-const brand = document.querySelector('.navbar-brand') as HTMLElement;
-const footerBrand = document.querySelector('.footer__brand') as HTMLElement;
-
-function changeLinkActiveLogo(e: Event) {
   deleteClassActive(navLinks);
-  const curTarget = e.currentTarget as HTMLAnchorElement;
-  const location = curTarget.href.split('/').slice(-2).join('/');
 
-  mainLink.classList.add('active');
+  const location = link.href.split('/').slice(-2).join('/');
+  navLinks.forEach(el => {
+    if (el.innerHTML === target.innerHTML) {
+      el.classList.add('active');
+    }
+  });
   onNavigate(location);
-}
-
-brand.addEventListener('click', changeLinkActiveLogo);
-
-footerBrand.addEventListener('click', changeLinkActiveLogo);
+});
