@@ -320,8 +320,8 @@ export const addTestBookEvents = (): void => {
 
 export const renderTextBook = (): void => {
   renderTextBookNavigation();
-  renderTextBoxPage(storage.wordsListCurrentGroup, storage.wordsListCurrentPage);
-  renderPagination(storage.wordsListCurrentPage);
+  renderTextBoxPage(0, 0);
+  renderPagination(0);
   addTestBookEvents();
   storage.currentPage = 'Book';
 };
