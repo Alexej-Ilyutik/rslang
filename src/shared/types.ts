@@ -1,4 +1,4 @@
-export type WordDifficulty = 'hard' | 'easy' | '';
+export type WordDifficulty = 'hard' | 'easy' | 'normal';
 
 export interface WordInterface {
   id: string,

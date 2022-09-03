@@ -118,7 +118,7 @@ class API {
   }
 
 
-  static async createUserWord(wordId: string, difficulty: string, guessCounter: number, dateWhenShowed: Date) {
+  static async createUserWord(wordId: string, difficulty: string, guessCounter: number, firstShowedDate: Date) {
     const {userId, token} = API.getJwt();
 
     const response = await fetch(`${API.users}/${userId}/words/${wordId}`, {
@@ -130,7 +130,7 @@ class API {
         'Content-Type': 'application/json',
       },
 
-      body: JSON.stringify({ "difficulty": `${difficulty}`, "optional": {guessCounter, dateWhenShowed} })
+      body: JSON.stringify({ "difficulty": `${difficulty}`, "optional": {guessCounter, firstShowedDate} })
 
     });
     const content = await response.json();
@@ -156,7 +156,7 @@ class API {
     // return content;
   }
 
-  static async updateUserWord(wordId: string, difficulty: string, guessCounter: number, dateWhenShowed: Date) {
+  static async updateUserWord(wordId: string, difficulty: string, guessCounter: number, firstShowedDate: Date) {
     const {userId, token} = API.getJwt();
     const response = await fetch(`${API.users}/${userId}/words/${wordId}`, {
       method: 'PUT',
@@ -166,7 +166,7 @@ class API {
         'Content-Type': 'application/json',
       },
 
-      body: JSON.stringify({ "difficulty": `${difficulty}`, "optional": {guessCounter, dateWhenShowed} })
+      body: JSON.stringify({ "difficulty": `${difficulty}`, "optional": {guessCounter, firstShowedDate} })
 
     });
     const content = await response.json();

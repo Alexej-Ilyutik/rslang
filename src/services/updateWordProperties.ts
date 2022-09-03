@@ -1,8 +1,10 @@
 /* eslint-disable no-await-in-loop */
-import { UserWordInterface } from "../shared/types"
+import { UserWordInterface, WordDifficulty } from "../shared/types"
 import API from './api';
 
-export const updateWordProperties = async (wordId: string, isGuessed: boolean): Promise<void> => {
+export const updateWordProperties = async (wordId: string, isGuessed: boolean | undefined,
+  difficultyValue: WordDifficulty | undefined)
+: Promise<void> => {
   const arrayOfWords: Promise<UserWordInterface[]> = API.getUserWords();
   let wordIndex: number | null = null;
   for (let i = 0; i < (await arrayOfWords).length; i += 1) {
@@ -12,16 +14,27 @@ export const updateWordProperties = async (wordId: string, isGuessed: boolean): 
     }
   }
   if (wordIndex || wordIndex === 0) {
-    const {difficulty} = (await arrayOfWords)[wordIndex];
-    const {firstShowedDate} = (await arrayOfWords)[wordIndex].optional;
+    let {difficulty} = (await arrayOfWords)[wordIndex];
+    if (difficultyValue) difficulty = difficultyValue;
+
     let {guessCounter} = (await arrayOfWords)[wordIndex].optional;
-    if (isGuessed) guessCounter += 1;
-    else guessCounter = 0;
+    if (isGuessed !== undefined) {
+      if (isGuessed) guessCounter += 1;
+      else guessCounter = 0;
+    }
+
+    const {firstShowedDate} = (await arrayOfWords)[wordIndex].optional;
+
     API.updateUserWord(wordId, difficulty, guessCounter, firstShowedDate);
   } else {
+    let difficulty = 'normal';
+    if (difficultyValue) difficulty = difficultyValue;
+
     let guessCounter = 0;
-    if (isGuessed) guessCounter += 1;
+    if (isGuessed !== undefined && isGuessed ) guessCounter += 1;
+
     const currentDate = new Date();
-    API.createUserWord(wordId, 'normal', guessCounter, currentDate);
+
+    API.createUserWord(wordId, difficulty, guessCounter, currentDate);
   }
 }

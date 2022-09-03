@@ -12,7 +12,7 @@ export const getWordsWithFullInformation = async (arrayOfWords: WordInterface[])
       if (element.id === userWords[i]._id) {
         element.userWord = userWords[i].userWord;
       } else {
-        element.userWord = {difficulty: '', optional: {guessCounter: 0}};
+        element.userWord = {difficulty: 'normal', optional: {guessCounter: 0}};
       }
     }
   })

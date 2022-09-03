@@ -1,11 +1,12 @@
 /* eslint-disable no-underscore-dangle */
 import './textBook.scss';
-import { PageOfWordsInterface, UserWordInterface, WordInterface } from '../../shared/types';
+import { PageOfWordsInterface, WordInterface } from '../../shared/types';
 import { storage } from '../../shared/storage';
 import API from '../../services/api';
 import { deleteClassActive } from '../../services/deleteClassActive';
 import { playAllAudioFiles } from '../../components/audioButton/audioButton';
 import { updateWordProperties } from '../../services/updateWordProperties';
+import { getWordProperties } from '../../services/getWordProperties';
 
 export const renderTextBookNavigation = (): void => {
   const textBook = `
@@ -48,41 +49,26 @@ export const renderTextBookNavigation = (): void => {
   main.innerHTML = textBook;
 }
 
-export const getAllUserWords = async (): Promise<void> => {
-  const arrayOfWords: Promise<UserWordInterface[]> = API.getUserWords();
-  storage.userWords = await arrayOfWords;
-  console.log(storage.userWords);
-}
-
-export const isUserWord = (wordId: string): number | null => {
-  let wordIndex: number | null = null;
-  storage.userWords.forEach((element, index) => {
-    if (element.wordId === wordId) wordIndex = index;
-  })
-  return wordIndex;
-}
-
 export const setWordsStatus = async (arrayOfWords: WordInterface[]): Promise<void> => {
-  await getAllUserWords();
   let learnedWordsOnPage = 0;
-  arrayOfWords.forEach(async element => {
-    const wordId = element.id || element._id;
-    const hardCheckbox = document.getElementById(`${wordId}Hard`) as HTMLInputElement;
-    const learnedCheckbox = (document.getElementById(`${wordId}Learned`) as HTMLInputElement);
-    const guessCounterSign = document.getElementById(`${wordId}`) as HTMLElement;
-    const userWordIndex = isUserWord(wordId || '');
 
-    let difficulty = 'easy';
-    let guessCounter = 0;
-    if (userWordIndex || userWordIndex === 0) {
-      if (storage.userWords[userWordIndex].optional.guessCounter >= 5) learnedWordsOnPage += 1;
-      difficulty = storage.userWords[userWordIndex].difficulty;
-      guessCounter = storage.userWords[userWordIndex].optional.guessCounter;
+  arrayOfWords.forEach(async element => {
+    const wordId = element.id;
+    const learnedCheckbox = document.getElementById(`${wordId}Learned`) as HTMLInputElement;
+    const hardCheckbox = document.getElementById(`${wordId}Hard`) as HTMLInputElement;
+    const guessCounterSign = document.getElementById(`${wordId}Counter`) as HTMLElement;
+    const { difficultyValue, guessCounterValue } = await getWordProperties(wordId);
+    if (guessCounterValue >= 5 || difficultyValue === 'easy') {
+      learnedWordsOnPage += 1;
+      learnedCheckbox.checked = true;
     }
-    if (difficulty === 'hard') hardCheckbox.checked = true;
-    if (guessCounter >= 5) learnedCheckbox.checked = true;
-    guessCounterSign.setAttribute('data-guessCounter', guessCounter.toString());
-    guessCounterSign.innerHTML = `Guessed ${guessCounter.toString()} times`;
+    if (difficultyValue === 'hard') {
+      hardCheckbox.checked = true;
+      learnedCheckbox.checked = false;
+    }
+    if (difficultyValue === 'easy' ||  difficultyValue === 'normal') hardCheckbox.checked = false;
+    guessCounterSign.setAttribute('data-guessCounter', guessCounterValue.toString());
+    guessCounterSign.innerHTML = `Guessed ${guessCounterValue.toString()} times`;
   });
 
   const learnedWordsCounter = document.querySelector('.textBook__games_information') as HTMLElement;
@@ -134,7 +120,7 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
               <p class="word-card_status-checkbox-text">Learned word</p>
             </div>
           </div>
-          <h3 class="word-card_counter-information" id="${element.id || element._id}">Guessed 0 times</h3>
+          <h3 class="word-card_counter-information" id="${element.id || element._id}Counter">Guessed 0 times</h3>
         </div>
       </div>
       <div class="word-card_audio-content-wrapper">
@@ -275,36 +261,21 @@ export const addEventWords = (): void => {
     }
     if ((event.target as HTMLInputElement).classList.contains('hard-checkbox')) {
       const wordId = (event.target as HTMLInputElement).getAttribute('data-id')?.toString() || '';
-      // const userWordIndex = isUserWord(wordId);
-      // if (userWordIndex || userWordIndex === 0) {
-      //   let {difficulty} = storage.userWords[userWordIndex];
-      //   if (((event.target as HTMLInputElement)).checked === true) difficulty = 'hard';
-      //   else difficulty = 'easy';
-      //   const {guessCounter} = storage.userWords[userWordIndex].optional;
-      //   await API.updateUserWord(wordId, difficulty, guessCounter);
-      // } else {
-      //   let difficulty = 'easy';
-      //   if (((event.target as HTMLInputElement)).checked === true) difficulty = 'hard';
-      //   await API.createUserWord(wordId, difficulty, 0);
-      // }
-      await updateWordProperties(wordId, true);
-      getAllUserWords();
-      setWordsStatus(storage.currentPageWords);
+      if (((event.target as HTMLInputElement)).checked === true) {
+        await updateWordProperties(wordId, undefined, 'hard');
+      } else {
+        await updateWordProperties(wordId, undefined, 'normal');
+      }
+      await setWordsStatus(storage.currentPageWords);
     }
     if ((event.target as HTMLInputElement).classList.contains('learned-checkbox')) {
       const wordId = (event.target as HTMLInputElement).getAttribute('data-id')?.toString() || '';
-      const userWordIndex = isUserWord(wordId);
-      let guessCounterValue = 0;
-      if (userWordIndex || userWordIndex === 0) {
-        const {difficulty} = storage.userWords[userWordIndex];
-        if (((event.target as HTMLInputElement)).checked === true) guessCounterValue = 5;
-        await API.updateUserWord(wordId, difficulty, guessCounterValue);
+      if (((event.target as HTMLInputElement)).checked === true) {
+        await updateWordProperties(wordId, undefined, 'easy');
       } else {
-        if (((event.target as HTMLInputElement)).checked === true) guessCounterValue = 5;
-        await API.createUserWord(wordId, 'easy', guessCounterValue);
+        await updateWordProperties(wordId, undefined, 'normal');
       }
-
-      setWordsStatus(storage.currentPageWords);
+      await setWordsStatus(storage.currentPageWords);
     }
   })
 }
