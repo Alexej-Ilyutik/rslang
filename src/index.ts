@@ -14,6 +14,7 @@ import { renderGamePage } from './pages/game/game';
 import { renderAudioPage } from './pages/audioGame/audioGame';
 import { renderGamePageContainer } from './components/gamePageContainer/gamePageContainer';
 import { startSprint } from './pages/sprint/sprint';
+import { renderStatistic } from './pages/statistic/statistic';
 
 const renderPage = (): void => {
   renderHeader();
@@ -47,7 +48,7 @@ const onNavigate = (location: string): void => {
       renderGamePage();
       break;
     case '#/statistic':
-      main.innerHTML = `<h1>Statistic</h1>`;
+      renderStatistic();
       break;
     case '#/sprint':
       renderGamePageContainer();
