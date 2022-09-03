@@ -222,7 +222,7 @@ const finishGame = async () => {
       games.dispatchEvent(fakeClick);
     }
 
-    if (isSprintFromTextBook) {
+    if (!flagPlayAgain && isSprintFromTextBook) {
       const book = <HTMLElement>document.querySelector('[href="#/book"]');
       book.dispatchEvent(fakeClick);
     }
