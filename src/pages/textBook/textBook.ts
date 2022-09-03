@@ -72,18 +72,22 @@ export const setWordStatus = async (wordId: string): Promise<void> => {
   guessCounterSign.innerHTML = `Guessed ${guessCounterValue.toString()} times`;
 }
 
-export const setWordsStatus = async (arrayOfWords: WordInterface[]): Promise<void> => {
-  arrayOfWords.forEach(async element => {
-    const wordId = element.id || element._id;
-    await setWordStatus(wordId || '');
-  });
+export const setWordsStatus = async (arrayOfWords: WordInterface[], isUserLogIn:boolean): Promise<void> => {
+  if (isUserLogIn) {
+    arrayOfWords.forEach(async element => {
+      const wordId = element.id || element._id;
+      await setWordStatus(wordId || '');
+    });
+  }
 }
 
-export const updateLearnWordsCounter = async (): Promise<void> => {
-  const learnedWordsCounter = document.querySelector('.textBook__games_information') as HTMLElement;
-  const learnedWordArray = await API.getAggregatedWords('easy');
-  storage.learnedWordsOnPage = learnedWordArray;
-  learnedWordsCounter.innerHTML = `<p>Learned ${learnedWordArray.length - 1}/20 words on page</p>`;
+export const updateLearnWordsCounter = async (isUserLogIn: boolean): Promise<void> => {
+  if (isUserLogIn) {
+    const learnedWordsCounter = document.querySelector('.textBook__games_information') as HTMLElement;
+    const learnedWordArray = await API.getAggregatedWords('easy');
+    storage.learnedWordsOnPage = learnedWordArray;
+    learnedWordsCounter.innerHTML = `<p>Learned ${learnedWordArray.length - 1}/20 words on page</p>`;
+  }
 }
 
 export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
@@ -150,8 +154,8 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
     )
     .join('');
   wordsList.innerHTML = html;
-  updateLearnWordsCounter();
-  setWordsStatus(await arrayOfWords);
+  updateLearnWordsCounter(storage.isLogin);
+  setWordsStatus(await arrayOfWords, storage.isLogin);
 };
 
 export const renderPagination = (pageNumber: number, totalPagesNumber: number = storage.limitOfPages): void => {
@@ -280,7 +284,7 @@ export const addEventWords = (): void => {
       if (((event.target as HTMLInputElement)).checked === true) {
         await updateWordProperties(wordId, undefined, 'hard');
         setWordStatus(wordId);
-        updateLearnWordsCounter();
+        updateLearnWordsCounter(storage.isLogin);
       } else {
         await updateWordProperties(wordId, undefined, 'normal');
         setWordStatus(wordId);
@@ -291,11 +295,11 @@ export const addEventWords = (): void => {
       if (((event.target as HTMLInputElement)).checked === true) {
         await updateWordProperties(wordId, undefined, 'easy');
         setWordStatus(wordId);
-        updateLearnWordsCounter();
+        updateLearnWordsCounter(storage.isLogin);
       } else {
         await updateWordProperties(wordId, undefined, 'normal');
         setWordStatus(wordId);
-        updateLearnWordsCounter();
+        updateLearnWordsCounter(storage.isLogin);
       }
     }
   });
@@ -327,8 +331,6 @@ export const addTestBookEvents = (): void => {
 
 export const renderTextBook = (): void => {
   storage.isLogin = isLogin(); // Check
-  console.log(storage.isLogin);
-
   renderTextBookNavigation();
   renderTextBoxPage(0, 0);
   renderPagination(0);
