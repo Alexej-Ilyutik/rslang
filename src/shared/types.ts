@@ -32,6 +32,8 @@ export interface UserWordInterface {
   wordId: string,
 }
 
+export type GameNameType = 'sprintGame' | 'audioGame';
+
 export interface GameStatisticInterface {
   newWordsCount: number,
   accuracy: number,
@@ -39,6 +41,12 @@ export interface GameStatisticInterface {
 }
 
 export type DateFormat = string;
+
+export interface UserStatisticInterfaceAll {
+  id: string,
+  learnedWords: 0,
+  optional: UserStatisticInterface,
+};
 
 export type UserStatisticInterface = {
   [date in DateFormat]: {
@@ -50,4 +58,4 @@ export type UserStatisticInterface = {
       learnedWordsToday: number;
     };
   };
-};
+}
