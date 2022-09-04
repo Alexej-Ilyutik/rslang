@@ -12,7 +12,6 @@ import { startSprintFromTextBook } from '../sprint/sprint';
 import { isLogin } from '../../services/isLogin';
 import { hideElement } from '../../services/hideElement';
 
-
 export const renderTextBookNavigation = (): void => {
 
   const textBook = `
