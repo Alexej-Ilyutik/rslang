@@ -11,6 +11,7 @@ import { renderGamePageContainer } from '../../components/gamePageContainer/game
 import { startSprintFromTextBook } from '../sprint/sprint';
 import { isLogin } from '../../services/isLogin';
 import { hideElement } from '../../services/hideElement';
+import { updateUserStatistic } from '../../services/updateUserStatistic';
 
 export const renderTextBookNavigation = (): void => {
 
