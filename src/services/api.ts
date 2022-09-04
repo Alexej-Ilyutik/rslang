@@ -1,4 +1,4 @@
-import { WordDifficulty } from "../shared/types";
+import { DateFormat, UserStatisticInterface, WordDifficulty } from "../shared/types";
 
 class API {
   static base = 'https://be-rs-lang.herokuapp.com';
@@ -120,7 +120,7 @@ class API {
   }
 
 
-  static async createUserWord(wordId: string, difficulty: string, guessCounter: number, firstShowedDate: Date) {
+  static async createUserWord(wordId: string, difficulty: string, guessCounter: number, firstShowedDate: DateFormat, learnDate: DateFormat) {
     const {userId, token} = API.getJwt();
 
     const response = await fetch(`${API.users}/${userId}/words/${wordId}`, {
@@ -132,7 +132,7 @@ class API {
         'Content-Type': 'application/json',
       },
 
-      body: JSON.stringify({ "difficulty": `${difficulty}`, "optional": {guessCounter, firstShowedDate} })
+      body: JSON.stringify({ "difficulty": `${difficulty}`, "optional": {guessCounter, firstShowedDate, learnDate} })
 
     });
     const content = await response.json();
@@ -152,7 +152,7 @@ class API {
     return content;
   }
 
-  static async updateUserWord(wordId: string, difficulty: string, guessCounter: number, firstShowedDate: Date) {
+  static async updateUserWord(wordId: string, difficulty: string, guessCounter: number, firstShowedDate: Date, learnDate: DateFormat) {
     const {userId, token} = API.getJwt();
     const response = await fetch(`${API.users}/${userId}/words/${wordId}`, {
       method: 'PUT',
@@ -162,7 +162,7 @@ class API {
         'Content-Type': 'application/json',
       },
 
-      body: JSON.stringify({ "difficulty": `${difficulty}`, "optional": {guessCounter, firstShowedDate} })
+      body: JSON.stringify({ "difficulty": `${difficulty}`, "optional": {guessCounter, firstShowedDate, learnDate} })
 
     });
     const content = await response.json();
@@ -224,15 +224,16 @@ class API {
     return content;
   }
 
-  static async upsertStatistics() {
+  static async upsertStatistics(obj: UserStatisticInterface, learnedWords: number) {
     const { userId, token } = API.getJwt();
-    const response = await fetch(`${API.users}/${userId}/statistics`, {
+    const response = await fetch(`${API.base}/users/${userId}/statistics`, {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${token}`,
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
+      body: JSON.stringify({ "learnedWords": learnedWords, "optional": obj }),
     });
     const content = await response.json();
     console.log(content);
