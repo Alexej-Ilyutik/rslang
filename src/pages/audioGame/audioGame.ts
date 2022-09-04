@@ -56,7 +56,7 @@ export const renderResultAudioPage = (
     <div class="result__container">
       <h3 class="audiocall__subtitle">Result</h3>
       <h4 class="result__subtitle">Accuracy: <span>${accuracy}%</span></h4>
-      <button type="button" class="btn-close result__close" aria-label="Close"></button>
+      <button type="button" class="btn-close result__close" id = "btn-close" aria-label="Close"></button>
 
       <div class="result__answer-container">
 
@@ -80,7 +80,7 @@ export const renderResultAudioPage = (
 
       </div>
 
-      <button type="button" class="btn btn-success result__btn-play">Play again</button>
+      <button type="button" class="btn btn-success result__btn-play" id = "btn-play-again">Play again</button>
     </div>
   `;
   block.innerHTML = mainBlock;
@@ -156,22 +156,22 @@ async function renderContentAudioPage(
     </div>
     <div class="audiocall__btns">
       <input type="radio" class="btn-check audiocall__check" name="options" id="option1" autocomplete="off">
-      <label class="btn btn-warning audiocall__btn-option"
+      <label class="btn btn-warning audiocall__btn-option" id="btn-option1"
       for="option1">1. ${`${array[0].wordTranslate}`}</label>
 
       <input type="radio" class="btn-check audiocall__check" name="options" id="option2" autocomplete="off">
-      <label class="btn btn-warning audiocall__btn-option"
+      <label class="btn btn-warning audiocall__btn-option" id="btn-option2"
       for="option2">2. ${`${array[1].wordTranslate}`}</label>
 
       <input type="radio" class="btn-check audiocall__check" name="options" id="option3" autocomplete="off">
-      <label class="btn btn-warning audiocall__btn-option"
+      <label class="btn btn-warning audiocall__btn-option" id="btn-option3"
       for="option3">3. ${`${array[2].wordTranslate}`}</label>
 
       <input type="radio" class="btn-check audiocall__check" name="options" id="option4" autocomplete="off">
-      <label class="btn btn-warning audiocall__btn-option"
+      <label class="btn btn-warning audiocall__btn-option" id="btn-option4"
       for="option4">4. ${`${array[3].wordTranslate}`}</label>
     </div>
-    <button type="button" class="btn btn-info audiocall__next">I don't know</button>
+    <button type="button" class="btn btn-info audiocall__next" id = "btn-next">I don't know</button>
     <div class="progressbar__container">${renderProgressBar(progressLine)}</div>
   `;
   block.innerHTML = mainBlock;
@@ -209,6 +209,8 @@ const addEventStartAudioGame = async (): Promise<void> => {
     const btnsOption = Array.from(document.getElementsByClassName('audiocall__check'));
 
     if (target.classList.contains('audiocall__btn-option')) {
+      console.log(target);
+
       const btnVoice = document.getElementById('voice-audio') as HTMLElement;
       const value = target.innerHTML.slice(3);
       const getIdWord = btnVoice.getAttribute('data-id') || '';
@@ -270,7 +272,61 @@ const addEventStartAudioGame = async (): Promise<void> => {
       renderGamePage();
     }
   });
+
+  // document.addEventListener('keydown', event => {
+  //   if (event.code === 'Digit1' || event.code === 'Numpad1') {
+  //     (document.getElementById('btn-option1') as HTMLElement).click();
+  //   } else if (event.code === 'Digit2' || event.code === 'Numpad2') {
+  //     (document.getElementById('btn-option2') as HTMLElement).click();
+  //   } else if (event.code === 'Digit3' || event.code === 'Numpad3') {
+  //     (document.getElementById('btn-option3') as HTMLElement).click();
+  //   } else if (event.code === 'Digit4' || event.code === 'Numpad4') {
+  //     (document.getElementById('btn-option4') as HTMLElement).click();
+  //   } else if (event.code === 'NumpadEnter' || event.code === 'Enter') {
+  //     if (document.getElementById('btn-next')) {
+  //       (document.getElementById('btn-next') as HTMLElement).click();
+  //     } else {
+  //       return;
+  //     }
+  //     // (document.getElementById('btn-start') as HTMLElement).click();
+  //   } else if (event.code === 'Escape') {
+  //     (document.getElementById('btn-close') as HTMLElement).click();
+  //   }
+  //   console.log(enterStatus);
+  // });
 };
+
+document.addEventListener('keydown', event => {
+  if (event.code === 'Digit1' || event.code === 'Numpad1') {
+    if (document.getElementById('btn-option1')) {
+      (document.getElementById('btn-option1') as HTMLElement).click();
+    }
+  } else if (event.code === 'Digit2' || event.code === 'Numpad2') {
+    if (document.getElementById('btn-option2')) {
+      (document.getElementById('btn-option2') as HTMLElement).click();
+    }
+  } else if (event.code === 'Digit3' || event.code === 'Numpad3') {
+    if (document.getElementById('btn-option3')) {
+      (document.getElementById('btn-option3') as HTMLElement).click();
+    }
+  } else if (event.code === 'Digit4' || event.code === 'Numpad4') {
+    if (document.getElementById('btn-option4')) {
+      (document.getElementById('btn-option4') as HTMLElement).click();
+    }
+  } else if (event.code === 'NumpadEnter' || event.code === 'Enter') {
+    if (document.getElementById('btn-next')) {
+      (document.getElementById('btn-next') as HTMLElement).click();
+    } else if (document.getElementById('btn-play-again')) {
+      (document.getElementById('btn-play-again') as HTMLElement).click();
+    } else if (document.getElementById('btn-start')) {
+      (document.getElementById('btn-start') as HTMLElement).click();
+    }
+  } else if (event.code === 'Escape') {
+    if (document.getElementById('btn-close')) {
+      (document.getElementById('btn-close') as HTMLElement).click();
+    }
+  }
+});
 
 export const renderAudioPage = async (): Promise<void> => {
   const gameContainer = document.querySelector('.audiocall__container') as HTMLElement;
