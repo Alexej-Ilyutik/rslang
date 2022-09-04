@@ -11,6 +11,7 @@ import { renderProgressBar } from '../../components/progressBar/renderProgressBa
 import API from '../../services/api';
 import { renderPreLoader } from '../../components/preLoader/preLoader';
 import { renderGamePageContainer } from '../../components/gamePageContainer/gamePageContainer';
+import { renderVolumeBtn } from '../../components/renderVolumeBtn/renderVolumeBtn';
 
 const trueAnswerAudio = new Audio('../../assets/success.mp3');
 const falseAnswerAudio = new Audio('../../assets/error.mp3');
@@ -104,20 +105,6 @@ const renderListItem = (block: HTMLElement, wordArr: WordInterface[]): void => {
   }
 };
 
-const renderVolumeBtn = (): string => {
-  let mainBlock = '';
-  if (storage.volumeState) {
-    mainBlock = `
-      <div class = "audiocall__volume-on"><i class="fa fa-volume-up fa-2x volume-on"></i></div>
-      `;
-  } else {
-    mainBlock = `
-      <div class = "audiocall__volume-off"><i class="fa fa-volume-mute fa-2x volume-off"></i></div>
-      `;
-  }
-  return mainBlock;
-};
-
 let level = 0;
 let progress = 0;
 
@@ -209,8 +196,6 @@ const addEventStartAudioGame = async (): Promise<void> => {
     const btnsOption = Array.from(document.getElementsByClassName('audiocall__check'));
 
     if (target.classList.contains('audiocall__btn-option')) {
-      console.log(target);
-
       const btnVoice = document.getElementById('voice-audio') as HTMLElement;
       const value = target.innerHTML.slice(3);
       const getIdWord = btnVoice.getAttribute('data-id') || '';
@@ -272,28 +257,6 @@ const addEventStartAudioGame = async (): Promise<void> => {
       renderGamePage();
     }
   });
-
-  // document.addEventListener('keydown', event => {
-  //   if (event.code === 'Digit1' || event.code === 'Numpad1') {
-  //     (document.getElementById('btn-option1') as HTMLElement).click();
-  //   } else if (event.code === 'Digit2' || event.code === 'Numpad2') {
-  //     (document.getElementById('btn-option2') as HTMLElement).click();
-  //   } else if (event.code === 'Digit3' || event.code === 'Numpad3') {
-  //     (document.getElementById('btn-option3') as HTMLElement).click();
-  //   } else if (event.code === 'Digit4' || event.code === 'Numpad4') {
-  //     (document.getElementById('btn-option4') as HTMLElement).click();
-  //   } else if (event.code === 'NumpadEnter' || event.code === 'Enter') {
-  //     if (document.getElementById('btn-next')) {
-  //       (document.getElementById('btn-next') as HTMLElement).click();
-  //     } else {
-  //       return;
-  //     }
-  //     // (document.getElementById('btn-start') as HTMLElement).click();
-  //   } else if (event.code === 'Escape') {
-  //     (document.getElementById('btn-close') as HTMLElement).click();
-  //   }
-  //   console.log(enterStatus);
-  // });
 };
 
 document.addEventListener('keydown', event => {
