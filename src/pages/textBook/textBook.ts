@@ -337,3 +337,7 @@ export const renderTextBook = (): void => {
   addTestBookEvents();
   storage.currentPage = 'Book';
 };
+
+// const currentUserStatistic = await API.getStatistics();
+// console.log(currentUserStatistic);
+updateUserStatistic({newWordsCount: 1, accuracy: 100, bestStreak: 10}, 'sprintGame');
