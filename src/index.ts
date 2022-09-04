@@ -13,7 +13,7 @@ import { switchLoginMode } from './services/switchLoginMode';
 import { renderGamePage } from './pages/game/game';
 import { renderAudioPage } from './pages/audioGame/audioGame';
 import { renderGamePageContainer } from './components/gamePageContainer/gamePageContainer';
-import { startSprint } from './pages/sprint/sprint';
+import { startSprint, startSprintFromTextBook } from './pages/sprint/sprint';
 
 const renderPage = (): void => {
   renderHeader();
@@ -52,6 +52,10 @@ const onNavigate = (location: string): void => {
     case '#/sprint':
       renderGamePageContainer();
       startSprint();
+      break;
+    case '#/sprint-book':
+      renderGamePageContainer();
+      startSprintFromTextBook();
       break;
     case '#/audio':
       renderGamePageContainer();
