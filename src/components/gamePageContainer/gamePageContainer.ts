@@ -1,3 +1,4 @@
+import { storage } from '../../shared/storage';
 import './gamePageContainer.scss';
 
 export const renderGamePageContainer = (): void => {
@@ -36,4 +37,10 @@ export const renderGamePageContainer = (): void => {
 `;
   const main = document.getElementById('main') as HTMLElement;
   main.innerHTML = mainBlock;
+  const inputs = Array.from(document.getElementsByClassName('setting__level'));
+  if (storage.currentPage === 'Book') {
+    for (let i = 0; i < inputs.length; i += 1) {
+      (<HTMLInputElement>inputs[i]).disabled = true;
+    }
+  }
 };

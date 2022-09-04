@@ -4,13 +4,13 @@ import { storage } from '../../shared/storage';
 import { getAllGroupWords } from '../../services/getAllGroupWords';
 import { getRandomNumber } from '../../services/getRandomNumber';
 import { playAllAudioFiles } from '../../components/audioButton/audioButton';
-import { renderSpinner, stopRenderSpinner } from '../../components/spinner/spinner';
 import { setAttrDisabled } from '../../services/setAttrDisabled';
 import { shuffle } from '../../services/shuffleArray';
 import { renderGamePage } from '../game/game';
-import { renderProgressBar, rerenderProgressBar } from '../../components/progressBar/renderProgressBar';
+import { renderProgressBar } from '../../components/progressBar/renderProgressBar';
 import API from '../../services/api';
-// import { renderPreLoader } from '../../components/preLoader/preLoader';
+import { renderPreLoader } from '../../components/preLoader/preLoader';
+import { renderGamePageContainer } from '../../components/gamePageContainer/gamePageContainer';
 
 const trueAnswerAudio = new Audio('../../assets/success.mp3');
 const falseAnswerAudio = new Audio('../../assets/error.mp3');
@@ -46,54 +46,56 @@ function getGuessWord(currentPage: string | null, arr: WordInterface[]) {
   return guessWordCur;
 }
 
-const renderContentAudioPage = async (
-  block: HTMLElement,
-  mainWord: WordInterface,
-  arrOptions: WordInterface[],
-  progress: number,
-): Promise<void> => {
-  const mainBlock = `
-    <h3 class="audiocall__subtitle">Game: Audio challenge</h3>
-    <figure class="figure audiocall__figure-container">
-      <img src="${`${API.base}/${mainWord.image}`}" class="figure-img img-fluid rounded" alt="${`${mainWord.word}`}">
-      <div class="audiocall__figure-content">
-        <button class="word-card_audio-button audiocall__figure-btn">
-          <img class="audiocall__figure-img voice__audio" src="../../assets/volume.svg" alt="audio button"
-          data-audio="${`${API.base}/${mainWord.audio}`}"
-          data-name ="${`${mainWord.wordTranslate}`}"
-          data-id="${`${mainWord.id}`}">
-        </button>
-        <figcaption class="figure-caption">${`${mainWord.word}`} ${`${mainWord.transcription}`} -
-        ${`${mainWord.wordTranslate}`}</figcaption>
-      </div>
+// const renderContentAudioPage = async (
+//   block: HTMLElement,
+//   mainWord: WordInterface,
+//   arrOptions: WordInterface[],
+//   progress: number,
+// ): Promise<void> => {
+//   const mainBlock = `
+//     <div class = "audiocall__volume">
+//     </div>
+//     <h3 class="audiocall__subtitle">Game: Audio challenge</h3>
+//     <figure class="figure audiocall__figure-container">
+//       <img src="${`${API.base}/${mainWord.image}`}" class="figure-img img-fluid rounded" alt="${`${mainWord.word}`}">
+//       <div class="audiocall__figure-content">
+//         <button class="word-card_audio-button audiocall__figure-btn">
+//           <img class="audiocall__figure-img voice__audio" src="../../assets/volume.svg" alt="audio button"
+//           data-audio="${`${API.base}/${mainWord.audio}`}"
+//           data-name ="${`${mainWord.wordTranslate}`}"
+//           data-id="${`${mainWord.id}`}">
+//         </button>
+//         <figcaption class="figure-caption">${`${mainWord.word}`} ${`${mainWord.transcription}`} -
+//         ${`${mainWord.wordTranslate}`}</figcaption>
+//       </div>
 
-    </figure>
-    <div class="audiocall__voice">
-        <button class="word-card_audio-button">
-          <img class="word-card_audio-button-image voice__audio" src="../../assets/volume.svg" alt="audio button"
-          data-audio="${`${API.base}/${mainWord.audio}`}"
-          data-name ="${`${mainWord.wordTranslate}`}"
-          data-id="${`${mainWord.id}`}">
-        </button>
-    </div>
-    <div class="audiocall__btns">
-      <input type="radio" class="btn-check audiocall__check" name="options" id="option1" autocomplete="off">
-      <label class="btn btn-warning audiocall__btn-option" for="option1">1. ${`${arrOptions[0].wordTranslate}`}</label>
+//     </figure>
+//     <div class="audiocall__voice">
+//         <button class="word-card_audio-button">
+//           <img class="word-card_audio-button-image voice__audio" src="../../assets/volume.svg" alt="audio button"
+//           data-audio="${`${API.base}/${mainWord.audio}`}"
+//           data-name ="${`${mainWord.wordTranslate}`}"
+//           data-id="${`${mainWord.id}`}">
+//         </button>
+//     </div>
+//     <div class="audiocall__btns">
+//       <input type="radio" class="btn-check audiocall__check" name="options" id="option1" autocomplete="off">
+//       <label class="btn btn-warning audiocall__btn-option" for="option1">1. ${`${arrOptions[0].wordTranslate}`}</label>
 
-      <input type="radio" class="btn-check audiocall__check" name="options" id="option2" autocomplete="off">
-      <label class="btn btn-warning audiocall__btn-option" for="option2">2. ${`${arrOptions[1].wordTranslate}`}</label>
+//       <input type="radio" class="btn-check audiocall__check" name="options" id="option2" autocomplete="off">
+//       <label class="btn btn-warning audiocall__btn-option" for="option2">2. ${`${arrOptions[1].wordTranslate}`}</label>
 
-      <input type="radio" class="btn-check audiocall__check" name="options" id="option3" autocomplete="off">
-      <label class="btn btn-warning audiocall__btn-option" for="option3">3. ${`${arrOptions[2].wordTranslate}`}</label>
+//       <input type="radio" class="btn-check audiocall__check" name="options" id="option3" autocomplete="off">
+//       <label class="btn btn-warning audiocall__btn-option" for="option3">3. ${`${arrOptions[2].wordTranslate}`}</label>
 
-      <input type="radio" class="btn-check audiocall__check" name="options" id="option4" autocomplete="off">
-      <label class="btn btn-warning audiocall__btn-option" for="option4">4. ${`${arrOptions[3].wordTranslate}`}</label>
-    </div>
-    <button type="button" class="btn btn-info audiocall__next">I don't know</button>
-    <div class="progressbar__container">${renderProgressBar(progress)}</div>
-  `;
-  block.innerHTML = mainBlock;
-};
+//       <input type="radio" class="btn-check audiocall__check" name="options" id="option4" autocomplete="off">
+//       <label class="btn btn-warning audiocall__btn-option" for="option4">4. ${`${arrOptions[3].wordTranslate}`}</label>
+//     </div>
+//     <button type="button" class="btn btn-info audiocall__next">I don't know</button>
+//     <div class="progressbar__container">${renderProgressBar(progress)}</div>
+//   `;
+//   block.innerHTML = mainBlock;
+// };
 
 export const renderResultAudioPage = (
   block: HTMLElement,
@@ -153,79 +155,255 @@ const renderListItem = (block: HTMLElement, wordArr: WordInterface[]): void => {
   }
 };
 
+// const renderVolumeBtn = (block: HTMLElement, position: boolean): void => {
+//   if (!position) {
+//     block.innerHTML = `
+//          <i class="volume__on fa fa-volume-up fa-2x"></i>
+//         `;
+//   } else {
+//     block.innerHTML = `
+//          <i class="volume__off fa fa-volume-mute fa-2x"></i>
+//         `;
+//   }
+// };
+
+// let level = 0;
+
+// const addEventStartAudioGame = (block: HTMLElement): void => {
+//   const GameContainer = document.querySelector('.audiocall__container') as HTMLElement;
+//   const btnStart = document.querySelector('.settings__start') as HTMLElement;
+
+//   btnStart.classList.add('btn__start-audio-game');
+//   let progress = 0;
+//   let trueAnswer = 0;
+//   let falseAnswer = 0;
+//   let trueAnswerArr: WordInterface[] = [];
+//   let falseAnswerArr: WordInterface[] = [];
+//   let volumePosition: boolean;
+
+//   async function rerenderAudioGame(event: Event) {
+//     // const keyboardEvent = <KeyboardEvent>event;
+//     // console.log(keyboardEvent.key);
+
+//     const target = event.target as HTMLInputElement;
+
+//     // const audioContent = document.querySelector('.audiocall__content') as HTMLElement;
+
+//     // renderSpinner(audioContent);
+
+//     const arrWords = await getAllGroupWords(level);
+
+//     // stopRenderSpinner(audioContent);
+
+//     const arrOptions = getArrOptions(arrWords);
+
+//     const guessWord = getGuessWord(storage.currentPage, arrWords);
+
+//     arrOptions.push(guessWord);
+
+//     const newArrOptions = getUniqueArray(arrOptions);
+
+//     shuffle(newArrOptions);
+
+//     const mainWord = guessWord;
+
+//     if (target.classList.contains('setting__level')) {
+//       level = Number(target.getAttribute('data-level'));
+//     }
+
+//     if (target.classList.contains('btn__start-audio-game') || target.classList.contains('result__btn-play')) {
+//       progress = 0;
+//       trueAnswer = 0;
+//       falseAnswer = 0;
+//       trueAnswerArr = [];
+//       falseAnswerArr = [];
+//       renderContentAudioPage(block, mainWord, newArrOptions, progress);
+//       target.disabled = true;
+
+//       const btnVoice = document.querySelector('.voice__audio') as HTMLElement;
+
+//       playAllAudioFiles([btnVoice.getAttribute('data-audio') || '']);
+//     }
+
+//     if (target.classList.contains('voice__audio')) {
+//       playAllAudioFiles([target.getAttribute('data-audio') || '']);
+//     }
+
+//     const ProgressContainer = document.querySelector('.progressbar__container') as HTMLElement;
+//     const btnNext = document.querySelector('.audiocall__next') as HTMLElement;
+//     const answerContainer = document.querySelector('.audiocall__figure-container') as HTMLElement;
+//     const btnVoiceContainer = document.querySelector('.audiocall__voice') as HTMLElement;
+//     const btnsOption = Array.from(document.getElementsByClassName('audiocall__check'));
+//     const volume = document.querySelector('.audiocall__volume') as HTMLElement;
+
+//     renderVolumeBtn(volume, volumePosition);
+
+//     if (target.classList.contains('volume__on')) {
+//       volumePosition = true;
+//     } else if (target.classList.contains('volume__off')) {
+//       volumePosition = false;
+//     }
+
+//     if (target.classList.contains('audiocall__btn-option')) {
+//       // if (keyboardEvent.key==='1') {
+
+//       // }
+
+//       const btnVoice = document.querySelector('.voice__audio') as HTMLElement;
+//       const value = target.innerHTML.slice(3);
+//       const getIdWord = btnVoice.getAttribute('data-id') || '';
+//       const currentWord: WordInterface = await API.getWord(getIdWord);
+
+//       if (value === btnVoice.getAttribute('data-name')) {
+//         target.classList.add('audiocall__btn-true');
+//         if (volumePosition) {
+//           trueAnswerAudio.play();
+//         }
+//         progress += 10;
+//         trueAnswer += 1;
+//         rerenderProgressBar(ProgressContainer, progress);
+//         btnNext.innerHTML = 'Next';
+//         answerContainer.style.display = 'flex';
+//         btnVoiceContainer.style.display = 'none';
+//         setAttrDisabled(btnsOption);
+//         trueAnswerArr.push(currentWord);
+//       } else {
+//         target.classList.add('audiocall__btn-false');
+//         if (volumePosition) {
+//           falseAnswerAudio.play();
+//         }
+
+//         progress += 10;
+//         falseAnswer += 1;
+//         rerenderProgressBar(ProgressContainer, progress);
+//         btnNext.innerHTML = 'Next';
+//         answerContainer.style.display = 'flex';
+//         btnVoiceContainer.style.display = 'none';
+//         setAttrDisabled(btnsOption);
+//         falseAnswerArr.push(currentWord);
+//       }
+//     }
+
+//     if (target.classList.contains('audiocall__next') && progress !== 100) {
+//       renderContentAudioPage(block, mainWord, newArrOptions, progress);
+//       const btnVoice = document.querySelector('.voice__audio') as HTMLElement;
+//       playAllAudioFiles([btnVoice.getAttribute('data-audio') || '']);
+//     } else if (target.classList.contains('audiocall__next') && progress === 100) {
+//       const accuracy = trueAnswer * 10;
+//       renderResultAudioPage(block, accuracy, trueAnswer, falseAnswer);
+//       const itemListTrue = document.querySelector('.result__list-true') as HTMLElement;
+//       const itemListFalse = document.querySelector('.result__list-false') as HTMLElement;
+//       renderListItem(itemListTrue, trueAnswerArr);
+//       renderListItem(itemListFalse, falseAnswerArr);
+//     }
+//     if (target.classList.contains('result__close')) {
+//       renderGamePage();
+//     }
+//   }
+
+//   GameContainer.addEventListener('click', rerenderAudioGame);
+//   // document.addEventListener('keydown', rerenderAudioGame);
+// };
+
+// export const renderAudioPage = async (): Promise<void> => {
+//   // renderPreLoader();
+//   // window.onload = (): void => {
+//   //   const preloader = document.getElementById('preloader') as HTMLElement;
+//   //   preloader.style.display = 'none';
+//   // };
+
+//   const audioContent = document.querySelector('.audiocall__content') as HTMLElement;
+
+//   addEventStartAudioGame(audioContent);
+
+//   const mainBlock = `
+//     <h3 class="audiocall__subtitle">Game: Audio challenge</h3>
+//     <img class="audiocall__img" src="../../assets/audio-img.png" alt="audio" alt="Image Title" />
+//   `;
+//   audioContent.innerHTML = mainBlock;
+// };
+
 let level = 0;
+let progress = 0;
 
-const addEventStartAudioGame = (block: HTMLElement): void => {
-  const GameContainer = document.querySelector('.audiocall__container') as HTMLElement;
-  const btnStart = document.querySelector('.settings__start') as HTMLElement;
+async function renderContentAudioPage(
+  block: HTMLElement,
+  mainWord: WordInterface,
+  array: WordInterface[],
+  progressLine: number,
+): Promise<void> {
+  const mainBlock = `
+    <div class = "audiocall__volume">
+    </div>
+    <h3 class="audiocall__subtitle">Game: Audio challenge</h3>
+    <figure class="figure audiocall__figure-container">
+      <img src="${`${API.base}/${mainWord.image}`}" class="figure-img img-fluid rounded" alt="${`${mainWord.word}`}">
+      <div class="audiocall__figure-content">
+        <button class="word-card_audio-button audiocall__figure-btn">
+          <img id = "voice-audio" class="audiocall__figure-img voice__audio" src="../../assets/volume.svg" alt="audio button"
+          data-audio="${`${API.base}/${mainWord.audio}`}"
+          data-name ="${`${mainWord.wordTranslate}`}"
+          data-id="${`${mainWord.id}`}">
+        </button>
+        <figcaption class="figure-caption">${`${mainWord.word}`} ${`${mainWord.transcription}`} -
+        ${`${mainWord.wordTranslate}`}</figcaption>
+      </div>
 
-  btnStart.classList.add('btn__start-audio-game');
-  let progress = 0;
+    </figure>
+    <div class="audiocall__voice">
+        <button class="word-card_audio-button">
+          <img class="word-card_audio-button-image voice__audio" src="../../assets/volume.svg" alt="audio button"
+          data-audio="${`${API.base}/${mainWord.audio}`}"
+          data-name ="${`${mainWord.wordTranslate}`}"
+          data-id="${`${mainWord.id}`}">
+        </button>
+    </div>
+    <div class="audiocall__btns">
+      <input type="radio" class="btn-check audiocall__check" name="options" id="option1" autocomplete="off">
+      <label class="btn btn-warning audiocall__btn-option"
+      for="option1">1. ${`${array[0].wordTranslate}`}</label>
+
+      <input type="radio" class="btn-check audiocall__check" name="options" id="option2" autocomplete="off">
+      <label class="btn btn-warning audiocall__btn-option"
+      for="option2">2. ${`${array[1].wordTranslate}`}</label>
+
+      <input type="radio" class="btn-check audiocall__check" name="options" id="option3" autocomplete="off">
+      <label class="btn btn-warning audiocall__btn-option"
+      for="option3">3. ${`${array[2].wordTranslate}`}</label>
+
+      <input type="radio" class="btn-check audiocall__check" name="options" id="option4" autocomplete="off">
+      <label class="btn btn-warning audiocall__btn-option"
+      for="option4">4. ${`${array[3].wordTranslate}`}</label>
+    </div>
+    <button type="button" class="btn btn-info audiocall__next">I don't know</button>
+    <div class="progressbar__container">${renderProgressBar(progressLine)}</div>
+  `;
+  block.innerHTML = mainBlock;
+}
+
+const addEventStartAudioGame = async (): Promise<void> => {
+  const arrWords = await getAllGroupWords(level);
+  const audioContent = document.querySelector('.audiocall__content') as HTMLElement;
+
   let trueAnswer = 0;
   let falseAnswer = 0;
-  let trueAnswerArr: WordInterface[] = [];
-  let falseAnswerArr: WordInterface[] = [];
+  const trueAnswerArr: WordInterface[] = [];
+  const falseAnswerArr: WordInterface[] = [];
 
-  async function rerenderAudioGame(event: Event) {
-    // const keyboardEvent = <KeyboardEvent>event;
-    // console.log(keyboardEvent.key);
-
-    const target = event.target as HTMLInputElement;
-
-    const audioContent = document.querySelector('.audiocall__content') as HTMLElement;
-
-    renderSpinner(audioContent);
-
-    const arrWords = await getAllGroupWords(level);
-    
-    stopRenderSpinner(audioContent);
-
-    const arrOptions = getArrOptions(arrWords);
-
-    const guessWord = getGuessWord(storage.currentPage, arrWords);
-
-    arrOptions.push(guessWord);
-
-    const newArrOptions = getUniqueArray(arrOptions);
-
-    shuffle(newArrOptions);
-
-    const mainWord = guessWord;
-
-    if (target.classList.contains('setting__level')) {
-      level = Number(target.getAttribute('data-level'));
-    }
-
-    if (target.classList.contains('btn__start-audio-game') || target.classList.contains('result__btn-play')) {
-      progress = 0;
-      trueAnswer = 0;
-      falseAnswer = 0;
-      trueAnswerArr = [];
-      falseAnswerArr = [];
-      renderContentAudioPage(block, mainWord, newArrOptions, progress);
-      target.disabled = true;
-
-      const btnVoice = document.querySelector('.voice__audio') as HTMLElement;
-
-      playAllAudioFiles([btnVoice.getAttribute('data-audio') || '']);
-    }
+  audioContent.addEventListener('click', async e => {
+    const target = e.target as HTMLInputElement;
 
     if (target.classList.contains('voice__audio')) {
       playAllAudioFiles([target.getAttribute('data-audio') || '']);
     }
 
-    const ProgressContainer = document.querySelector('.progressbar__container') as HTMLElement;
     const btnNext = document.querySelector('.audiocall__next') as HTMLElement;
     const answerContainer = document.querySelector('.audiocall__figure-container') as HTMLElement;
     const btnVoiceContainer = document.querySelector('.audiocall__voice') as HTMLElement;
     const btnsOption = Array.from(document.getElementsByClassName('audiocall__check'));
 
-    // if (keyboardEvent.key==='1') {
-
-    // }
-
     if (target.classList.contains('audiocall__btn-option')) {
-      const btnVoice = document.querySelector('.voice__audio') as HTMLElement;
+      const btnVoice = document.getElementById('voice-audio') as HTMLElement;
       const value = target.innerHTML.slice(3);
       const getIdWord = btnVoice.getAttribute('data-id') || '';
       const currentWord: WordInterface = await API.getWord(getIdWord);
@@ -235,7 +413,6 @@ const addEventStartAudioGame = (block: HTMLElement): void => {
         trueAnswerAudio.play();
         progress += 10;
         trueAnswer += 1;
-        rerenderProgressBar(ProgressContainer, progress);
         btnNext.innerHTML = 'Next';
         answerContainer.style.display = 'flex';
         btnVoiceContainer.style.display = 'none';
@@ -246,7 +423,6 @@ const addEventStartAudioGame = (block: HTMLElement): void => {
         falseAnswerAudio.play();
         progress += 10;
         falseAnswer += 1;
-        rerenderProgressBar(ProgressContainer, progress);
         btnNext.innerHTML = 'Next';
         answerContainer.style.display = 'flex';
         btnVoiceContainer.style.display = 'none';
@@ -256,40 +432,68 @@ const addEventStartAudioGame = (block: HTMLElement): void => {
     }
 
     if (target.classList.contains('audiocall__next') && progress !== 100) {
-      renderContentAudioPage(block, mainWord, newArrOptions, progress);
-      const btnVoice = document.querySelector('.voice__audio') as HTMLElement;
-      playAllAudioFiles([btnVoice.getAttribute('data-audio') || '']);
+      const arrayOptions = getArrOptions(arrWords);
+
+      const newGuessWord = getGuessWord(storage.currentPage, arrWords);
+      arrayOptions.push(newGuessWord);
+      console.log(level);
+
+      console.log(newGuessWord);
+
+      const newArrayOptions = getUniqueArray(arrayOptions);
+      shuffle(newArrayOptions);
+      console.log(newArrayOptions);
+
+      renderContentAudioPage(audioContent, newGuessWord, newArrayOptions, progress);
+      playAllAudioFiles([`${API.base}/${newGuessWord.audio}`]);
     } else if (target.classList.contains('audiocall__next') && progress === 100) {
       const accuracy = trueAnswer * 10;
-      renderResultAudioPage(block, accuracy, trueAnswer, falseAnswer);
+      renderResultAudioPage(audioContent, accuracy, trueAnswer, falseAnswer);
       const itemListTrue = document.querySelector('.result__list-true') as HTMLElement;
       const itemListFalse = document.querySelector('.result__list-false') as HTMLElement;
       renderListItem(itemListTrue, trueAnswerArr);
       renderListItem(itemListFalse, falseAnswerArr);
     }
+
     if (target.classList.contains('result__close')) {
       renderGamePage();
     }
-  }
-
-  GameContainer.addEventListener('click', rerenderAudioGame);
-  // document.addEventListener('keydown', rerenderAudioGame);
+  });
 };
 
 export const renderAudioPage = async (): Promise<void> => {
-  // renderPreLoader();
-  // window.onload = (): void => {
-  //   const preloader = document.getElementById('preloader') as HTMLElement;
-  //   preloader.style.display = 'none';
-  // };
-
+  const gameContainer = document.querySelector('.audiocall__container') as HTMLElement;
   const audioContent = document.querySelector('.audiocall__content') as HTMLElement;
-
-  addEventStartAudioGame(audioContent);
-
   const mainBlock = `
     <h3 class="audiocall__subtitle">Game: Audio challenge</h3>
     <img class="audiocall__img" src="../../assets/audio-img.png" alt="audio" alt="Image Title" />
   `;
   audioContent.innerHTML = mainBlock;
+
+  gameContainer.addEventListener('click', async e => {
+    const target = <HTMLButtonElement>e.target;
+
+    if (target.classList.contains('setting__level')) {
+      level = Number(target.getAttribute('data-level'));
+    }
+    if (target.classList.contains('settings__start')) {
+      progress = 0;
+      renderPreLoader(audioContent);
+      const arrWords = await getAllGroupWords(level);
+      const arrOptions = getArrOptions(arrWords);
+      const guessWord = getGuessWord(storage.currentPage, arrWords);
+      arrOptions.push(guessWord);
+      const newArrOptions = getUniqueArray(arrOptions);
+      shuffle(newArrOptions);
+      renderContentAudioPage(audioContent, guessWord, newArrOptions, progress);
+      playAllAudioFiles([`${API.base}/${guessWord.audio}`]);
+      addEventStartAudioGame();
+      target.disabled = true;
+    }
+    if (target.classList.contains('result__btn-play')) {
+      level = 0;
+      renderGamePageContainer();
+      renderAudioPage();
+    }
+  });
 };

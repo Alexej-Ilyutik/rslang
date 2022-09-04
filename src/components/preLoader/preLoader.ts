@@ -1,11 +1,13 @@
 import './preLoader.scss';
 
-export const renderPreLoader = (): void => {
-  const mainBlock = `
-    <div id = "preloader" class="spinner-border text-primary" role="status">
-      <span class="visually-hidden">Загрузка...</span>
-    </div>
-`;
-  const main = document.getElementById('main') as HTMLElement;
-  main.innerHTML = mainBlock;
+export const renderPreLoader = (block: HTMLElement): void => {
+  const spinner = document.createElement('div');
+  spinner.className = 'spinner-container';
+  spinner.id = 'spinner';
+  spinner.innerHTML = `
+      <div class="spinner-border text-warning" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+  `;
+  block.appendChild(spinner);
 };

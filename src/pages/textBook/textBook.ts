@@ -27,7 +27,7 @@ export const renderTextBookNavigation = (): void => {
           </ul>
         </nav>
         <div class="textBook__games">
-          <a href="#/sprint" class="textBook__games_game-button link-direction">
+          <a href="#/sprintBook" class="textBook__games_game-button link-direction">
             <img src="../../assets/sprint-icon.svg" class="textBook__games_game-img" alt="game image"></img>
             <h2 class="textBook__games_game-name">Sprint</h2>
           </a>

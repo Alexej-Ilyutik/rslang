@@ -14,7 +14,6 @@ import { renderGamePage } from './pages/game/game';
 import { renderAudioPage } from './pages/audioGame/audioGame';
 import { renderGamePageContainer } from './components/gamePageContainer/gamePageContainer';
 import { startSprint } from './pages/sprint/sprint';
-// import { renderPreLoader } from './components/preLoader/preLoader';
 
 const renderPage = (): void => {
   renderHeader();
@@ -60,6 +59,9 @@ const onNavigate = (location: string): void => {
       renderGamePageContainer();
       renderAudioPage();
       break;
+    case '#/sprintBook':
+      main.innerHTML = `<h1>sprintBook</h1>`;
+      break;
     default:
       renderMain();
       break;
@@ -82,8 +84,3 @@ window.addEventListener('click', (e: Event) => {
   });
   onNavigate(location);
 });
-
-// window.onload = (): void => {
-//   const preloader = document.getElementById('preloader') as HTMLElement;
-//   preloader.style.display = 'none';
-// };
