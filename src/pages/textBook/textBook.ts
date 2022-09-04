@@ -340,8 +340,8 @@ export const renderTextBook = (): void => {
   storage.currentPage = 'Book';
 };
 
-// const currentUserStatistic = await API.getStatistics();
-// console.log(currentUserStatistic);
-// updateUserStatistic({newWordsCount: 1, accuracy: 100, bestStreak: 10}, 'sprintGame');
+const currentUserStatistic = await API.getStatistics();
+console.log(currentUserStatistic);
+// updateUserStatistic({newWordsCount: 10, accuracy: 100, bestStreak: 10}, 'sprintGame');
 // getNumberOfLearnedWordsByDate(new Date().toLocaleDateString('en-GB'));
 // resetUserStatistic();
