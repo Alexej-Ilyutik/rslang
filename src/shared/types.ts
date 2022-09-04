@@ -1,3 +1,5 @@
+export type WordDifficulty = 'hard' | 'easy' | 'normal';
+
 export interface WordInterface {
   id: string,
   _id?: string,
@@ -14,16 +16,38 @@ export interface WordInterface {
   wordTranslate: string,
   textMeaningTranslate: string,
   textExampleTranslate: string,
-  userWord?: { difficulty: string, optional: { guessCounter: number }}
+  userWord?: UserWordInterface,
 };
 
 export type PageOfWordsInterface = Promise<WordInterface[]>;
 
 export interface UserWordInterface {
-  difficulty: string,
+  difficulty: WordDifficulty,
   id: string,
-  optional: {guessCounter: number},
+  optional: {
+    guessCounter: number,
+    firstShowedDate: DateFormat,
+    learnDate: DateFormat,
+  },
   wordId: string,
 }
 
-// export type WordDifficulty = 'hard' | 'easy';
+export interface GameStatisticInterface {
+  newWordsCount: number,
+  accuracy: number,
+  bestStreak: number,
+}
+
+export type DateFormat = string;
+
+export type UserStatisticInterface = {
+  [date in DateFormat]: {
+    gamesStatistic: {
+      sprintGame: GameStatisticInterface[];
+      audioGame: GameStatisticInterface[];
+    };
+    globalStatistic: {
+      learnedWordsToday: number;
+    };
+  };
+};

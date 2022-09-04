@@ -8,6 +8,8 @@ interface StorageInterface {
   userWords: UserWordInterface[];
   currentPageWords: WordInterface[];
   currentPage: string;
+  learnedWordsOnPage: number;
+  isLogin: boolean;
 }
 
 export const storage: StorageInterface = {
@@ -18,4 +20,6 @@ export const storage: StorageInterface = {
   userWords: [],
   currentPageWords: [],
   currentPage: '',
+  learnedWordsOnPage: 0,
+  isLogin: false,
 };

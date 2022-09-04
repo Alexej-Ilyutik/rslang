@@ -441,7 +441,7 @@ export const startSprintFromTextBook = async () => {
   const {wordsListCurrentGroup, wordsListCurrentPage} = storage;
 
   if (wordsListCurrentGroup === 6) {
-    sprintWords = await API.getAggregatedWords();
+    sprintWords = await API.getAggregatedWords('hard');
   } else {
     sprintWords = await API.getWords(wordsListCurrentGroup, wordsListCurrentPage);
   }
