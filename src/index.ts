@@ -23,9 +23,9 @@ const renderPage = (): void => {
 
 renderPage();
 
-const header = document.getElementById('header');
-header?.insertAdjacentHTML('beforeend', loginForm);
-header?.insertAdjacentHTML('beforeend', registerForm);
+const header = <HTMLElement>document.getElementById('header');
+header.insertAdjacentHTML('beforeend', loginForm);
+header.insertAdjacentHTML('beforeend', registerForm);
 loginHandler();
 registerHandler();
 
