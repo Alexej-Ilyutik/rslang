@@ -67,6 +67,10 @@ export const registerHandler = () => {
       switchLoginMode();
       registerError.classList.add('hidden-element');
       API.createStatistics();
+      const locations = (<HTMLInputElement>document.querySelector('.link-direction.active'));
+      if (locations) {
+        locations.dispatchEvent(new Event('click', {bubbles: true}));
+      }
     } catch (e) {
       console.error(e);
       registerError.classList.remove('hidden-element');
