@@ -206,7 +206,7 @@ class API {
       },
     });
     const content = await response.json();
-    console.log(content);
+    // console.log(content);
     return content;
   }
 
@@ -220,7 +220,7 @@ class API {
       },
     });
     const content = await response.json();
-    console.log(content);
+    // console.log(content);
     return content;
   }
 

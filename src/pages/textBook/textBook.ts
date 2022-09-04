@@ -12,6 +12,8 @@ import { startSprintFromTextBook } from '../sprint/sprint';
 import { isLogin } from '../../services/isLogin';
 import { hideElement } from '../../services/hideElement';
 import { updateUserStatistic } from '../../services/updateUserStatistic';
+import { getNumberOfLearnedWordsByDate } from '../../services/getNumberOflearnedWordsByDate';
+import { resetUserStatistic } from '../../services/resetUserStatistic';
 
 export const renderTextBookNavigation = (): void => {
 
@@ -319,3 +321,9 @@ export const renderTextBook = (): void => {
   addTestBookEvents();
   storage.currentPage = 'Book';
 };
+
+// const currentUserStatistic = await API.getStatistics();
+// console.log(currentUserStatistic);
+// updateUserStatistic({newWordsCount: 1, accuracy: 100, bestStreak: 10}, 'sprintGame');
+// getNumberOfLearnedWordsByDate(new Date().toLocaleDateString('en-GB'));
+// resetUserStatistic();
