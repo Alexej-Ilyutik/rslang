@@ -1,11 +1,13 @@
 import { DateFormat, GameNameType, GameStatisticInterface } from "../shared/types";
 import API from "./api";
+import { getNumberOfLearnedWordsByDate } from "./getNumberOflearnedWordsByDate";
 
 export const updateUserStatistic = async (obj: GameStatisticInterface, gameName: GameNameType): Promise<void> => {
   const learnedWordsArray = await API.getAggregatedWords('easy');
   const learnedWordsNumber = learnedWordsArray.length;
-  // const currentDate: DateFormat = new Date().toLocaleDateString('en-GB');
-  const currentDate: DateFormat = '01/09/22';
+  const currentDate: DateFormat = new Date().toLocaleDateString('en-GB');
+  // const currentDate: DateFormat = '04/09/2022';
+  const learnedWordsTodayValue = await getNumberOfLearnedWordsByDate(currentDate);
   const {newWordsCount, accuracy, bestStreak} = obj;
 
   const currentUserStatistic = await API.getStatistics();
@@ -35,7 +37,7 @@ export const updateUserStatistic = async (obj: GameStatisticInterface, gameName:
         audioGame: audioGameStatistics,
       },
       globalStatistic: {
-        learnedWordsToday: 0, // TODO
+        learnedWordsToday: learnedWordsTodayValue,
       },
     }
   } else {
@@ -45,7 +47,7 @@ export const updateUserStatistic = async (obj: GameStatisticInterface, gameName:
         audioGame: [{newWordsCount: 0, accuracy: 0, bestStreak: 0}],
       },
       globalStatistic: {
-        learnedWordsToday: 0, // TODO
+        learnedWordsToday: learnedWordsTodayValue,
       },
     }
     switch (gameName) {

@@ -2,7 +2,7 @@ import { DateFormat, UserStatisticInterface } from "../shared/types";
 import API from "./api";
 
 // RESET STATISTIC//!!!!!
-export const initUserStatistic = async (): Promise<void> => {
+export const resetUserStatistic = async (): Promise<void> => {
   const currentDate: DateFormat = new Date().toLocaleDateString('en-GB');
   const statisticForm: UserStatisticInterface = {
     [currentDate]: {
