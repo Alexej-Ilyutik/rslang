@@ -9,9 +9,6 @@ import { updateWordProperties } from '../../services/updateWordProperties';
 import { getWordProperties } from '../../services/getWordProperties';
 import { isLogin } from '../../services/isLogin';
 import { hideElement } from '../../services/hideElement';
-import { updateUserStatistic } from '../../services/updateUserStatistic';
-import { getNumberOfLearnedWordsByDate } from '../../services/getNumberOfLearnedWordsByDate';
-import { resetUserStatistic } from '../../services/resetUserStatistic';
 
 export const renderTextBookNavigation = (): void => {
 
@@ -110,7 +107,7 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
   storage.currentPageWords = await arrayOfWords;
 
   const wordsList = document.querySelector('.textBook__words-list') as HTMLElement;
-  storage.wordsListCurrentPage = pageNumber; // update page number
+  storage.wordsListCurrentPage = pageNumber;
   const html = (await arrayOfWords)
     .map(
       element => `
@@ -316,16 +313,10 @@ export const addTestBookEvents = (): void => {
 }
 
 export const renderTextBook = (groupNumber: number, pageNumber: number): void => {
-  storage.isLogin = isLogin(); // Check
+  storage.isLogin = isLogin();
   renderTextBookNavigation();
   renderTextBoxPage(groupNumber, pageNumber);
   renderPagination(pageNumber);
   addTestBookEvents();
   storage.currentPage = 'Book';
 };
-
-// const currentUserStatistic = await API.getStatistics();
-// console.log(currentUserStatistic);
-// updateUserStatistic({newWordsCount: 1, accuracy: 100, bestStreak: 10}, 'sprintGame');
-// getNumberOfLearnedWordsByDate(new Date().toLocaleDateString('en-GB'));
-// resetUserStatistic();
