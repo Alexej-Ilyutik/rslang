@@ -1,6 +1,6 @@
 import { DateFormat, GameNameType, GameStatisticInterface } from "../shared/types";
 import API from "./api";
-import { getNumberOfLearnedWordsByDate } from "./getNumberOflearnedWordsByDate";
+import { getNumberOfLearnedWordsByDate } from "./getNumberOfLearnedWordsByDate";
 
 export const updateUserStatistic = async (obj: GameStatisticInterface, gameName: GameNameType): Promise<void> => {
   const learnedWordsArray = await API.getAggregatedWords('easy');

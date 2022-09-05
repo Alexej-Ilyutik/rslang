@@ -12,7 +12,7 @@ import { startSprintFromTextBook } from '../sprint/sprint';
 import { isLogin } from '../../services/isLogin';
 import { hideElement } from '../../services/hideElement';
 import { updateUserStatistic } from '../../services/updateUserStatistic';
-import { getNumberOfLearnedWordsByDate } from '../../services/getNumberOflearnedWordsByDate';
+import { getNumberOfLearnedWordsByDate } from '../../services/getNumberOfLearnedWordsByDate';
 import { resetUserStatistic } from '../../services/resetUserStatistic';
 
 export const renderTextBookNavigation = (): void => {
