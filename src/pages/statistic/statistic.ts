@@ -8,7 +8,7 @@ export const findGameAccuracy = (array: GameStatisticInterface[]): number => {
   array.forEach((element) => {
     sumOfSprintAccuracy += element.accuracy;
   })
-  return sumOfSprintAccuracy / (numberOfGames - 1);
+  return sumOfSprintAccuracy / (numberOfGames);
 }
 
 export const findGameBestStrike = (array: GameStatisticInterface[]): number => {
@@ -23,6 +23,18 @@ export const updateStatistic = async (): Promise<void> => {
   const userStatistic = await API.getStatistics();
   const currentDate = new Date().toLocaleDateString('en-GB');
 
+  if (!(currentDate in userStatistic.optional)) {
+    userStatistic.optional[currentDate] = { // Initialization
+      gamesStatistic: {
+        sprintGame: [],
+        audioGame: [],
+      },
+      globalStatistic: {
+        learnedWordsToday: 0,
+      },
+    }
+  }
+
   const dailyAccuracy = document.getElementById('daily-accuracy') as HTMLElement;
 
   const dailyNewWords = document.getElementById('daily-new-words') as HTMLElement;
@@ -31,21 +43,25 @@ export const updateStatistic = async (): Promise<void> => {
 
   const arrayOfSprintGames = userStatistic.optional[currentDate].gamesStatistic.sprintGame;
   const lastSprintGameNumber = arrayOfSprintGames.length;
-  const sprintNewLearnedWords = document.getElementById('Sprint-new-learned-words') as HTMLElement;
-  sprintNewLearnedWords.innerHTML = arrayOfSprintGames[lastSprintGameNumber - 1].newWordsCount.toString();
-  const sprintAccuracy = document.getElementById('Sprint-accuracy') as HTMLElement;
-  sprintAccuracy.innerHTML = findGameAccuracy(arrayOfSprintGames).toString();
-  const sprintBestStreak = document.getElementById('Sprint-best-streak') as HTMLElement;
-  sprintBestStreak.innerHTML = findGameBestStrike(arrayOfSprintGames).toString();
+  if (lastSprintGameNumber) {
+    const sprintNewLearnedWords = document.getElementById('Sprint-new-learned-words') as HTMLElement;
+    sprintNewLearnedWords.innerHTML = arrayOfSprintGames[lastSprintGameNumber - 1].newWordsCount.toString();
+    const sprintAccuracy = document.getElementById('Sprint-accuracy') as HTMLElement;
+    sprintAccuracy.innerHTML = findGameAccuracy(arrayOfSprintGames).toString();
+    const sprintBestStreak = document.getElementById('Sprint-best-streak') as HTMLElement;
+    sprintBestStreak.innerHTML = findGameBestStrike(arrayOfSprintGames).toString();
+  }
 
   const arrayOfAudioGames = userStatistic.optional[currentDate].gamesStatistic.audioGame;
   const lastAudioGameNumber = arrayOfAudioGames.length;
-  const audioNewLearnedWords = document.getElementById('Audio-new-learned-words') as HTMLElement;
-  audioNewLearnedWords.innerHTML = arrayOfAudioGames[lastAudioGameNumber - 1].newWordsCount.toString();
-  const audioAccuracy = document.getElementById('Audio-accuracy') as HTMLElement;
-  audioAccuracy.innerHTML = findGameAccuracy(arrayOfAudioGames).toString();
-  const audioBestStreak = document.getElementById('Audio-best-streak') as HTMLElement;
-  audioBestStreak.innerHTML = findGameBestStrike(arrayOfAudioGames).toString();
+  if (lastAudioGameNumber) {
+    const audioNewLearnedWords = document.getElementById('Audio-new-learned-words') as HTMLElement;
+    audioNewLearnedWords.innerHTML = arrayOfAudioGames[lastAudioGameNumber - 1].newWordsCount.toString();
+    const audioAccuracy = document.getElementById('Audio-accuracy') as HTMLElement;
+    audioAccuracy.innerHTML = findGameAccuracy(arrayOfAudioGames).toString();
+    const audioBestStreak = document.getElementById('Audio-best-streak') as HTMLElement;
+    audioBestStreak.innerHTML = findGameBestStrike(arrayOfAudioGames).toString();
+  }
 }
 
 export const renderStatistic = (): void => {
