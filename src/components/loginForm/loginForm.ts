@@ -74,9 +74,15 @@ export const loginHandler = () => {
   logoutBtn.addEventListener('click', () => {
     localStorage.removeItem('userAuthenticationData');
     switchLoginMode();
-    const locations = <HTMLInputElement>document.querySelector('.link-direction.active');
+    const locations = (<HTMLInputElement>document.querySelector('.link-direction.active'));
+    const statisticBtn = document.querySelector('[href="#/statistic"]') as HTMLElement;
+    const main = document.querySelector('[href="#/main"]') as HTMLElement;
     if (locations) {
-      locations.dispatchEvent(new Event('click', { bubbles: true }));
+      if (locations === statisticBtn) {
+        main.dispatchEvent(new Event('click', {bubbles: true}));
+      } else {
+        locations.dispatchEvent(new Event('click', {bubbles: true}));
+      }
     }
   });
 };

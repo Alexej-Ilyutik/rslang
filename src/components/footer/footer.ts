@@ -1,3 +1,5 @@
+import { hideElement } from '../../services/hideElement';
+import { storage } from '../../shared/storage';
 import './footer.scss';
 
 export const renderFooter = (): void => {
@@ -34,7 +36,7 @@ export const renderFooter = (): void => {
               <a class="text-white nav-link link-direction" href="#/games">Games</a>
             </p>
             <p>
-              <a class="text-white nav-link link-direction" href="#/statistic">Statistics</a>
+              <a class="text-white nav-link link-direction ${hideElement(storage.isLogin)}" href="#/statistic">Statistics</a>
             </p>
           </div>
           <!-- Grid column -->

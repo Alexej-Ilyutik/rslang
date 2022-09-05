@@ -230,20 +230,18 @@ class API {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        learnedWords: 0,
-        optional: {
-          [new Date().toLocaleDateString('en-GB')]: {
-            gamesStatistic: {
-              sprintGame: [],
-              audioGame: [],
-            },
-            globalStatistic: {
-              learnedWordsToday: 0,
-            },
+      body: JSON.stringify({ "learnedWords": 0, "optional": {
+        [new Date().toLocaleDateString('en-GB')]: {
+          gamesStatistic: {
+            sprintGame: [],
+            audioGame: [],
+            puzzleGame: []
+          },
+          globalStatistic: {
+            learnedWordsToday: 0
           },
         },
-      }),
+      } }),
     });
     const content = await response.json();
     return content;
