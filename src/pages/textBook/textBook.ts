@@ -7,8 +7,6 @@ import { deleteClassActive } from '../../services/deleteClassActive';
 import { playAllAudioFiles } from '../../components/audioButton/audioButton';
 import { updateWordProperties } from '../../services/updateWordProperties';
 import { getWordProperties } from '../../services/getWordProperties';
-import { renderGamePageContainer } from '../../components/gamePageContainer/gamePageContainer';
-import { startSprintFromTextBook } from '../sprint/sprint';
 import { isLogin } from '../../services/isLogin';
 import { hideElement } from '../../services/hideElement';
 import { updateUserStatistic } from '../../services/updateUserStatistic';
@@ -311,24 +309,23 @@ export const addEventWords = (): void => {
   });
 };
 
-
 export const addTestBookEvents = (): void => {
   addEventWordsGroup();
   addEventPagination();
   addEventWords();
 }
 
-export const renderTextBook = (): void => {
+export const renderTextBook = (groupNumber: number, pageNumber: number): void => {
   storage.isLogin = isLogin(); // Check
   renderTextBookNavigation();
-  renderTextBoxPage(0, 0);
-  renderPagination(0);
+  renderTextBoxPage(groupNumber, pageNumber);
+  renderPagination(pageNumber);
   addTestBookEvents();
   storage.currentPage = 'Book';
 };
 
 // const currentUserStatistic = await API.getStatistics();
 // console.log(currentUserStatistic);
-// updateUserStatistic({newWordsCount: 10, accuracy: 10, bestStreak: 20}, 'audioGame');
+// updateUserStatistic({newWordsCount: 1, accuracy: 100, bestStreak: 10}, 'sprintGame');
 // getNumberOfLearnedWordsByDate(new Date().toLocaleDateString('en-GB'));
 // resetUserStatistic();
