@@ -13,9 +13,12 @@ import { updateWordProperties } from "../../services/updateWordProperties";
 import { setBestStreak } from "../../services/setBestStreak";
 import { updateUserStatistic } from "../../services/updateUserStatistic";
 import { isLogin } from "../../services/isLogin";
+import { renderVolumeBtn } from "../../components/renderVolumeBtn/renderVolumeBtn";
 
 export const renderSprint = (): void => {
   const sprint = `
+  <div class = "audiocall__volume">${renderVolumeBtn()}
+  </div>
   <div class="sprint">
     <div class="sprint__wrapper container-sm">
       <div class="progress-timer">
@@ -200,7 +203,9 @@ const finishGame = async () => {
   const incorrectAnswersCount = <HTMLElement>document.getElementById('incorrect-answers-count');
 
   const victorySound = new Audio('./assets/victory.mp3');
-  victorySound.play();
+  if (storage.volumeState) {
+    victorySound.play();
+  }
 
   modalBody.addEventListener('click', (e) => {
     const target = <HTMLElement>e.target;
@@ -319,9 +324,22 @@ export const sprintGame = async (learnedWords?: string[]) => {
   const score = <HTMLElement>document.getElementById('sprint-score');
   const word = <HTMLElement>document.querySelector('.sprint__word');
   const wordTranslate = <HTMLElement>document.querySelector('.sprint__word-translate');
-
   const correctAnswerSound = new Audio('./assets/success.mp3');
   const incorrectAnswerSound = new Audio('./assets/error.mp3');
+
+  const playAnswerSound = (answer: boolean) => {
+    correctAnswerSound.currentTime = 0;
+    incorrectAnswerSound.currentTime = 0;
+
+    if (storage.volumeState) {
+      if (answer) {
+        correctAnswerSound.play();
+      }
+      if (!answer) {
+        incorrectAnswerSound.play();
+      }
+    }
+  }
 
   let primaryWordNumber = getRandomNumber(0, sprintWords.length - 1);
   let wordTranslateNumber = primaryWordNumber;
@@ -368,13 +386,13 @@ export const sprintGame = async (learnedWords?: string[]) => {
 
   const wrongBtnHandler = () => {
     if(isTranslateRight) {
-      incorrectAnswerSound.currentTime = 0;
-      incorrectAnswerSound.play();
+      //incorrectAnswerSound.currentTime = 0;
+      playAnswerSound(false);
       sprintStorage.streak = 0;
       sprintStorage.incorrect.push(sprintWords[primaryWordNumber]);
     } else {
-      correctAnswerSound.currentTime = 0;
-      correctAnswerSound.play();
+      //correctAnswerSound.currentTime = 0;
+      playAnswerSound(true);
       sprintStorage.streak += 1;
       sprintStorage.correct.push(sprintWords[primaryWordNumber]);
     }
@@ -382,13 +400,13 @@ export const sprintGame = async (learnedWords?: string[]) => {
 
   const rightBtnHandler = () => {
     if(isTranslateRight) {
-      correctAnswerSound.currentTime = 0;
-      correctAnswerSound.play();
+      //correctAnswerSound.currentTime = 0;
+      playAnswerSound(true);
       sprintStorage.streak += 1;
       sprintStorage.correct.push(sprintWords[primaryWordNumber]);
     } else {
-      incorrectAnswerSound.currentTime = 0;
-      incorrectAnswerSound.play();
+      //incorrectAnswerSound.currentTime = 0;
+      playAnswerSound(false);
       sprintStorage.streak = 0;
       sprintStorage.incorrect.push(sprintWords[primaryWordNumber]);
     }
@@ -410,6 +428,16 @@ export const sprintGame = async (learnedWords?: string[]) => {
   sprintContent.addEventListener('click', (e) => {
     const target = <HTMLElement>e.target;
     if (!sprintWords.length) return;
+
+    if (target.classList.contains('volume-off')) {
+      storage.volumeState = true;
+      target.classList.remove('fa-volume-mute', 'volume-off');
+      target.classList.add('fa-volume-up', 'volume-on');
+    } else if (target.classList.contains('volume-on')) {
+      storage.volumeState = false;
+      target.classList.remove('fa-volume-up', 'volume-on');
+      target.classList.add('fa-volume-mute', 'volume-off');
+    }
 
     if (target === wrongBtn) {
       wrongBtnHandler();
