@@ -15,7 +15,6 @@ import { renderAudioPage } from './pages/audioGame/audioGame';
 import { renderGamePageContainer } from './components/gamePageContainer/gamePageContainer';
 import { startSprint, startSprintFromTextBook } from './pages/sprint/sprint';
 import { renderStatistic } from './pages/statistic/statistic';
-import API from './services/api';
 
 const renderPage = (): void => {
   renderHeader();

@@ -386,12 +386,10 @@ export const sprintGame = async (learnedWords?: string[]) => {
 
   const wrongBtnHandler = () => {
     if(isTranslateRight) {
-      //incorrectAnswerSound.currentTime = 0;
       playAnswerSound(false);
       sprintStorage.streak = 0;
       sprintStorage.incorrect.push(sprintWords[primaryWordNumber]);
     } else {
-      //correctAnswerSound.currentTime = 0;
       playAnswerSound(true);
       sprintStorage.streak += 1;
       sprintStorage.correct.push(sprintWords[primaryWordNumber]);
@@ -400,12 +398,10 @@ export const sprintGame = async (learnedWords?: string[]) => {
 
   const rightBtnHandler = () => {
     if(isTranslateRight) {
-      //correctAnswerSound.currentTime = 0;
       playAnswerSound(true);
       sprintStorage.streak += 1;
       sprintStorage.correct.push(sprintWords[primaryWordNumber]);
     } else {
-      //incorrectAnswerSound.currentTime = 0;
       playAnswerSound(false);
       sprintStorage.streak = 0;
       sprintStorage.incorrect.push(sprintWords[primaryWordNumber]);
@@ -425,7 +421,7 @@ export const sprintGame = async (learnedWords?: string[]) => {
     getNextPair();
   }
 
-  sprintContent.addEventListener('click', (e) => {
+  const clickHandler = (e: Event) => {
     const target = <HTMLElement>e.target;
     if (!sprintWords.length) return;
 
@@ -450,7 +446,9 @@ export const sprintGame = async (learnedWords?: string[]) => {
     if (target === wrongBtn || target === rightBtn) {
       bothBtnHandler();
     }
-  });
+  };
+
+  sprintContent.onclick = clickHandler;
   const keyboardHandler = (e: KeyboardEvent) => {
     if (e.repeat || !sprintWords.length) return;
 
@@ -467,7 +465,7 @@ export const sprintGame = async (learnedWords?: string[]) => {
   gameContainer.tabIndex = 0;
   gameContainer.focus();
   gameContainer.style.outline = 'none';
-  gameContainer.addEventListener('keydown', keyboardHandler);
+  gameContainer.onkeydown = keyboardHandler;
 }
 
 export const startSprint = async (): Promise<void> => {
