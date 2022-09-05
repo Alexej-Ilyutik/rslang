@@ -36,7 +36,7 @@ const main = document.getElementById('main') as HTMLElement;
 
 const navLinks = Array.from(document.getElementsByClassName('nav-link'));
 
-const onNavigate = (location: string): void => {
+const onNavigate = async (location: string): Promise<void> => {
   switch (location) {
     case '#/main':
       renderMain();

@@ -263,8 +263,12 @@ const finishGame = async () => {
   if (isLogin()) {
     const oldUserWords = await API.getUserWords();
     const updateWords = async () => {
-      await Promise.all(sprintStorage.correct.map(async(x) => {if (x._id) await updateWordProperties(x._id, true)}));
-      await Promise.all(sprintStorage.incorrect.map(async(x) => {if (x._id) await updateWordProperties(x._id, false)}));
+      await Promise.all(sprintStorage.correct.map(async(x) => {
+        if (x._id) await updateWordProperties(x._id, true, undefined)
+      }));
+      await Promise.all(sprintStorage.incorrect.map(async(x) => {
+        if (x._id) await updateWordProperties(x._id, false, undefined)
+      }));
     }
     await updateWords();
     const newWordsCount = async () => {
