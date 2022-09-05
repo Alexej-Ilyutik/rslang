@@ -15,7 +15,6 @@ import { renderAudioPage } from './pages/audioGame/audioGame';
 import { renderGamePageContainer } from './components/gamePageContainer/gamePageContainer';
 import { startSprint, startSprintFromTextBook } from './pages/sprint/sprint';
 import { renderGraphs, renderStatistic } from './pages/statistic/statistic';
-import { renderGraph } from './components/gpaph/graph';
 import { renderWordPuzzlePage } from './pages/wordPuzzle/wordPuzzle';
 
 

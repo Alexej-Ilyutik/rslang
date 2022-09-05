@@ -36,6 +36,7 @@
   "dependencies": {
     "@popperjs/core": "^2.11.6",
     "bootstrap": "^5.2.0",
+    "chart.js": "^3.9.1",
     "eslint-plugin-prettier": "^4.2.1"
   }
 }
