@@ -1,4 +1,4 @@
-import { DateFormat, UserStatisticInterface, WordDifficulty } from "../shared/types";
+import { DateFormat, UserStatisticInterface, WordDifficulty } from '../shared/types';
 
 class API {
   static base = 'https://be-rs-lang.herokuapp.com';
@@ -119,9 +119,14 @@ class API {
     return content;
   }
 
-
-  static async createUserWord(wordId: string, difficulty: string, guessCounter: number, firstShowedDate: DateFormat, learnDate: DateFormat) {
-    const {userId, token} = API.getJwt();
+  static async createUserWord(
+    wordId: string,
+    difficulty: string,
+    guessCounter: number,
+    firstShowedDate: DateFormat,
+    learnDate: DateFormat,
+  ) {
+    const { userId, token } = API.getJwt();
 
     const response = await fetch(`${API.users}/${userId}/words/${wordId}`, {
       method: 'POST',
@@ -132,8 +137,7 @@ class API {
         'Content-Type': 'application/json',
       },
 
-      body: JSON.stringify({ "difficulty": `${difficulty}`, "optional": {guessCounter, firstShowedDate, learnDate} })
-
+      body: JSON.stringify({ difficulty: `${difficulty}`, optional: { guessCounter, firstShowedDate, learnDate } }),
     });
     const content = await response.json();
     // console.log(content, 'create');
@@ -152,8 +156,14 @@ class API {
     return content;
   }
 
-  static async updateUserWord(wordId: string, difficulty: string, guessCounter: number, firstShowedDate: Date, learnDate: DateFormat) {
-    const {userId, token} = API.getJwt();
+  static async updateUserWord(
+    wordId: string,
+    difficulty: string,
+    guessCounter: number,
+    firstShowedDate: Date,
+    learnDate: DateFormat,
+  ) {
+    const { userId, token } = API.getJwt();
     const response = await fetch(`${API.users}/${userId}/words/${wordId}`, {
       method: 'PUT',
       headers: {
@@ -162,8 +172,7 @@ class API {
         'Content-Type': 'application/json',
       },
 
-      body: JSON.stringify({ "difficulty": `${difficulty}`, "optional": {guessCounter, firstShowedDate, learnDate} })
-
+      body: JSON.stringify({ difficulty: `${difficulty}`, optional: { guessCounter, firstShowedDate, learnDate } }),
     });
     const content = await response.json();
     // console.log(content, 'updated');
@@ -221,17 +230,20 @@ class API {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ "learnedWords": 0, "optional": {
-        [new Date().toLocaleDateString('en-GB')]: {
-          gamesStatistic: {
-            sprintGame: [],
-            audioGame: []
-          },
-          globalStatistic: {
-            learnedWordsToday: 0
+      body: JSON.stringify({
+        learnedWords: 0,
+        optional: {
+          [new Date().toLocaleDateString('en-GB')]: {
+            gamesStatistic: {
+              sprintGame: [],
+              audioGame: [],
+            },
+            globalStatistic: {
+              learnedWordsToday: 0,
+            },
           },
         },
-      } }),
+      }),
     });
     const content = await response.json();
     return content;
@@ -258,7 +270,7 @@ class API {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ "learnedWords": learnedWords, "optional": obj }),
+      body: JSON.stringify({ learnedWords, optional: obj }),
     });
     const content = await response.json();
     // console.log(content);

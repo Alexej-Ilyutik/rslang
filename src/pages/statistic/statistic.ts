@@ -1,36 +1,36 @@
-import "./statistic.scss";
-import API from "../../services/api";
-import { GameStatisticInterface, UserStatisticInterfaceAll, UserWordInterface } from "../../shared/types";
-import { renderGraph } from "../../components/gpaph/graph";
+import './statistic.scss';
+import API from '../../services/api';
+import { GameStatisticInterface, UserStatisticInterfaceAll, UserWordInterface } from '../../shared/types';
+import { renderGraph } from '../../components/gpaph/graph';
 
 export const findGameAccuracy = (array: GameStatisticInterface[]): number => {
   const numberOfGames = array.length;
   let sumOfSprintAccuracy = 0;
-  array.forEach((element) => {
+  array.forEach(element => {
     sumOfSprintAccuracy += element.accuracy;
-  })
-  return Math.round(sumOfSprintAccuracy / (numberOfGames));
-}
+  });
+  return Math.round(sumOfSprintAccuracy / numberOfGames);
+};
 
 export const findGameBestStrike = (array: GameStatisticInterface[]): number => {
   let bestStreakValue = 0;
-  array.forEach((element) => {
+  array.forEach(element => {
     if (element.bestStreak > bestStreakValue) bestStreakValue = element.bestStreak;
-  })
+  });
   return bestStreakValue;
-}
+};
 
 export const findDailyAccuracy = (gamesStatistic: GameStatisticInterface[][]): number => {
   let sumOfDailyAccuracy = 0;
   let numberOfPlayedGames = 0;
-  gamesStatistic.forEach((game) => {
-    game.forEach((element) => {
+  gamesStatistic.forEach(game => {
+    game.forEach(element => {
       sumOfDailyAccuracy += element.accuracy;
       numberOfPlayedGames += 1;
-    })
-  })
+    });
+  });
   return Math.round(sumOfDailyAccuracy / numberOfPlayedGames);
-}
+};
 
 export const findDailyNewWords = async (date: string): Promise<number> => {
   let sumOfDailyWords = 0;
@@ -42,14 +42,15 @@ export const findDailyNewWords = async (date: string): Promise<number> => {
     if (arrayOfUserWords[i].optional.firstShowedDate === date) sumOfDailyWords += 1;
   }
   return sumOfDailyWords;
-}
+};
 
 export const updateStatistic = async (): Promise<void> => {
   const userStatistic = await API.getStatistics();
   const currentDate = new Date().toLocaleDateString('en-GB');
 
   if (!(currentDate in userStatistic.optional)) {
-    userStatistic.optional[currentDate] = { // Initialization
+    userStatistic.optional[currentDate] = {
+      // Initialization
       gamesStatistic: {
         sprintGame: [],
         audioGame: [],
@@ -57,7 +58,7 @@ export const updateStatistic = async (): Promise<void> => {
       globalStatistic: {
         learnedWordsToday: 0,
       },
-    }
+    };
   }
 
   const dailyLearnedWords = document.getElementById('daily-learned-words') as HTMLElement;
@@ -91,7 +92,7 @@ export const updateStatistic = async (): Promise<void> => {
   const dailyNewWords = document.getElementById('daily-new-words') as HTMLElement;
   const DailyNewWords = await findDailyNewWords(currentDate);
   dailyNewWords.innerHTML = DailyNewWords.toString();
-}
+};
 
 export const renderGraphs = async () => {
   const statistic: UserStatisticInterfaceAll = await API.getStatistics();
@@ -105,11 +106,11 @@ export const renderGraphs = async () => {
     sum += valuesArray[i].globalStatistic.learnedWordsToday;
     return sum;
   });
-  const totalNewWords = await Promise.all(dateArray.map(async (x) => findDailyNewWords(x)));
+  const totalNewWords = await Promise.all(dateArray.map(async x => findDailyNewWords(x)));
 
-  renderGraph(dateArray, totalNewWords, 'new word per day', (<HTMLCanvasElement>document.getElementById('myChart')));
-  renderGraph(dateArray, totalLearnedWords, 'leaned words', (<HTMLCanvasElement>document.getElementById('myChart2')));
-}
+  renderGraph(dateArray, totalNewWords, 'new word per day', <HTMLCanvasElement>document.getElementById('myChart'));
+  renderGraph(dateArray, totalLearnedWords, 'leaned words', <HTMLCanvasElement>document.getElementById('myChart2'));
+};
 
 export const renderStatistic = (): void => {
   const statistic = `
@@ -213,4 +214,4 @@ export const renderStatistic = (): void => {
   main.innerHTML = statistic;
 
   updateStatistic();
-}
+};

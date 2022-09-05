@@ -1,20 +1,20 @@
-import "./sprint.scss";
+import './sprint.scss';
 import * as bootstrap from 'bootstrap';
-import { getAllGroupWords } from "../../services/getAllGroupWords";
-import { getRandomNumber } from "../../services/getRandomNumber";
-import { WordInterface } from "../../shared/types";
-import { renderSmallAudioButton } from "../../components/audioButtonSmall/audioButtonSmall";
-import API from "../../services/api";
-import { storage } from "../../shared/storage";
-import { renderSpinner } from "../../components/spinner/spinner";
-import { setSettingsGameStyles } from "../../services/setSettingsGameStyles";
-import { textBlinker } from "../../services/textBlinker";
-import { updateWordProperties } from "../../services/updateWordProperties";
-import { setBestStreak } from "../../services/setBestStreak";
-import { updateUserStatistic } from "../../services/updateUserStatistic";
-import { isLogin } from "../../services/isLogin";
-import { renderVolumeBtn } from "../../components/renderVolumeBtn/renderVolumeBtn";
-import { changePage, renderPagination, renderTextBook, renderTextBookNavigation, renderTextBoxPage } from "../textBook/textBook";
+import { getAllGroupWords } from '../../services/getAllGroupWords';
+import { getRandomNumber } from '../../services/getRandomNumber';
+import { WordInterface } from '../../shared/types';
+import { renderSmallAudioButton } from '../../components/audioButtonSmall/audioButtonSmall';
+import API from '../../services/api';
+import { storage } from '../../shared/storage';
+import { renderSpinner } from '../../components/spinner/spinner';
+import { setSettingsGameStyles } from '../../services/setSettingsGameStyles';
+import { textBlinker } from '../../services/textBlinker';
+import { updateWordProperties } from '../../services/updateWordProperties';
+import { setBestStreak } from '../../services/setBestStreak';
+import { updateUserStatistic } from '../../services/updateUserStatistic';
+import { isLogin } from '../../services/isLogin';
+import { renderVolumeBtn } from '../../components/renderVolumeBtn/renderVolumeBtn';
+import { renderTextBook } from '../textBook/textBook';
 
 export const renderSprint = (): void => {
   const sprint = `
@@ -77,7 +77,7 @@ export const renderSprint = (): void => {
 
   const main = document.querySelector('.audiocall__content') as HTMLElement;
   main.innerHTML = sprint;
-}
+};
 
 let isSprintFromTextBook = false;
 let sprintWords: WordInterface[];
@@ -94,7 +94,7 @@ const sprintStorage: SprintStorage = {
   incorrect: [],
   score: 0,
   streak: 0,
-  bestStreak: 0
+  bestStreak: 0,
 };
 let reward = 10;
 let level = 0;
@@ -103,7 +103,7 @@ const nextReward = () => {
   if (reward === 10) return 20;
   if (reward === 20) return 40;
   return 80;
-}
+};
 
 const getRandom = () => Math.round(Math.random());
 
@@ -113,7 +113,7 @@ const startRewordAnimation = () => {
   if ([0, 3, 7, 11].includes(sprintStorage.streak)) {
     textBlinker(<HTMLElement>document.querySelector('.sprint__reward'));
   }
-}
+};
 
 const setReword = () => {
   const rewardElem = <HTMLElement>document.querySelector('.sprint__reward');
@@ -131,7 +131,7 @@ const setReword = () => {
     sprintStorage.score += reward;
   }
   rewardElem.innerText = sprintStorage.streak > 2 ? `+${nextReward()} points per word` : '';
-}
+};
 
 const setStreakRoundFill = () => {
   const round1 = <HTMLElement>document.getElementById('streak-round-1');
@@ -158,12 +158,12 @@ const setStreakRoundFill = () => {
     round1.style.background = 'transparent';
     round3.style.background = 'transparent';
   }
-}
+};
 
 const play = (elem: HTMLElement) => {
   const audio = <HTMLAudioElement>elem.previousElementSibling;
   audio.play();
-}
+};
 
 const renderModal = () => {
   const correctAnswers = <HTMLElement>document.getElementById('correct-answers');
@@ -175,23 +175,29 @@ const renderModal = () => {
   sprintStorage.correct.forEach((_, i) => {
     const audio = new Audio(`${API.base}/${sprintStorage.correct[i].audio}`);
     audio.preload = 'none';
-    correctAnswers.insertAdjacentHTML('beforeend', `<div class="result-words__container">
+    correctAnswers.insertAdjacentHTML(
+      'beforeend',
+      `<div class="result-words__container">
     ${audio.outerHTML}
     ${renderSmallAudioButton()}
     <span class="result-words__origin">${sprintStorage.correct[i].word}</span>
-    <span class="result-words__translate">- ${sprintStorage.correct[i].wordTranslate}</span></div>`);
+    <span class="result-words__translate">- ${sprintStorage.correct[i].wordTranslate}</span></div>`,
+    );
   });
 
   sprintStorage.incorrect.forEach((_, i) => {
     const audio = new Audio(`${API.base}/${sprintStorage.incorrect[i].audio}`);
     audio.preload = 'none';
-    incorrectAnswers.insertAdjacentHTML('beforeend', `<div class="result-words__container">
+    incorrectAnswers.insertAdjacentHTML(
+      'beforeend',
+      `<div class="result-words__container">
     ${audio.outerHTML}
     ${renderSmallAudioButton()}
     <span class="result-words__origin">${sprintStorage.incorrect[i].word}</span>
-    <span class="result-words__translate">- ${sprintStorage.incorrect[i].wordTranslate}</span></div>`);
+    <span class="result-words__translate">- ${sprintStorage.incorrect[i].wordTranslate}</span></div>`,
+    );
   });
-}
+};
 
 const finishGame = async () => {
   const gameModal = <HTMLElement>document.getElementById('game-modal');
@@ -208,7 +214,7 @@ const finishGame = async () => {
     victorySound.play();
   }
 
-  modalBody.addEventListener('click', (e) => {
+  modalBody.addEventListener('click', e => {
     const target = <HTMLElement>e.target;
     if (target.tagName === 'BUTTON') {
       play(target);
@@ -228,13 +234,15 @@ const finishGame = async () => {
   incorrectAnswersCount.innerHTML = `Mistakes<span class="badge text-bg-danger ms-2">
     ${sprintStorage.incorrect.length || 0}</span>`;
 
-  const accuracy = Math.round(sprintStorage.correct.length / (sprintStorage.incorrect.length +
-    sprintStorage.correct.length) * 100) || 0;
+  const accuracy =
+    Math.round(
+      (sprintStorage.correct.length / (sprintStorage.incorrect.length + sprintStorage.correct.length)) * 100,
+    ) || 0;
   finishAccuracy.innerText = `Accuracy: ${accuracy} %`;
 
   let flagPlayAgain = false;
   gameModal.addEventListener('hide.bs.modal', () => {
-    const fakeClick = new Event('click', {bubbles: true});
+    const fakeClick = new Event('click', { bubbles: true });
 
     if (!flagPlayAgain && !isSprintFromTextBook) {
       const games = <HTMLElement>document.querySelector('[href="#/games"]');
@@ -251,7 +259,7 @@ const finishGame = async () => {
   playAgain.addEventListener('click', () => {
     const btnStart = <HTMLButtonElement>document.body.querySelector('.settings__start');
     flagPlayAgain = true;
-    const fakeClick = new Event('click', {bubbles: true});
+    const fakeClick = new Event('click', { bubbles: true });
     modal.hide();
     if (isSprintFromTextBook) {
       // eslint-disable-next-line @typescript-eslint/no-use-before-define
@@ -263,27 +271,31 @@ const finishGame = async () => {
   if (isLogin()) {
     const oldUserWords = await API.getUserWords();
     const updateWords = async () => {
-      await Promise.all(sprintStorage.correct.map(async(x) => {
-        if (x._id) await updateWordProperties(x._id, true, undefined)
-      }));
-      await Promise.all(sprintStorage.incorrect.map(async(x) => {
-        if (x._id) await updateWordProperties(x._id, false, undefined)
-      }));
-    }
+      await Promise.all(
+        sprintStorage.correct.map(async x => {
+          if (x._id) await updateWordProperties(x._id, true, undefined);
+        }),
+      );
+      await Promise.all(
+        sprintStorage.incorrect.map(async x => {
+          if (x._id) await updateWordProperties(x._id, false, undefined);
+        }),
+      );
+    };
     await updateWords();
     const newWordsCount = async () => {
       const userWords = await API.getUserWords();
       const result = oldUserWords.length - userWords.length;
       return Math.abs(result);
-    }
+    };
     const result = {
       newWordsCount: await newWordsCount(),
       accuracy,
-      bestStreak: sprintStorage.bestStreak
+      bestStreak: sprintStorage.bestStreak,
     };
     updateUserStatistic(result, 'sprintGame');
   }
-}
+};
 
 const setCircleProgress = (second: number) => {
   const circle = <SVGCircleElement>document.querySelector('#sprint-circle');
@@ -292,12 +304,12 @@ const setCircleProgress = (second: number) => {
     const circumference = 2 * Math.PI * radius;
     circle.style.strokeDasharray = `${circumference} ${circumference}`;
     circle.style.strokeDashoffset = `${circumference}`;
-    const offset = circumference - second / 60 * circumference;
+    const offset = circumference - (second / 60) * circumference;
     circle.style.strokeDashoffset = `${offset}`;
   }
-}
+};
 
-const startTimer = (elem:HTMLElement, time: number) => {
+const startTimer = (elem: HTMLElement, time: number) => {
   const element = elem;
   const countDownDate = new Date().getTime() + time;
 
@@ -319,7 +331,7 @@ const startTimer = (elem:HTMLElement, time: number) => {
       renderModal();
     }
   }, 500);
-}
+};
 
 export const sprintGame = async (learnedWords?: string[]) => {
   const sprintContent = <HTMLElement>document.querySelector('.audiocall__content');
@@ -344,7 +356,7 @@ export const sprintGame = async (learnedWords?: string[]) => {
         incorrectAnswerSound.play();
       }
     }
-  }
+  };
 
   let primaryWordNumber = getRandomNumber(0, sprintWords.length - 1);
   let wordTranslateNumber = primaryWordNumber;
@@ -355,7 +367,7 @@ export const sprintGame = async (learnedWords?: string[]) => {
       return result;
     }
     return getOtherWordNumber(primaryWordNumber);
-  }
+  };
 
   const getNextPair = async () => {
     word.innerText = sprintWords[primaryWordNumber].word;
@@ -368,17 +380,17 @@ export const sprintGame = async (learnedWords?: string[]) => {
     }
 
     if (isSprintFromTextBook && sprintWords.length === 1) {
-      const {group, page} = sprintWords[0];
+      const { group, page } = sprintWords[0];
       if (page > 0) {
         const prevPage = page - 1;
         let extraWords = await API.getWords(group, prevPage);
         if (learnedWords) {
-          extraWords = extraWords.filter((x: { id: string; }) => !learnedWords.includes(x.id));
+          extraWords = extraWords.filter((x: { id: string }) => !learnedWords.includes(x.id));
         }
         sprintWords = sprintWords.concat(extraWords);
       }
     }
-  }
+  };
 
   sprintStorage.correct = [];
   sprintStorage.incorrect = [];
@@ -390,7 +402,7 @@ export const sprintGame = async (learnedWords?: string[]) => {
   startTimer(timer, 60000);
 
   const wrongBtnHandler = () => {
-    if(isTranslateRight) {
+    if (isTranslateRight) {
       playAnswerSound(false);
       sprintStorage.streak = 0;
       sprintStorage.incorrect.push(sprintWords[primaryWordNumber]);
@@ -399,10 +411,10 @@ export const sprintGame = async (learnedWords?: string[]) => {
       sprintStorage.streak += 1;
       sprintStorage.correct.push(sprintWords[primaryWordNumber]);
     }
-  }
+  };
 
   const rightBtnHandler = () => {
-    if(isTranslateRight) {
+    if (isTranslateRight) {
       playAnswerSound(true);
       sprintStorage.streak += 1;
       sprintStorage.correct.push(sprintWords[primaryWordNumber]);
@@ -411,7 +423,7 @@ export const sprintGame = async (learnedWords?: string[]) => {
       sprintStorage.streak = 0;
       sprintStorage.incorrect.push(sprintWords[primaryWordNumber]);
     }
-  }
+  };
 
   const bothBtnHandler = () => {
     sprintStorage.bestStreak = setBestStreak(sprintStorage.streak, sprintStorage.bestStreak);
@@ -420,11 +432,11 @@ export const sprintGame = async (learnedWords?: string[]) => {
     setStreakRoundFill();
     score.innerText = String(sprintStorage.score);
     sprintWords.splice(primaryWordNumber, 1);
-    isTranslateRight = sprintWords.length > 1 ? getRandom(): 1;
+    isTranslateRight = sprintWords.length > 1 ? getRandom() : 1;
     primaryWordNumber = getRandomNumber(0, sprintWords.length - 1);
     if (sprintWords.length === 0) return;
     getNextPair();
-  }
+  };
 
   const clickHandler = (e: Event) => {
     const target = <HTMLElement>e.target;
@@ -465,13 +477,13 @@ export const sprintGame = async (learnedWords?: string[]) => {
       rightBtnHandler();
       bothBtnHandler();
     }
-  }
+  };
   const gameContainer = document.querySelector('.audiocall__container') as HTMLElement;
   gameContainer.tabIndex = 0;
   gameContainer.focus();
   gameContainer.style.outline = 'none';
   gameContainer.onkeydown = keyboardHandler;
-}
+};
 
 export const startSprint = async (): Promise<void> => {
   const gameContainer = document.querySelector('.audiocall__container') as HTMLElement;
@@ -482,7 +494,7 @@ export const startSprint = async (): Promise<void> => {
   <img class="sprint__img" src="../../assets/sprint-img.png" alt="sprint game" alt="Image Title" />
   `;
 
-  gameContainer.addEventListener('click', async (e) => {
+  gameContainer.addEventListener('click', async e => {
     isSprintFromTextBook = false;
     const target = <HTMLButtonElement>e.target;
 
@@ -498,20 +510,20 @@ export const startSprint = async (): Promise<void> => {
       sprintGame();
     }
   });
-}
+};
 
 export const startSprintFromTextBook = async () => {
   setSettingsGameStyles();
   renderSpinner();
   isSprintFromTextBook = true;
-  const {wordsListCurrentGroup, wordsListCurrentPage} = storage;
-  const learnedWords = (await API.getAggregatedWords('easy')).map((x: { _id: string; }) => x._id);
+  const { wordsListCurrentGroup, wordsListCurrentPage } = storage;
+  const learnedWords = (await API.getAggregatedWords('easy')).map((x: { _id: string }) => x._id);
 
   if (wordsListCurrentGroup === 6) {
     sprintWords = await API.getAggregatedWords('hard');
   } else {
     sprintWords = await API.getWords(wordsListCurrentGroup, wordsListCurrentPage);
-    sprintWords = sprintWords.filter((x: { id: string; }) => !learnedWords.includes(x.id));
+    sprintWords = sprintWords.filter((x: { id: string }) => !learnedWords.includes(x.id));
   }
   if (!sprintWords.length) {
     renderTextBook(wordsListCurrentGroup, wordsListCurrentPage);
@@ -520,4 +532,4 @@ export const startSprintFromTextBook = async () => {
 
   renderSprint();
   sprintGame(learnedWords);
-}
+};

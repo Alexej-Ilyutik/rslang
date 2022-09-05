@@ -1,7 +1,7 @@
-import { DateFormat, UserStatisticInterface } from "../shared/types";
-import API from "./api";
+import { DateFormat, UserStatisticInterface } from '../shared/types';
+import API from './api';
 
-// RESET STATISTIC//!!!!!
+// RESET STATISTIC
 export const resetUserStatistic = async (): Promise<void> => {
   const currentDate: DateFormat = new Date().toLocaleDateString('en-GB');
   const statisticForm: UserStatisticInterface = {
@@ -16,6 +16,6 @@ export const resetUserStatistic = async (): Promise<void> => {
         learnedWordsToday: 0,
       },
     },
-  }
+  };
   await API.upsertStatistics(0, statisticForm);
-}
+};

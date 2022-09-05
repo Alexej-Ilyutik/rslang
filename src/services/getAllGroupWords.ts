@@ -1,4 +1,4 @@
-import API from "./api";
+import API from './api';
 
 export const getAllGroupWords = async (diff: number) => {
   const result = [];
@@ -8,4 +8,4 @@ export const getAllGroupWords = async (diff: number) => {
   }
 
   return (await Promise.all(result)).flat();
-}
+};

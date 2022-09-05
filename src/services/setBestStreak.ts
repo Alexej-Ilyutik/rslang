@@ -3,4 +3,4 @@ export const setBestStreak = (currentStreak: number, bestStreak: number) => {
     return currentStreak;
   }
   return bestStreak;
-}
+};
