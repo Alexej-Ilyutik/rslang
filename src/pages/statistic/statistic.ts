@@ -1,6 +1,7 @@
 import "./statistic.scss";
 import API from "../../services/api";
-import { GameStatisticInterface, UserWordInterface, WordInterface } from "../../shared/types";
+import { GameStatisticInterface, UserStatisticInterfaceAll, UserWordInterface, WordInterface } from "../../shared/types";
+import { renderGraph } from "../../components/gpaph/graph";
 
 export const findGameAccuracy = (array: GameStatisticInterface[]): number => {
   const numberOfGames = array.length;
@@ -8,7 +9,7 @@ export const findGameAccuracy = (array: GameStatisticInterface[]): number => {
   array.forEach((element) => {
     sumOfSprintAccuracy += element.accuracy;
   })
-  return sumOfSprintAccuracy / (numberOfGames);
+  return Math.round(sumOfSprintAccuracy / (numberOfGames));
 }
 
 export const findGameBestStrike = (array: GameStatisticInterface[]): number => {
@@ -28,7 +29,7 @@ export const findDailyAccuracy = (gamesStatistic: GameStatisticInterface[][]): n
       numberOfPlayedGames += 1;
     })
   })
-  return sumOfDailyAccuracy / numberOfPlayedGames;
+  return Math.round(sumOfDailyAccuracy / numberOfPlayedGames);
 }
 
 export const findDailyNewWords = async (date: string): Promise<number> => {
@@ -90,6 +91,23 @@ export const updateStatistic = async (): Promise<void> => {
   const dailyNewWords = document.getElementById('daily-new-words') as HTMLElement;
   const DailyNewWords = await findDailyNewWords(currentDate);
   dailyNewWords.innerHTML = DailyNewWords.toString();
+}
+
+export const renderGraphs = async () => {
+  const statistic: UserStatisticInterfaceAll = await API.getStatistics();
+
+  const dateArray = Object.keys(statistic.optional);
+  const valuesArray = Object.values(statistic.optional);
+
+  let sum = 0;
+  const totalLearnedWords = valuesArray.map((x, i) => {
+    sum += valuesArray[i].globalStatistic.learnedWordsToday;
+    return sum;
+  });
+  const totalNewWords = await Promise.all(dateArray.map(async (x) => findDailyNewWords(x)));
+
+  renderGraph(dateArray, totalNewWords, 'new word per day', (<HTMLCanvasElement>document.getElementById('myChart')));
+  renderGraph(dateArray, totalLearnedWords, 'leaned words', (<HTMLCanvasElement>document.getElementById('myChart2')));
 }
 
 export const renderStatistic = (): void => {
@@ -171,11 +189,19 @@ export const renderStatistic = (): void => {
 
         </div>
       </div>
-      <div class="all-time">
+      <div class="all-time container">
         <h3>All time</h3>
-        <div class="d-flex">
-          <h1>Graph</h1>
-          <h1>Graph</h1>
+        <div class="all-time__content d-flex">
+          <div class="card line-graph">
+            <div class="card-body">
+              <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
+            </div>
+          </div>
+          <div class="card line-graph">
+            <div class="card-body">
+              <canvas id="myChart2" style="width:100%;max-width:700px"></canvas>
+            </div>
+          </div>
         </div>
       </div>
     </div>

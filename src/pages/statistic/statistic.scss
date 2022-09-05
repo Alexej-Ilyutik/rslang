@@ -91,6 +91,12 @@
   background-color: #bd150b;
 }
 
+.all-time__content {
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
 @media (max-width: 600px ) {
   .words__title {
     font-size: 3em;
