@@ -1,6 +1,6 @@
 import "./statistic.scss";
 import API from "../../services/api";
-import { GameStatisticInterface, UserStatisticInterfaceAll, UserWordInterface, WordInterface } from "../../shared/types";
+import { GameStatisticInterface, UserStatisticInterfaceAll, UserWordInterface } from "../../shared/types";
 import { renderGraph } from "../../components/gpaph/graph";
 
 export const findGameAccuracy = (array: GameStatisticInterface[]): number => {
@@ -213,5 +213,3 @@ export const renderStatistic = (): void => {
 
   updateStatistic();
 }
-
-
