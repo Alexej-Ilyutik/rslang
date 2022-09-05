@@ -83,12 +83,16 @@ export const setWordsStatus = async (arrayOfWords: WordInterface[], isUserLogIn:
   }
 }
 
-export const updateLearnWordsCounter = async (isUserLogIn: boolean): Promise<void> => {
+export const updateLearnWordsCounter = async (groupNumber: number, pageNumber: number, isUserLogIn: boolean): Promise<void> => {
   if (isUserLogIn) {
     const learnedWordsCounter = document.querySelector('.textBook__games_information') as HTMLElement;
     const learnedWordArray = await API.getAggregatedWords('easy');
+    let learnedWordsOnPage = 0;
+    for (let i = 0; i < learnedWordArray.length; i += 1) {
+      if (learnedWordArray[i].group === groupNumber && learnedWordArray[i].page === pageNumber) learnedWordsOnPage += 1;
+    }
     storage.learnedWordsOnPage = learnedWordArray;
-    learnedWordsCounter.innerHTML = `<p>Learned ${learnedWordArray.length - 1}/20 words on page</p>`;
+    learnedWordsCounter.innerHTML = `<p>Learned ${learnedWordsOnPage}/20 words on page</p>`;
   }
 }
 
@@ -156,7 +160,7 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
     )
     .join('');
   wordsList.innerHTML = html;
-  updateLearnWordsCounter(storage.isLogin);
+  updateLearnWordsCounter(storage.wordsListCurrentGroup, storage.wordsListCurrentPage, storage.isLogin);
   setWordsStatus(await arrayOfWords, storage.isLogin);
 };
 
@@ -286,7 +290,7 @@ export const addEventWords = (): void => {
       if (((event.target as HTMLInputElement)).checked === true) {
         await updateWordProperties(wordId, undefined, 'hard');
         setWordStatus(wordId);
-        updateLearnWordsCounter(storage.isLogin);
+        updateLearnWordsCounter(storage.wordsListCurrentGroup, storage.wordsListCurrentPage, storage.isLogin);
       } else {
         await updateWordProperties(wordId, undefined, 'normal');
         setWordStatus(wordId);
@@ -297,11 +301,11 @@ export const addEventWords = (): void => {
       if (((event.target as HTMLInputElement)).checked === true) {
         await updateWordProperties(wordId, undefined, 'easy');
         setWordStatus(wordId);
-        updateLearnWordsCounter(storage.isLogin);
+        updateLearnWordsCounter(storage.wordsListCurrentGroup, storage.wordsListCurrentPage, storage.isLogin);
       } else {
         await updateWordProperties(wordId, undefined, 'normal');
         setWordStatus(wordId);
-        updateLearnWordsCounter(storage.isLogin);
+        updateLearnWordsCounter(storage.wordsListCurrentGroup, storage.wordsListCurrentPage, storage.isLogin);
       }
     }
   });

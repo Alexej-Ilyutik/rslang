@@ -59,7 +59,7 @@ export const renderStatistic = (): void => {
         <div class="daily__content d-flex">
           <div class="card words">
             <div class="card-body d-flex words__body">
-              <h3 class="card-title words__title" id="daily-accuracy">100%</h3>
+              <h3 class="card-title words__title" id="daily-accuracy">?</h3>
               <div class="words__text">
                 <h3 class="mb-0">accuracy</h3>
                 <span class="card-text">were achieved</span>
@@ -68,7 +68,7 @@ export const renderStatistic = (): void => {
           </div>
           <div class="card words">
             <div class="card-body d-flex words__body">
-              <h3 class="card-title words__title" id="daily-new-words">1000</h3>
+              <h3 class="card-title words__title" id="daily-new-words">?</h3>
               <div class="words__text">
                 <h3 class="mb-0">words</h3>
                 <span class="card-text">were new</span>
@@ -77,7 +77,7 @@ export const renderStatistic = (): void => {
           </div>
           <div class="card words">
             <div class="card-body d-flex words__body">
-              <h3 class="card-title words__title" id="daily-learned-words">1000</h3>
+              <h3 class="card-title words__title" id="daily-learned-words">?</h3>
               <div class="words__text">
                 <h3 class="mb-0">words</h3>
                 <span class="card-text">were learned</span>
@@ -90,15 +90,15 @@ export const renderStatistic = (): void => {
               <h3 class="card-title game__blue-title">Sprint</h3>
               <div class="game__content">
                 <div class="game__text">
-                  <span id="Sprint-new-learned-words">0</span>
+                  <span id="Sprint-new-learned-words">?</span>
                   <span>words</span>
                 </div>
                 <div class="game__text">
-                  <span id="Sprint-accuracy">0%</span>
+                  <span id="Sprint-accuracy">?</span>
                   <span>accuracy</span>
                 </div>
                 <div class="game__text">
-                  <span id="Sprint-best-streak">0</span>
+                  <span id="Sprint-best-streak">?</span>
                   <span>best streak</span>
                 </div>
               </div>
@@ -110,15 +110,15 @@ export const renderStatistic = (): void => {
               <h3 class="card-title game__red-title">Audio challenge</h3>
               <div class="game__content">
               <div class="game__text">
-                <span id="Audio-new-learned-words">0</span>
+                <span id="Audio-new-learned-words">?</span>
                   <span>words</span>
                 </div>
                 <div class="game__text">
-                  <span id="Audio-accuracy">0%</span>
+                  <span id="Audio-accuracy">?</span>
                   <span>accuracy</span>
                 </div>
                 <div class="game__text">
-                  <span id="Audio-best-streak">0</span>
+                  <span id="Audio-best-streak">?</span>
                   <span>best streak</span>
                 </div>
               </div>
