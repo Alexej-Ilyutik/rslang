@@ -19,9 +19,7 @@ import { renderStatistic } from './pages/statistic/statistic';
 
 const renderPage = (): void => {
   renderHeader();
-  // renderMain();
-  renderGamePageContainer();
-  renderWordPuzzlePage();
+  renderMain();
   renderFooter();
 };
 
@@ -43,15 +41,19 @@ const onNavigate = (location: string): void => {
   switch (location) {
     case '#/main':
       renderMain();
+      renderFooter();
       break;
     case '#/book':
       renderTextBook();
+      renderFooter();
       break;
     case '#/games':
       renderGamePage();
+      renderFooter();
       break;
     case '#/statistic':
       renderStatistic();
+      renderFooter();
       break;
     case '#/sprint':
       renderGamePageContainer();
@@ -67,9 +69,6 @@ const onNavigate = (location: string): void => {
     case '#/wordPuzzle':
       renderGamePageContainer();
       renderWordPuzzlePage();
-      break;
-    case '#/sentencePuzzle':
-      main.innerHTML = `<h1>#/sentencePuzzle</h1>`;
       break;
     default:
       renderMain();

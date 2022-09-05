@@ -14,8 +14,8 @@ import API from '../../services/api';
 import { renderPreLoader } from '../../components/preLoader/preLoader';
 import { renderGamePageContainer } from '../../components/gamePageContainer/gamePageContainer';
 import { renderVolumeBtn } from '../../components/renderVolumeBtn/renderVolumeBtn';
-import { updateWordProperties } from '../../services/updateWordProperties';
 import { updateUserStatistic } from '../../services/updateUserStatistic';
+import { updateWord } from '../../services/updateWord';
 
 const trueAnswerAudio = new Audio('../../assets/success.mp3');
 const falseAnswerAudio = new Audio('../../assets/error.mp3');
@@ -158,25 +158,6 @@ async function renderContentAudioPage(
   block.innerHTML = mainBlock;
 }
 
-const updateWord = async (arrTrue: WordInterface[], arrFalse: WordInterface[]) => {
-  await Promise.all(
-    arrTrue.map(async x => {
-      if (x.id) {
-        console.log('updateWord1');
-
-        await updateWordProperties(x.id, true, undefined);
-      }
-    }),
-  );
-  await Promise.all(
-    arrFalse.map(async x => {
-      if (x.id) {
-        console.log('updateWord2');
-        await updateWordProperties(x.id, true, undefined);
-      }
-    }),
-  );
-};
 
 const addEventStartAudioGame = async (): Promise<void> => {
   const arrWords = await getAllGroupWords(level);
@@ -271,12 +252,9 @@ const addEventStartAudioGame = async (): Promise<void> => {
       renderListItem(itemListFalse, falseAnswerArr);
 
       await updateWord(trueAnswerArr, falseAnswerArr);
-      console.log(trueAnswerArr);
 
-      console.log(await API.getUserWords());
       currentStreakArray.push(currentStreak);
-      console.log(currentStreakArray);
-      console.log(Math.max.apply(null, currentStreakArray));
+ 
       await updateUserStatistic(
         {
           newWordsCount: 2,
