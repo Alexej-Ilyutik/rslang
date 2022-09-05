@@ -1,0 +1,41 @@
+#footer {
+  background-color: var(--footer-bg);
+  margin-top: 3rem;
+  .footer__container {
+    .footer__brand {
+      text-decoration: none;
+      p {
+        color: var(--bs-white);
+      }
+    }
+    .footer__description {
+      color: var(--bs-white);
+    }
+    .footer__title {
+      color: var(--bs-white);
+    }
+  }
+  .footer__resources {
+    text-decoration: none;
+  }
+  .footer__github {
+    padding: 0.3rem 0.35rem 0.1rem 0.35rem;
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+    &:hover {
+      &::after {
+        content: attr(data-title);
+        position: absolute;
+        left: -0.3rem;
+        right: 0;
+        bottom: 2.4rem;
+        z-index: 1;
+        color: #fff;
+        text-align: center;
+        font-size: 1.2rem;
+        border: none;
+      }
+    }
+  }
+}

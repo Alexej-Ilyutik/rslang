@@ -1,0 +1,140 @@
+.statistic__wrapper {
+  box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
+  border-radius: 0.5rem;
+  border: 0.3rem solid var(--bs-warning);
+  padding: 2rem;
+}
+
+.daily__content {
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.words {
+  max-width: max-content;
+  background-color: var(--bg-second);
+  border: none;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 21px -12px rgb(0 0 0 / 66%);
+}
+
+.words__body {
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.words__title {
+  font-size: 6em;
+  margin: 0;
+}
+
+.words__text {
+}
+
+.game {
+  width: max-content;
+  background-color: var(--bg-second);
+  border: none;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 21px -12px rgb(0 0 0 / 66%);
+}
+
+.game__body {
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.game__blue-title {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.game__red-title {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.game__green-title {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.game__content {
+  flex-shrink: 0;
+  width: 9rem;
+}
+
+.game__text {
+  font-size: 1.5rem;
+}
+
+.game__blue-title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -1rem;
+  width: 100%;
+  height: 5px;
+  margin: 10px 0;
+  border-radius: 5px;
+  background-color: #0076bd;
+}
+
+.game__red-title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -1rem;
+  width: 100%;
+  height: 5px;
+  margin: 10px 0;
+  border-radius: 5px;
+  background-color: #bd150b;
+}
+
+.game__green-title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1rem;
+  width: 100%;
+  height: 5px;
+  margin: 10px 0;
+  border-radius: 5px;
+  background-color: #79dd09;
+}
+
+.all-time__content {
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 600px) {
+  .words__title {
+    font-size: 3em;
+    margin: 0;
+  }
+
+  .game__text {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 580px) {
+  .game__body {
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .words__title {
+    font-size: 2em;
+    margin: 0;
+  }
+}
