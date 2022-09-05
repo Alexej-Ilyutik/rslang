@@ -17,6 +17,7 @@ import { startSprint } from './pages/sprint/sprint';
 import { renderWordPuzzlePage } from './pages/wordPuzzle/wordPuzzle';
 import { renderStatistic } from './pages/statistic/statistic';
 
+
 const renderPage = (): void => {
   renderHeader();
   renderMain();

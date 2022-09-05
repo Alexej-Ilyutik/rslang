@@ -16,6 +16,7 @@ import { renderGamePageContainer } from '../../components/gamePageContainer/game
 import { renderVolumeBtn } from '../../components/renderVolumeBtn/renderVolumeBtn';
 import { updateUserStatistic } from '../../services/updateUserStatistic';
 import { updateWord } from '../../services/updateWord';
+import { findDailyNewWords } from '../statistic/statistic';
 
 const trueAnswerAudio = new Audio('../../assets/success.mp3');
 const falseAnswerAudio = new Audio('../../assets/error.mp3');
@@ -101,6 +102,9 @@ const renderListItem = (block: HTMLElement, wordArr: WordInterface[]): void => {
 
 let level = 0;
 let progress = 0;
+let newWordStart = 0;
+let newWordFinish = 0;
+const currentDate = new Date().toLocaleDateString('en-GB');
 
 async function renderContentAudioPage(
   block: HTMLElement,
@@ -157,7 +161,6 @@ async function renderContentAudioPage(
   `;
   block.innerHTML = mainBlock;
 }
-
 
 const addEventStartAudioGame = async (): Promise<void> => {
   const arrWords = await getAllGroupWords(level);
@@ -234,11 +237,8 @@ const addEventStartAudioGame = async (): Promise<void> => {
       const newGuessWord = getGuessWord(storage.currentPage, arrWords);
       arrayOptions.push(newGuessWord);
 
-      // console.log(newGuessWord);
-
       const newArrayOptions = getUniqueArray(arrayOptions);
       shuffle(newArrayOptions);
-      // console.log(newArrayOptions);
 
       renderContentAudioPage(audioContent, newGuessWord, newArrayOptions, progress);
 
@@ -254,10 +254,12 @@ const addEventStartAudioGame = async (): Promise<void> => {
       await updateWord(trueAnswerArr, falseAnswerArr);
 
       currentStreakArray.push(currentStreak);
- 
+
+      newWordFinish = await findDailyNewWords(currentDate);
+
       await updateUserStatistic(
         {
-          newWordsCount: 2,
+          newWordsCount: newWordFinish - newWordStart,
           accuracy: myAccuracy,
           bestStreak: Math.max.apply(null, currentStreakArray),
         },
@@ -320,6 +322,8 @@ export const renderAudioPage = async (): Promise<void> => {
       level = Number(target.getAttribute('data-level'));
     }
     if (target.classList.contains('settings__start')) {
+      newWordStart = await findDailyNewWords(currentDate);
+
       progress = 0;
       renderPreLoader(audioContent);
       const arrWords = await getAllGroupWords(level);
