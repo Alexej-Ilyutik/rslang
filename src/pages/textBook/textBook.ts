@@ -57,12 +57,12 @@ export const setWordStatus = async (wordId: string): Promise<void> => {
   const hardCheckbox = document.getElementById(`${wordId}Hard`) as HTMLInputElement;
   const guessCounterSign = document.getElementById(`${wordId}Counter`) as HTMLElement;
   const { difficultyValue, guessCounterValue } = await getWordProperties(wordId);
-  if (guessCounterValue >= 5 || difficultyValue === 'easy') {
-    learnedCheckbox.checked = true;
-    hardCheckbox.checked = false;
-  } else if (difficultyValue === 'hard') {
+  if (difficultyValue === 'hard') {
     hardCheckbox.checked = true;
     learnedCheckbox.checked = false;
+  } else if (guessCounterValue >= 5 || difficultyValue === 'easy') {
+    learnedCheckbox.checked = true;
+    hardCheckbox.checked = false;
   }
   guessCounterSign.setAttribute('data-guessCounter', guessCounterValue.toString());
   guessCounterSign.innerHTML = `Guessed ${guessCounterValue.toString()} times`;
