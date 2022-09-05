@@ -132,7 +132,6 @@ export const renderStatistic = (): void => {
         <div class="d-flex">
           <h1>Graph</h1>
           <h1>Graph</h1>
-        </div>
       </div>
     </div>
   </div>

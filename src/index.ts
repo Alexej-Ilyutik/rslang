@@ -15,6 +15,7 @@ import { renderAudioPage } from './pages/audioGame/audioGame';
 import { renderGamePageContainer } from './components/gamePageContainer/gamePageContainer';
 import { startSprint, startSprintFromTextBook } from './pages/sprint/sprint';
 import { renderStatistic } from './pages/statistic/statistic';
+import API from './services/api';
 
 const renderPage = (): void => {
   renderHeader();
@@ -54,16 +55,13 @@ const onNavigate = (location: string): void => {
       renderGamePageContainer();
       startSprint();
       break;
-    case '#/sprint-book':
+    case '#/sprintBook':
       renderGamePageContainer();
       startSprintFromTextBook();
       break;
     case '#/audio':
       renderGamePageContainer();
       renderAudioPage();
-      break;
-    case '#/sprintBook':
-      main.innerHTML = `<h1>sprintBook</h1>`;
       break;
     case '#/wordPuzzle':
       main.innerHTML = `<h1>#/wordPuzzle</h1>`;

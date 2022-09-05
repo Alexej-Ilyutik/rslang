@@ -7,8 +7,6 @@ import { deleteClassActive } from '../../services/deleteClassActive';
 import { playAllAudioFiles } from '../../components/audioButton/audioButton';
 import { updateWordProperties } from '../../services/updateWordProperties';
 import { getWordProperties } from '../../services/getWordProperties';
-import { renderGamePageContainer } from '../../components/gamePageContainer/gamePageContainer';
-import { startSprintFromTextBook } from '../sprint/sprint';
 import { isLogin } from '../../services/isLogin';
 import { hideElement } from '../../services/hideElement';
 import { updateUserStatistic } from '../../services/updateUserStatistic';

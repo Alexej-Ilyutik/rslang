@@ -4,7 +4,7 @@ import { WordDifficulty } from "../shared/types"
 import API from './api';
 
 export const updateWordProperties = async (wordId: string, isGuessed: boolean | undefined,
-  difficultyValue: WordDifficulty | undefined)
+  difficultyValue?: WordDifficulty | undefined)
 : Promise<void> => {
   const arrayOfWords = await API.getUserWords();
   let wordIndex: number | null = null;
