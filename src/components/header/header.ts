@@ -40,7 +40,7 @@ export const renderHeader = (): void => {
               </li>
               <li class="nav-item mx-3">
                 <a class="nav-link fw-bolder fs-5 link-direction statistic-button-header hidden-element" href="#/statistic"
-                >Statistics</a>
+                >Statistic</a>
               </li>
             </ul>
             <ul class="navbar-nav mb-2 mb-lg-0 navbar-btn-group">
