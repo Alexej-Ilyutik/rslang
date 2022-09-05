@@ -17,7 +17,6 @@ import { startSprint } from './pages/sprint/sprint';
 import { renderWordPuzzlePage } from './pages/wordPuzzle/wordPuzzle';
 import { renderStatistic } from './pages/statistic/statistic';
 
-
 const renderPage = (): void => {
   renderHeader();
   renderMain();
@@ -43,37 +42,46 @@ const onNavigate = (location: string): void => {
     case '#/main':
       renderMain();
       renderFooter();
+      localStorage.setItem('currentPage', '#/main');
       break;
     case '#/book':
       renderTextBook();
       renderFooter();
+      localStorage.setItem('currentPage', '#/book');
       break;
     case '#/games':
       renderGamePage();
       renderFooter();
+      localStorage.setItem('currentPage', '#/games');
       break;
     case '#/statistic':
       renderStatistic();
       renderFooter();
+      localStorage.setItem('currentPage', '#/statistic');
       break;
     case '#/sprint':
       renderGamePageContainer();
       startSprint();
+      localStorage.setItem('currentPage', '#/sprint');
       break;
     case '#/audio':
       renderGamePageContainer();
       renderAudioPage();
+      localStorage.setItem('currentPage', '#/audio');
       break;
     case '#/sprintBook':
       main.innerHTML = `<h1>sprintBook</h1>`;
+      localStorage.setItem('currentPage', '#/sprintBook');
       break;
     case '#/wordPuzzle':
       renderGamePageContainer();
       renderWordPuzzlePage();
+      localStorage.setItem('currentPage', '#/wordPuzzle');
       break;
     default:
       renderMain();
       renderFooter();
+      localStorage.setItem('currentPage', '#/main');
       break;
   }
 };
@@ -93,4 +101,17 @@ window.addEventListener('click', (e: Event) => {
     }
   });
   onNavigate(location);
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  const location = localStorage.getItem('currentPage') as string;
+  deleteClassActive(navLinks);
+  navLinks.forEach(el => {
+    if (el.innerHTML.toLowerCase() === location.slice(2)) {
+      el.classList.add('active');
+    }
+
+  });
+  onNavigate(location);
+
 });

@@ -26,7 +26,7 @@ export const renderHeader = (): void => {
                   class="nav-link fw-bolder fs-5 active main-link link-direction"
                   aria-current="page"
                   href="#/main"
-                  >Home</a
+                  >Main</a
                 >
               </li>
               <li class="nav-item mx-3">
@@ -40,7 +40,7 @@ export const renderHeader = (): void => {
               </li>
               <li class="nav-item mx-3">
                 <a class="nav-link fw-bolder fs-5 link-direction" href="#/statistic"
-                >Statistics</a>
+                >Statistic</a>
               </li>
             </ul>
             <ul class="navbar-nav mb-2 mb-lg-0 navbar-btn-group">
