@@ -1,6 +1,6 @@
-import { DateFormat, GameNameType, GameStatisticInterface } from "../shared/types";
-import API from "./api";
-import { getNumberOfLearnedWordsByDate } from "./getNumberOfLearnedWordsByDate";
+import { DateFormat, GameNameType, GameStatisticInterface } from '../shared/types';
+import API from './api';
+import { getNumberOfLearnedWordsByDate } from './getNumberOfLearnedWordsByDate';
 
 export const updateUserStatistic = async (obj: GameStatisticInterface, gameName: GameNameType): Promise<void> => {
   const learnedWordsArray = await API.getAggregatedWords('easy');
@@ -8,7 +8,7 @@ export const updateUserStatistic = async (obj: GameStatisticInterface, gameName:
   // const currentDate: DateFormat = new Date().toLocaleDateString('en-GB');
   const currentDate: DateFormat = '05/09/2022';
   const learnedWordsTodayValue = await getNumberOfLearnedWordsByDate(currentDate);
-  const {newWordsCount, accuracy, bestStreak} = obj;
+  const { newWordsCount, accuracy, bestStreak } = obj;
 
   const currentUserStatistic = await API.getStatistics();
 
@@ -20,11 +20,11 @@ export const updateUserStatistic = async (obj: GameStatisticInterface, gameName:
 
     switch (gameName) {
       case 'sprintGame':
-        sprintGameStatistics.push({newWordsCount, accuracy, bestStreak});
+        sprintGameStatistics.push({ newWordsCount, accuracy, bestStreak });
         break;
 
       case 'audioGame':
-        audioGameStatistics.push({newWordsCount, accuracy, bestStreak});
+        audioGameStatistics.push({ newWordsCount, accuracy, bestStreak });
         break;
 
       default:
@@ -39,9 +39,10 @@ export const updateUserStatistic = async (obj: GameStatisticInterface, gameName:
       globalStatistic: {
         learnedWordsToday: learnedWordsTodayValue,
       },
-    }
+    };
   } else {
-    currentUserStatistic.optional[currentDate] = { // Initialization
+    currentUserStatistic.optional[currentDate] = {
+      // Initialization
       gamesStatistic: {
         sprintGame: [],
         audioGame: [],
@@ -49,14 +50,22 @@ export const updateUserStatistic = async (obj: GameStatisticInterface, gameName:
       globalStatistic: {
         learnedWordsToday: learnedWordsTodayValue,
       },
-    }
+    };
     switch (gameName) {
       case 'sprintGame':
-        currentUserStatistic.optional[currentDate].gamesStatistic.sprintGame[0] = {newWordsCount, accuracy, bestStreak};
+        currentUserStatistic.optional[currentDate].gamesStatistic.sprintGame[0] = {
+          newWordsCount,
+          accuracy,
+          bestStreak,
+        };
         break;
 
       case 'audioGame':
-        currentUserStatistic.optional[currentDate].gamesStatistic.audioGame[0] = {newWordsCount, accuracy, bestStreak};
+        currentUserStatistic.optional[currentDate].gamesStatistic.audioGame[0] = {
+          newWordsCount,
+          accuracy,
+          bestStreak,
+        };
         break;
 
       default:
@@ -65,4 +74,4 @@ export const updateUserStatistic = async (obj: GameStatisticInterface, gameName:
   }
 
   await API.upsertStatistics(learnedWordsNumber, currentUserStatistic.optional);
-}
+};

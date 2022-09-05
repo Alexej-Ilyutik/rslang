@@ -1,6 +1,6 @@
-export const hideElement = (isNotHidden: boolean):string => {
+export const hideElement = (isNotHidden: boolean): string => {
   if (!isNotHidden) {
-    return 'hidden'
+    return 'hidden';
   }
   return '';
-}
+};

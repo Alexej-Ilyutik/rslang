@@ -1,8 +1,8 @@
 .statistic__wrapper {
   box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
-    border-radius: 0.5rem;
-    border: 0.3rem solid var(--bs-warning);
-    padding: 2rem;
+  border-radius: 0.5rem;
+  border: 0.3rem solid var(--bs-warning);
+  padding: 2rem;
 }
 
 .daily__content {
@@ -22,7 +22,7 @@
 .words__body {
   width: 100%;
   justify-content: center;
-  align-items:center;
+  align-items: center;
   gap: 1rem;
 }
 
@@ -44,7 +44,7 @@
 
 .game__body {
   justify-content: center;
-  align-items:center;
+  align-items: center;
   gap: 1rem;
 }
 
@@ -68,7 +68,7 @@
 }
 
 .game__blue-title::after {
-  content: "";
+  content: '';
   position: absolute;
   left: 0;
   bottom: -1rem;
@@ -80,7 +80,7 @@
 }
 
 .game__red-title::after {
-  content: "";
+  content: '';
   position: absolute;
   left: 0;
   bottom: -1rem;
@@ -97,7 +97,7 @@
   flex-wrap: wrap;
 }
 
-@media (max-width: 600px ) {
+@media (max-width: 600px) {
   .words__title {
     font-size: 3em;
     margin: 0;
@@ -115,7 +115,7 @@
   }
 }
 
-@media (max-width: 400px ) {
+@media (max-width: 400px) {
   .words__title {
     font-size: 2em;
     margin: 0;

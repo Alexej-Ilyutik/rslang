@@ -15,7 +15,6 @@ import { renderAudioPage } from './pages/audioGame/audioGame';
 import { renderGamePageContainer } from './components/gamePageContainer/gamePageContainer';
 import { startSprint, startSprintFromTextBook } from './pages/sprint/sprint';
 import { renderGraphs, renderStatistic } from './pages/statistic/statistic';
-import { renderGraph } from './components/gpaph/graph';
 import { renderWordPuzzlePage } from './pages/wordPuzzle/wordPuzzle';
 
 const renderPage = (): void => {
@@ -33,8 +32,6 @@ loginHandler();
 registerHandler();
 
 if (isLogin()) switchLoginMode();
-
-const main = document.getElementById('main') as HTMLElement;
 
 const navLinks = Array.from(document.getElementsByClassName('nav-link'));
 

@@ -288,12 +288,12 @@ nav {
 }
 
 .textBook__games_information {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  font-size: 2rem;
+  p {
     margin: 0;
-    font-size: 2rem;
-    p {
-      margin: 0;
     font-size: 1.8rem;
     li {
       list-style-type: square;

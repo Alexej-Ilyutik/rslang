@@ -9,12 +9,8 @@ import { updateWordProperties } from '../../services/updateWordProperties';
 import { getWordProperties } from '../../services/getWordProperties';
 import { isLogin } from '../../services/isLogin';
 import { hideElement } from '../../services/hideElement';
-import { updateUserStatistic } from '../../services/updateUserStatistic';
-import { getNumberOfLearnedWordsByDate } from '../../services/getNumberOfLearnedWordsByDate';
-import { resetUserStatistic } from '../../services/resetUserStatistic';
 
 export const renderTextBookNavigation = (): void => {
-
   const textBook = `
     <div class="textBook container">
       <h2 class="textBook__title">Text book</h2>
@@ -70,18 +66,22 @@ export const setWordStatus = async (wordId: string): Promise<void> => {
   }
   guessCounterSign.setAttribute('data-guessCounter', guessCounterValue.toString());
   guessCounterSign.innerHTML = `Guessed ${guessCounterValue.toString()} times`;
-}
+};
 
-export const setWordsStatus = async (arrayOfWords: WordInterface[], isUserLogIn:boolean): Promise<void> => {
+export const setWordsStatus = async (arrayOfWords: WordInterface[], isUserLogIn: boolean): Promise<void> => {
   if (isUserLogIn) {
     arrayOfWords.forEach(async element => {
       const wordId = element.id || element._id;
       await setWordStatus(wordId || '');
     });
   }
-}
+};
 
-export const updateLearnWordsCounter = async (groupNumber: number, pageNumber: number, isUserLogIn: boolean): Promise<void> => {
+export const updateLearnWordsCounter = async (
+  groupNumber: number,
+  pageNumber: number,
+  isUserLogIn: boolean,
+): Promise<void> => {
   if (isUserLogIn) {
     const learnedWordsCounter = document.querySelector('.textBook__games_information') as HTMLElement;
     const learnedWordArray = await API.getAggregatedWords('easy');
@@ -92,10 +92,9 @@ export const updateLearnWordsCounter = async (groupNumber: number, pageNumber: n
     storage.learnedWordsOnPage = learnedWordArray;
     learnedWordsCounter.innerHTML = `<p>Learned ${learnedWordsOnPage}/20 words on page</p>`;
   }
-}
+};
 
-export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
-: Promise<void> => {
+export const renderTextBoxPage = async (groupNumber: number, pageNumber: number): Promise<void> => {
   storage.wordsListCurrentGroup = groupNumber;
 
   const getWords = async (_groupNumber: number, _pageNumber: number): PageOfWordsInterface => {
@@ -285,7 +284,7 @@ export const addEventWords = (): void => {
     }
     if ((event.target as HTMLInputElement).classList.contains('hard-checkbox')) {
       const wordId = (event.target as HTMLInputElement).getAttribute('data-id')?.toString() || '';
-      if (((event.target as HTMLInputElement)).checked === true) {
+      if ((event.target as HTMLInputElement).checked === true) {
         await updateWordProperties(wordId, undefined, 'hard');
         setWordStatus(wordId);
         updateLearnWordsCounter(storage.wordsListCurrentGroup, storage.wordsListCurrentPage, storage.isLogin);
@@ -296,7 +295,7 @@ export const addEventWords = (): void => {
     }
     if ((event.target as HTMLInputElement).classList.contains('learned-checkbox')) {
       const wordId = (event.target as HTMLInputElement).getAttribute('data-id')?.toString() || '';
-      if (((event.target as HTMLInputElement)).checked === true) {
+      if ((event.target as HTMLInputElement).checked === true) {
         await updateWordProperties(wordId, undefined, 'easy');
         setWordStatus(wordId);
         updateLearnWordsCounter(storage.wordsListCurrentGroup, storage.wordsListCurrentPage, storage.isLogin);
@@ -313,7 +312,7 @@ export const addTestBookEvents = (): void => {
   addEventWordsGroup();
   addEventPagination();
   addEventWords();
-}
+};
 
 export const renderTextBook = (groupNumber: number, pageNumber: number): void => {
   storage.isLogin = isLogin(); // Check
@@ -323,9 +322,3 @@ export const renderTextBook = (groupNumber: number, pageNumber: number): void =>
   addTestBookEvents();
   storage.currentPage = 'Book';
 };
-
-// const currentUserStatistic = await API.getStatistics();
-// console.log(currentUserStatistic);
-// updateUserStatistic({newWordsCount: 1, accuracy: 100, bestStreak: 10}, 'sprintGame');
-// getNumberOfLearnedWordsByDate(new Date().toLocaleDateString('en-GB'));
-// resetUserStatistic();
