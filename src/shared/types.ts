@@ -16,7 +16,7 @@ export interface WordInterface {
   wordTranslate: string,
   textMeaningTranslate: string,
   textExampleTranslate: string,
-  userWord?: { difficulty?: WordDifficulty, optional: { guessCounter: number, firstShowedDate?: Date }}
+  userWord?: UserWordInterface,
 };
 
 export type PageOfWordsInterface = Promise<WordInterface[]>;
@@ -26,7 +26,36 @@ export interface UserWordInterface {
   id: string,
   optional: {
     guessCounter: number,
-    firstShowedDate: Date, // When create new user's word put current Date here.
+    firstShowedDate: DateFormat,
+    learnDate: DateFormat,
   },
   wordId: string,
+}
+
+export type GameNameType = 'sprintGame' | 'audioGame';
+
+export interface GameStatisticInterface {
+  newWordsCount: number,
+  accuracy: number,
+  bestStreak: number,
+}
+
+export type DateFormat = string;
+
+export interface UserStatisticInterfaceAll {
+  id: string,
+  learnedWords: 0,
+  optional: UserStatisticInterface,
+};
+
+export type UserStatisticInterface = {
+  [date in DateFormat]: {
+    gamesStatistic: {
+      sprintGame: GameStatisticInterface[];
+      audioGame: GameStatisticInterface[];
+    };
+    globalStatistic: {
+      learnedWordsToday: number;
+    };
+  };
 }
