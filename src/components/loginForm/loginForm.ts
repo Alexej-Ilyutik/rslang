@@ -1,6 +1,6 @@
 import './loginForm.scss';
 import * as bootstrap from 'bootstrap';
-import API from "../../services/api";
+import API from '../../services/api';
 import { togglePasswordVisibility } from '../../services/togglePasswordVisibility';
 import { switchLoginMode } from '../../services/switchLoginMode';
 
@@ -37,7 +37,7 @@ export const loginForm = `
         </div>
       </div>
     </div>
-  </div>`
+  </div>`;
 
 export const loginHandler = () => {
   const login = <HTMLElement>document.getElementById('login-form');
@@ -50,7 +50,7 @@ export const loginHandler = () => {
 
   passwordVisibilityCheckbox.addEventListener('change', () => togglePasswordVisibility(passwordInput));
 
-  login.addEventListener('submit', async (event) => {
+  login.addEventListener('submit', async event => {
     event.preventDefault();
     const email = (<HTMLInputElement>document.getElementById('login-email-input')).value;
     const password = passwordInput.value;
@@ -61,11 +61,11 @@ export const loginHandler = () => {
       loginModal.hide();
       switchLoginMode();
       loginError.classList.add('hidden-element');
-      const locations = (<HTMLInputElement>document.querySelector('.link-direction.active'));
+      const locations = <HTMLInputElement>document.querySelector('.link-direction.active');
       if (locations) {
-        locations.dispatchEvent(new Event('click', {bubbles: true}));
+        locations.dispatchEvent(new Event('click', { bubbles: true }));
       }
-    } catch(e) {
+    } catch (e) {
       console.error(e);
       loginError.classList.remove('hidden-element');
     }
@@ -85,4 +85,4 @@ export const loginHandler = () => {
       }
     }
   });
-}
+};

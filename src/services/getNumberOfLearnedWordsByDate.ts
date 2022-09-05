@@ -1,6 +1,6 @@
 /* eslint-disable no-await-in-loop */
-import { WordInterface } from "../shared/types";
-import API from "./api";
+import { WordInterface } from '../shared/types';
+import API from './api';
 
 export const getNumberOfLearnedWordsByDate = async (date: string): Promise<number> => {
   const learnedWordsArray: WordInterface[] = await API.getAggregatedWords('easy');
@@ -10,4 +10,4 @@ export const getNumberOfLearnedWordsByDate = async (date: string): Promise<numbe
     if (learnedWordsArray[i].userWord?.optional.learnDate === date) numberOfLearnedWords += 1;
   }
   return numberOfLearnedWords;
-}
+};
