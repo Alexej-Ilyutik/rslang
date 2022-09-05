@@ -50,7 +50,7 @@ class API {
     }
 
     const content = await response.json();
-    console.log(content);
+    // console.log(content);
     return content;
   }
 
@@ -62,7 +62,7 @@ class API {
       },
     });
     const content = await response.json();
-    console.log('getUser', content);
+    // console.log('getUser', content);
     return content;
   }
 
@@ -78,7 +78,7 @@ class API {
       body: JSON.stringify({ email: `${email}`, password: `${password}` }),
     });
     const content = await response.json();
-    console.log(content);
+    // console.log(content);
   }
 
   static async deleteUser() {
@@ -101,7 +101,7 @@ class API {
     });
     const content = await response.json();
     localStorage.setItem('userAuthenticationData', JSON.stringify(content));
-    console.log(content);
+    // console.log(content);
     return content;
   }
 
@@ -136,7 +136,7 @@ class API {
 
     });
     const content = await response.json();
-    console.log(content, 'create');
+    // console.log(content, 'create');
     return content;
   }
 
@@ -148,7 +148,7 @@ class API {
       },
     });
     const content = await response.json();
-    console.log(content);
+    // console.log(content);
     return content;
   }
 
@@ -166,7 +166,7 @@ class API {
 
     });
     const content = await response.json();
-    console.log(content, 'updated');
+    // console.log(content, 'updated');
     return content;
   }
 
@@ -179,7 +179,7 @@ class API {
       },
     });
     const content = response.status;
-    console.log(`Server response with status: ${content}`);
+    // console.log(`Server response with status: ${content}`);
   }
 
   // USERS/AGGREGATED WORDS:
@@ -261,7 +261,7 @@ class API {
       body: JSON.stringify({ "learnedWords": learnedWords, "optional": obj }),
     });
     const content = await response.json();
-    console.log(content);
+    // console.log(content);
     return content;
   }
 
@@ -275,7 +275,7 @@ class API {
       },
     });
     const content = await response.json();
-    console.log(content);
+    // console.log(content);
     return content;
   }
 
@@ -290,7 +290,7 @@ class API {
       },
     });
     const content = await response.json();
-    console.log(content);
+    // console.log(content);
     return content;
   }
 
@@ -319,7 +319,7 @@ class API {
     }
 
     const content = await response.json();
-    console.log(content);
+    // console.log(content);
     localStorage.setItem('userAuthenticationData', JSON.stringify(content));
     return content;
   }

@@ -5,8 +5,7 @@ import { getNumberOfLearnedWordsByDate } from "./getNumberOfLearnedWordsByDate";
 export const updateUserStatistic = async (obj: GameStatisticInterface, gameName: GameNameType): Promise<void> => {
   const learnedWordsArray = await API.getAggregatedWords('easy');
   const learnedWordsNumber = learnedWordsArray.length;
-  // const currentDate: DateFormat = new Date().toLocaleDateString('en-GB');
-  const currentDate: DateFormat = '05/09/2022';
+  const currentDate: DateFormat = new Date().toLocaleDateString('en-GB');
   const learnedWordsTodayValue = await getNumberOfLearnedWordsByDate(currentDate);
   const {newWordsCount, accuracy, bestStreak} = obj;
 
@@ -41,7 +40,7 @@ export const updateUserStatistic = async (obj: GameStatisticInterface, gameName:
       },
     }
   } else {
-    currentUserStatistic.optional[currentDate] = { // Initialization
+    currentUserStatistic.optional[currentDate] = {
       gamesStatistic: {
         sprintGame: [],
         audioGame: [],
