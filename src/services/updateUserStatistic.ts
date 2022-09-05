@@ -41,10 +41,6 @@ export const updateUserStatistic = async (obj: GameStatisticInterface, gameName:
     };
   } else {
     currentUserStatistic.optional[currentDate] = {
-<<<<<<< HEAD
-      // Initialization
-=======
->>>>>>> develop
       gamesStatistic: {
         sprintGame: [],
         audioGame: [],
