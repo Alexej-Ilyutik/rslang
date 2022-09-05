@@ -44,7 +44,7 @@ export type DateFormat = string;
 
 export interface UserStatisticInterfaceAll {
   id: string,
-  learnedWords: 0,
+  learnedWords: number,
   optional: UserStatisticInterface,
 };
 

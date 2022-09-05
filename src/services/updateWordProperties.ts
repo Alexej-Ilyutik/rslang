@@ -41,7 +41,7 @@ export const updateWordProperties = async (wordId: string, isGuessed: boolean | 
     let guessCounter = 0;
     if (isGuessed !== undefined && isGuessed ) guessCounter += 1;
 
-    let learnDate = '';
+    let learnDate = 'none';
     if (guessCounter >= storage.maxGuessNumber || difficulty === 'easy') {
       if (guessCounter === storage.maxGuessNumber || difficultyValue === 'easy') { // Word has just been learned
         learnDate = new Date().toLocaleDateString('en-GB');

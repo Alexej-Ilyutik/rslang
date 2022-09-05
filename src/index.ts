@@ -14,7 +14,10 @@ import { renderGamePage } from './pages/game/game';
 import { renderAudioPage } from './pages/audioGame/audioGame';
 import { renderGamePageContainer } from './components/gamePageContainer/gamePageContainer';
 import { startSprint, startSprintFromTextBook } from './pages/sprint/sprint';
-import { renderStatistic } from './pages/statistic/statistic';
+import { renderGraphs, renderStatistic } from './pages/statistic/statistic';
+import { renderGraph } from './components/gpaph/graph';
+import { renderWordPuzzlePage } from './pages/wordPuzzle/wordPuzzle';
+
 
 const renderPage = (): void => {
   renderHeader();
@@ -40,15 +43,20 @@ const onNavigate = async (location: string): Promise<void> => {
   switch (location) {
     case '#/main':
       renderMain();
+      renderFooter();
       break;
     case '#/book':
       renderTextBook(0, 0);
+      renderFooter();
       break;
     case '#/games':
       renderGamePage();
+      renderFooter();
       break;
     case '#/statistic':
       renderStatistic();
+      renderGraphs();
+      renderFooter();
       break;
     case '#/sprint':
       renderGamePageContainer();
@@ -63,10 +71,8 @@ const onNavigate = async (location: string): Promise<void> => {
       renderAudioPage();
       break;
     case '#/wordPuzzle':
-      main.innerHTML = `<h1>#/wordPuzzle</h1>`;
-      break;
-    case '#/sentencePuzzle':
-      main.innerHTML = `<h1>#/sentencePuzzle</h1>`;
+      renderGamePageContainer();
+      renderWordPuzzlePage();
       break;
     default:
       renderMain();
