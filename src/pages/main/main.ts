@@ -37,21 +37,6 @@ export const renderMain = (): void => {
         </div>
       </div>
     </section>
-     <section class="card card__video">
-      <div class="row ">
-        <div class="col-md-3">
-          <h2 class="card-title main-title">Presentation & tutorial</h2>
-        </div>
-        <div class="col-md-9">
-         <div class="ratio ratio-16x9">
-            <iframe src="https://www.youtube.com/embed/vlDzYIIOYmM"
-                    title="YouTube video"
-                    allowfullscreen
-            ></iframe>
-          </div>
-        </div>
-      </div>
-    </section>
       <section class="team-boxed">
             <div class="intro">
                 <h2 class="text-left mb-5">Our team </h2>
