@@ -13,7 +13,7 @@ import { switchLoginMode } from './services/switchLoginMode';
 import { renderGamePage } from './pages/game/game';
 import { renderAudioPage } from './pages/audioGame/audioGame';
 import { renderGamePageContainer } from './components/gamePageContainer/gamePageContainer';
-import { startSprint } from './pages/sprint/sprint';
+import { startSprint, startSprintFromTextBook } from './pages/sprint/sprint';
 import { renderGraphs, renderStatistic } from './pages/statistic/statistic';
 import { renderWordPuzzlePage } from './pages/wordPuzzle/wordPuzzle';
 
@@ -38,14 +38,14 @@ const main = document.getElementById('main') as HTMLElement;
 
 const navLinks = Array.from(document.getElementsByClassName('nav-link'));
 
-const onNavigate = (location: string): void => {
+const onNavigate = async (location: string): Promise<void> => {
   switch (location) {
     case '#/main':
       renderMain();
       renderFooter();
       break;
     case '#/book':
-      renderTextBook();
+      renderTextBook(0, 0);
       renderFooter();
       break;
     case '#/games':
@@ -61,12 +61,13 @@ const onNavigate = (location: string): void => {
       renderGamePageContainer();
       startSprint();
       break;
+    case '#/sprintBook':
+      renderGamePageContainer();
+      startSprintFromTextBook();
+      break;
     case '#/audio':
       renderGamePageContainer();
       renderAudioPage();
-      break;
-    case '#/sprintBook':
-      main.innerHTML = `<h1>sprintBook</h1>`;
       break;
     case '#/wordPuzzle':
       renderGamePageContainer();

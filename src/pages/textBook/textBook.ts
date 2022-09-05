@@ -7,13 +7,8 @@ import { deleteClassActive } from '../../services/deleteClassActive';
 import { playAllAudioFiles } from '../../components/audioButton/audioButton';
 import { updateWordProperties } from '../../services/updateWordProperties';
 import { getWordProperties } from '../../services/getWordProperties';
-import { renderGamePageContainer } from '../../components/gamePageContainer/gamePageContainer';
-import { startSprintFromTextBook } from '../sprint/sprint';
 import { isLogin } from '../../services/isLogin';
 import { hideElement } from '../../services/hideElement';
-import { updateUserStatistic } from '../../services/updateUserStatistic';
-import { getNumberOfLearnedWordsByDate } from '../../services/getNumberOfLearnedWordsByDate';
-import { resetUserStatistic } from '../../services/resetUserStatistic';
 
 export const renderTextBookNavigation = (): void => {
 
@@ -112,7 +107,7 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
   storage.currentPageWords = await arrayOfWords;
 
   const wordsList = document.querySelector('.textBook__words-list') as HTMLElement;
-  storage.wordsListCurrentPage = pageNumber; // update page number
+  storage.wordsListCurrentPage = pageNumber;
   const html = (await arrayOfWords)
     .map(
       element => `
@@ -311,24 +306,17 @@ export const addEventWords = (): void => {
   });
 };
 
-
 export const addTestBookEvents = (): void => {
   addEventWordsGroup();
   addEventPagination();
   addEventWords();
 }
 
-export const renderTextBook = (): void => {
-  storage.isLogin = isLogin(); // Check
+export const renderTextBook = (groupNumber: number, pageNumber: number): void => {
+  storage.isLogin = isLogin();
   renderTextBookNavigation();
-  renderTextBoxPage(0, 0);
-  renderPagination(0);
+  renderTextBoxPage(groupNumber, pageNumber);
+  renderPagination(pageNumber);
   addTestBookEvents();
   storage.currentPage = 'Book';
 };
-
-// const currentUserStatistic = await API.getStatistics();
-// console.log(currentUserStatistic);
-// updateUserStatistic({newWordsCount: 10, accuracy: 10, bestStreak: 20}, 'audioGame');
-// getNumberOfLearnedWordsByDate(new Date().toLocaleDateString('en-GB'));
-// resetUserStatistic();

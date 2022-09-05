@@ -1,6 +1,6 @@
 import "./statistic.scss";
 import API from "../../services/api";
-import { GameStatisticInterface, UserStatisticInterfaceAll, UserWordInterface, WordInterface } from "../../shared/types";
+import { GameStatisticInterface, UserStatisticInterfaceAll, UserWordInterface } from "../../shared/types";
 import { renderGraph } from "../../components/gpaph/graph";
 import { storage } from "../../shared/storage";
 import { isLogin } from "../../services/isLogin";
@@ -192,6 +192,26 @@ export const renderStatistic = (): void => {
             </div>
           </div>
 
+          <div class="card game">
+            <div class="card-body d-flex game__body">
+              <h3 class="card-title game__green-title">Audio challenge</h3>
+              <div class="game__content">
+              <div class="game__text">
+                <span id="puzzle-new-learned-words">?</span>
+                  <span>words</span>
+                </div>
+                <div class="game__text">
+                  <span id="puzzle-accuracy">?</span>
+                  <span>accuracy</span>
+                </div>
+                <div class="game__text">
+                  <span id="puzzle-best-streak">?</span>
+                  <span>best streak</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
       <div class="all-time container">
@@ -218,5 +238,3 @@ export const renderStatistic = (): void => {
 
   updateStatistic();
 }
-
-
