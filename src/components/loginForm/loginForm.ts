@@ -40,13 +40,13 @@ export const loginForm = `
   </div>`
 
 export const loginHandler = () => {
-  const login = document.getElementById('login-form') as HTMLElement;
-  const passwordInput = document.getElementById('login-password-input') as HTMLInputElement;
-  const passwordVisibilityCheckbox = document.getElementById('login-password-visibility') as HTMLInputElement;
-  const logoutBtn = document.getElementById('logout-btn') as HTMLButtonElement;
-  const loginError = document.getElementById('login-error') as HTMLElement;
+  const login = <HTMLElement>document.getElementById('login-form');
+  const passwordInput = <HTMLInputElement>document.getElementById('login-password-input');
+  const passwordVisibilityCheckbox = <HTMLInputElement>document.getElementById('login-password-visibility');
+  const logoutBtn = <HTMLButtonElement>document.getElementById('logout-btn');
+  const loginError = <HTMLElement>document.getElementById('login-error');
 
-  const loginModal = new bootstrap.Modal(document.getElementById('login-modal')!, {});
+  const loginModal = new bootstrap.Modal(<HTMLElement>document.getElementById('login-modal'), {});
 
   passwordVisibilityCheckbox.addEventListener('change', () => togglePasswordVisibility(passwordInput));
 
@@ -61,6 +61,10 @@ export const loginHandler = () => {
       loginModal.hide();
       switchLoginMode();
       loginError.classList.add('hidden-element');
+      const locations = (<HTMLInputElement>document.querySelector('.link-direction.active'));
+      if (locations) {
+        locations.dispatchEvent(new Event('click', {bubbles: true}));
+      }
     } catch(e) {
       console.error(e);
       loginError.classList.remove('hidden-element');
@@ -70,5 +74,9 @@ export const loginHandler = () => {
   logoutBtn.addEventListener('click', () => {
     localStorage.removeItem('userAuthenticationData');
     switchLoginMode();
+    const locations = (<HTMLInputElement>document.querySelector('.link-direction.active'));
+    if (locations) {
+      locations.dispatchEvent(new Event('click', {bubbles: true}));
+    }
   });
 }

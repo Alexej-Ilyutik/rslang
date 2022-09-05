@@ -409,7 +409,7 @@ export const sprintGame = async () => {
 export const startSprint = async (): Promise<void> => {
   const gameContainer = document.querySelector('.audiocall__container') as HTMLElement;
   const sprintContent = document.querySelector('.audiocall__content') as HTMLElement;
-  gameContainer.style.height = '404px';
+  // gameContainer.style.height = '404px';
   sprintContent.style.gap = '0';
   sprintContent.innerHTML = `
   <h3 class="audiocall__subtitle">Game: Sprint</h3>

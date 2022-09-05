@@ -1,3 +1,4 @@
+import { storage } from '../../shared/storage';
 import './gamePageContainer.scss';
 
 export const renderGamePageContainer = (): void => {
@@ -26,7 +27,7 @@ export const renderGamePageContainer = (): void => {
             <input type="radio" class="btn-check setting__level" name="level" data-level="5" id="C2" autocomplete="off">
             <label class="btn btn-info" for="C2">C2</label>
           </div>
-          <button type="button" class="btn btn-success settings__start">Start</button>
+          <button type="button" class="btn btn-success settings__start" id = "btn-start">Start</button>
 
         </aside>
         <div class="audiocall__content col-9">
@@ -36,4 +37,13 @@ export const renderGamePageContainer = (): void => {
 `;
   const main = document.getElementById('main') as HTMLElement;
   main.innerHTML = mainBlock;
+  const inputs = Array.from(document.getElementsByClassName('setting__level'));
+  if (storage.currentPage === 'Book') {
+    for (let i = 0; i < inputs.length; i += 1) {
+      (<HTMLInputElement>inputs[i]).disabled = true;
+    }
+  }
+
+  const footer = document.getElementById('footer') as HTMLElement;
+  footer.innerHTML = '';
 };

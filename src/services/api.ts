@@ -1,4 +1,4 @@
-import { DateFormat, UserStatisticInterface, UserStatisticInterfaceAll, WordDifficulty } from "../shared/types";
+import { DateFormat, UserStatisticInterface, WordDifficulty } from "../shared/types";
 
 class API {
   static base = 'https://be-rs-lang.herokuapp.com';
@@ -212,7 +212,32 @@ class API {
 
   // USERS/STATISTICS:
 
-  static async getStatistics(): Promise<UserStatisticInterfaceAll> {
+  static async createStatistics() {
+    const { userId, token } = API.getJwt();
+    const response = await fetch(`${API.base}/users/${userId}/statistics`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ "learnedWords": 0, "optional": {
+        [new Date().toLocaleDateString('en-GB')]: {
+          gamesStatistic: {
+            sprintGame: [],
+            audioGame: []
+          },
+          globalStatistic: {
+            learnedWordsToday: 0
+          },
+        },
+      } }),
+    });
+    const content = await response.json();
+    return content;
+  }
+
+  static async getStatistics() {
     const { userId, token } = API.getJwt();
     const response = await fetch(`${API.users}/${userId}/statistics`, {
       headers: {

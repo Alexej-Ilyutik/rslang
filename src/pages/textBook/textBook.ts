@@ -38,7 +38,7 @@ export const renderTextBookNavigation = (): void => {
           </ul>
         </nav>
         <div class="textBook__games" ${hideElement(storage.isLogin)}>
-          <a href="#/sprint" class="textBook__games_game-button link-direction">
+          <a href="#/sprintBook" class="textBook__games_game-button link-direction">
             <img src="../../assets/sprint-icon.svg" class="textBook__games_game-img" alt="game image"></img>
             <h2 class="textBook__games_game-name">Sprint</h2>
           </button>
@@ -307,28 +307,11 @@ export const addEventWords = (): void => {
   });
 };
 
-const addEventGames = () => {
-  const textBookGames = <HTMLButtonElement>document.querySelector('.textBook__games');
-  const sprintStartBtn = <HTMLButtonElement>document.getElementById('start-sprint-text-book');
-  // const AudioGameStartBtn = <HTMLButtonElement>document.getElementById('start-audio-game-text-book');
-  textBookGames.addEventListener('click', (e) => {
-    const target = <HTMLElement>e.target;
-    if (sprintStartBtn.contains(target)) {
-      renderGamePageContainer();
-      startSprintFromTextBook();
-    }
-    // if (AudioGameStartBtn.contains(target)) {
-    //   renderGamePageContainer();
-    //   renderAudioPage();
-    // }
-  });
-}
 
 export const addTestBookEvents = (): void => {
   addEventWordsGroup();
   addEventPagination();
   addEventWords();
-  addEventGames();
 }
 
 export const renderTextBook = (): void => {
