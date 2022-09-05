@@ -115,7 +115,6 @@ export const renderGraphs = async () => {
 }
 
 export const renderStatistic = (): void => {
-  storage.isLogin = isLogin();
   const statistic = `
   <div class="statistic" ${hideElement(storage.isLogin)}>
   <div class="statistic__wrapper container">

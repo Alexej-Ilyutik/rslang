@@ -1,10 +1,8 @@
 import { hideElement } from '../../services/hideElement';
-import { isLogin } from '../../services/isLogin';
 import { storage } from '../../shared/storage';
 import './header.scss';
 
 export const renderHeader = (): void => {
-  storage.isLogin = isLogin();
   const headerBlock = `
         <nav class="navbar navbar-expand-lg mb-5">
         <div class="container">

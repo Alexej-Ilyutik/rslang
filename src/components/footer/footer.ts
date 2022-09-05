@@ -1,10 +1,8 @@
 import { hideElement } from '../../services/hideElement';
-import { isLogin } from '../../services/isLogin';
 import { storage } from '../../shared/storage';
 import './footer.scss';
 
 export const renderFooter = (): void => {
-  storage.isLogin = isLogin();
   const footerBlock = `
         <div class="container p-4 pb-0">
       <!-- Section: Links -->
