@@ -44,12 +44,12 @@ export const registerForm = `
   </div>`;
 
 export const registerHandler = () => {
-  const register = document.getElementById('register-form') as HTMLElement;
-  const passwordInput = document.getElementById('register-password-input') as HTMLInputElement;
-  const passwordVisibilityCheckbox = document.getElementById('register-password-visibility') as HTMLInputElement;
-  const registerError = document.getElementById('register-error') as HTMLElement;
+  const register = <HTMLElement>document.getElementById('register-form');
+  const passwordInput = <HTMLInputElement>document.getElementById('register-password-input');
+  const passwordVisibilityCheckbox = <HTMLInputElement>document.getElementById('register-password-visibility');
+  const registerError = <HTMLElement>document.getElementById('register-error');
 
-  const registerModal = new bootstrap.Modal(document.getElementById('register-modal')!, {});
+  const registerModal = new bootstrap.Modal(<HTMLElement>document.getElementById('register-modal'), {});
 
   passwordVisibilityCheckbox.addEventListener('change', () => togglePasswordVisibility(passwordInput));
 
@@ -66,6 +66,11 @@ export const registerHandler = () => {
       registerModal.hide();
       switchLoginMode();
       registerError.classList.add('hidden-element');
+      API.createStatistics();
+      const locations = (<HTMLInputElement>document.querySelector('.link-direction.active'));
+      if (locations) {
+        locations.dispatchEvent(new Event('click', {bubbles: true}));
+      }
     } catch (e) {
       console.error(e);
       registerError.classList.remove('hidden-element');

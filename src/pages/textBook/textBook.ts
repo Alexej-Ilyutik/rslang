@@ -12,7 +12,7 @@ import { startSprintFromTextBook } from '../sprint/sprint';
 import { isLogin } from '../../services/isLogin';
 import { hideElement } from '../../services/hideElement';
 import { updateUserStatistic } from '../../services/updateUserStatistic';
-import { getNumberOfLearnedWordsByDate } from '../../services/getNumberOflearnedWordsByDate';
+import { getNumberOfLearnedWordsByDate } from '../../services/getNumberOfLearnedWordsByDate';
 import { resetUserStatistic } from '../../services/resetUserStatistic';
 
 export const renderTextBookNavigation = (): void => {
@@ -38,7 +38,7 @@ export const renderTextBookNavigation = (): void => {
           </ul>
         </nav>
         <div class="textBook__games" ${hideElement(storage.isLogin)}>
-          <a href="#/sprint-book" class="textBook__games_game-button link-direction">
+          <a href="#/sprintBook" class="textBook__games_game-button link-direction">
             <img src="../../assets/sprint-icon.svg" class="textBook__games_game-img" alt="game image"></img>
             <h2 class="textBook__games_game-name">Sprint</h2>
           </button>

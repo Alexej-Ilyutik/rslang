@@ -13,7 +13,7 @@ import { switchLoginMode } from './services/switchLoginMode';
 import { renderGamePage } from './pages/game/game';
 import { renderAudioPage } from './pages/audioGame/audioGame';
 import { renderGamePageContainer } from './components/gamePageContainer/gamePageContainer';
-import { startSprint } from './pages/sprint/sprint';
+import { startSprint, startSprintFromTextBook } from './pages/sprint/sprint';
 import { renderStatistic } from './pages/statistic/statistic';
 
 const renderPage = (): void => {
@@ -24,9 +24,9 @@ const renderPage = (): void => {
 
 renderPage();
 
-const header = document.getElementById('header');
-header?.insertAdjacentHTML('beforeend', loginForm);
-header?.insertAdjacentHTML('beforeend', registerForm);
+const header = <HTMLElement>document.getElementById('header');
+header.insertAdjacentHTML('beforeend', loginForm);
+header.insertAdjacentHTML('beforeend', registerForm);
 loginHandler();
 registerHandler();
 
@@ -62,8 +62,18 @@ const onNavigate = (location: string): void => {
       renderGamePageContainer();
       renderAudioPage();
       break;
+    case '#/sprintBook':
+      main.innerHTML = `<h1>sprintBook</h1>`;
+      break;
+    case '#/wordPuzzle':
+      main.innerHTML = `<h1>#/wordPuzzle</h1>`;
+      break;
+    case '#/sentencePuzzle':
+      main.innerHTML = `<h1>#/sentencePuzzle</h1>`;
+      break;
     default:
       renderMain();
+      renderFooter();
       break;
   }
 };

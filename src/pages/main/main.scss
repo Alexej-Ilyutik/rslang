@@ -162,7 +162,9 @@
       margin-bottom: 30px;
       min-height: 32rem;
       border-radius: 0.3rem;
-      box-shadow: 0 4px 21px -12px rgba(0, 0, 0, 0.66);
+      img {
+        box-shadow: 0 4px 21px -12px rgba(0, 0, 0, 0.66);
+      }
       a {
         color: var(--text-color);
       }

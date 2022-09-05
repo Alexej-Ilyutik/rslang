@@ -1,5 +1,52 @@
 import "./statistic.scss";
 import API from "../../services/api";
+import { GameStatisticInterface } from "../../shared/types";
+
+export const findGameAccuracy = (array: GameStatisticInterface[]): number => {
+  const numberOfGames = array.length;
+  let sumOfSprintAccuracy = 0;
+  array.forEach((element) => {
+    sumOfSprintAccuracy += element.accuracy;
+  })
+  return sumOfSprintAccuracy / (numberOfGames - 1);
+}
+
+export const findGameBestStrike = (array: GameStatisticInterface[]): number => {
+  let bestStreakValue = 0;
+  array.forEach((element) => {
+    if (element.bestStreak > bestStreakValue) bestStreakValue = element.bestStreak;
+  })
+  return bestStreakValue;
+}
+
+export const updateStatistic = async (): Promise<void> => {
+  const userStatistic = await API.getStatistics();
+  const currentDate = new Date().toLocaleDateString('en-GB');
+
+  const dailyAccuracy = document.getElementById('daily-accuracy') as HTMLElement;
+
+  const dailyNewWords = document.getElementById('daily-new-words') as HTMLElement;
+  const dailyLearnedWords = document.getElementById('daily-learned-words') as HTMLElement;
+  dailyLearnedWords.innerHTML = userStatistic.optional[currentDate].globalStatistic.learnedWordsToday.toString();
+
+  const arrayOfSprintGames = userStatistic.optional[currentDate].gamesStatistic.sprintGame;
+  const lastSprintGameNumber = arrayOfSprintGames.length;
+  const sprintNewLearnedWords = document.getElementById('Sprint-new-learned-words') as HTMLElement;
+  sprintNewLearnedWords.innerHTML = arrayOfSprintGames[lastSprintGameNumber - 1].newWordsCount.toString();
+  const sprintAccuracy = document.getElementById('Sprint-accuracy') as HTMLElement;
+  sprintAccuracy.innerHTML = findGameAccuracy(arrayOfSprintGames).toString();
+  const sprintBestStreak = document.getElementById('Sprint-best-streak') as HTMLElement;
+  sprintBestStreak.innerHTML = findGameBestStrike(arrayOfSprintGames).toString();
+
+  const arrayOfAudioGames = userStatistic.optional[currentDate].gamesStatistic.audioGame;
+  const lastAudioGameNumber = arrayOfAudioGames.length;
+  const audioNewLearnedWords = document.getElementById('Audio-new-learned-words') as HTMLElement;
+  audioNewLearnedWords.innerHTML = arrayOfAudioGames[lastAudioGameNumber - 1].newWordsCount.toString();
+  const audioAccuracy = document.getElementById('Audio-accuracy') as HTMLElement;
+  audioAccuracy.innerHTML = findGameAccuracy(arrayOfAudioGames).toString();
+  const audioBestStreak = document.getElementById('Audio-best-streak') as HTMLElement;
+  audioBestStreak.innerHTML = findGameBestStrike(arrayOfAudioGames).toString();
+}
 
 export const renderStatistic = (): void => {
   const statistic = `
@@ -43,15 +90,15 @@ export const renderStatistic = (): void => {
               <h3 class="card-title game__blue-title">Sprint</h3>
               <div class="game__content">
                 <div class="game__text">
-                  <span>0</span>
+                  <span id="Sprint-new-learned-words">0</span>
                   <span>words</span>
                 </div>
                 <div class="game__text">
-                  <span>0%</span>
+                  <span id="Sprint-accuracy">0%</span>
                   <span>accuracy</span>
                 </div>
                 <div class="game__text">
-                  <span>0</span>
+                  <span id="Sprint-best-streak">0</span>
                   <span>best streak</span>
                 </div>
               </div>
@@ -62,16 +109,16 @@ export const renderStatistic = (): void => {
             <div class="card-body d-flex game__body">
               <h3 class="card-title game__red-title">Audio challenge</h3>
               <div class="game__content">
-                <div class="game__text">
-                  <span>0</span>
+              <div class="game__text">
+                <span id="Audio-new-learned-words">0</span>
                   <span>words</span>
                 </div>
                 <div class="game__text">
-                  <span>0%</span>
+                  <span id="Audio-accuracy">0%</span>
                   <span>accuracy</span>
                 </div>
                 <div class="game__text">
-                  <span>0</span>
+                  <span id="Audio-best-streak">0</span>
                   <span>best streak</span>
                 </div>
               </div>
@@ -91,8 +138,10 @@ export const renderStatistic = (): void => {
   </div>
 </div>
 `;
-
-
   const main = document.getElementById('main') as HTMLElement;
   main.innerHTML = statistic;
+
+  updateStatistic();
 }
+
+
