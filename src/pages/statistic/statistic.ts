@@ -1,6 +1,6 @@
 import "./statistic.scss";
 import API from "../../services/api";
-import { GameStatisticInterface } from "../../shared/types";
+import { GameStatisticInterface, UserWordInterface, WordInterface } from "../../shared/types";
 
 export const findGameAccuracy = (array: GameStatisticInterface[]): number => {
   const numberOfGames = array.length;
@@ -19,6 +19,30 @@ export const findGameBestStrike = (array: GameStatisticInterface[]): number => {
   return bestStreakValue;
 }
 
+export const findDailyAccuracy = (gamesStatistic: GameStatisticInterface[][]): number => {
+  let sumOfDailyAccuracy = 0;
+  let numberOfPlayedGames = 0;
+  gamesStatistic.forEach((game) => {
+    game.forEach((element) => {
+      sumOfDailyAccuracy += element.accuracy;
+      numberOfPlayedGames += 1;
+    })
+  })
+  return sumOfDailyAccuracy / numberOfPlayedGames;
+}
+
+export const findDailyNewWords = async (date: string): Promise<number> => {
+  let sumOfDailyWords = 0;
+  const arrayOfUserWords: UserWordInterface[] = await API.getUserWords();
+  // arrayOfUserWords.forEach((element) => {
+  //   if (element.optional.firstShowedDate === date) sumOfDailyWords += 1;
+  // })
+  for (let i = 0; i < arrayOfUserWords.length; i += 1) {
+    if (arrayOfUserWords[i].optional.firstShowedDate === date) sumOfDailyWords += 1;
+  }
+  return sumOfDailyWords;
+}
+
 export const updateStatistic = async (): Promise<void> => {
   const userStatistic = await API.getStatistics();
   const currentDate = new Date().toLocaleDateString('en-GB');
@@ -35,9 +59,6 @@ export const updateStatistic = async (): Promise<void> => {
     }
   }
 
-  const dailyAccuracy = document.getElementById('daily-accuracy') as HTMLElement;
-
-  const dailyNewWords = document.getElementById('daily-new-words') as HTMLElement;
   const dailyLearnedWords = document.getElementById('daily-learned-words') as HTMLElement;
   dailyLearnedWords.innerHTML = userStatistic.optional[currentDate].globalStatistic.learnedWordsToday.toString();
 
@@ -62,6 +83,13 @@ export const updateStatistic = async (): Promise<void> => {
     const audioBestStreak = document.getElementById('Audio-best-streak') as HTMLElement;
     audioBestStreak.innerHTML = findGameBestStrike(arrayOfAudioGames).toString();
   }
+
+  const dailyAccuracy = document.getElementById('daily-accuracy') as HTMLElement;
+  dailyAccuracy.innerHTML = findDailyAccuracy([arrayOfSprintGames, arrayOfAudioGames]).toString();
+
+  const dailyNewWords = document.getElementById('daily-new-words') as HTMLElement;
+  const DailyNewWords = await findDailyNewWords(currentDate);
+  dailyNewWords.innerHTML = DailyNewWords.toString();
 }
 
 export const renderStatistic = (): void => {
