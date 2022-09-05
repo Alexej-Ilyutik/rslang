@@ -14,6 +14,7 @@ import { setBestStreak } from "../../services/setBestStreak";
 import { updateUserStatistic } from "../../services/updateUserStatistic";
 import { isLogin } from "../../services/isLogin";
 import { renderVolumeBtn } from "../../components/renderVolumeBtn/renderVolumeBtn";
+import { changePage, renderPagination, renderTextBook, renderTextBookNavigation, renderTextBoxPage } from "../textBook/textBook";
 
 export const renderSprint = (): void => {
   const sprint = `
@@ -507,6 +508,10 @@ export const startSprintFromTextBook = async () => {
   } else {
     sprintWords = await API.getWords(wordsListCurrentGroup, wordsListCurrentPage);
     sprintWords = sprintWords.filter((x: { id: string; }) => !learnedWords.includes(x.id));
+  }
+  if (!sprintWords.length) {
+    renderTextBook(wordsListCurrentGroup, wordsListCurrentPage);
+    return;
   }
 
   renderSprint();

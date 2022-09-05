@@ -311,11 +311,11 @@ export const addTestBookEvents = (): void => {
   addEventWords();
 }
 
-export const renderTextBook = (): void => {
+export const renderTextBook = (groupNumber: number, pageNumber: number): void => {
   storage.isLogin = isLogin(); // Check
   renderTextBookNavigation();
-  renderTextBoxPage(0, 0);
-  renderPagination(0);
+  renderTextBoxPage(groupNumber, pageNumber);
+  renderPagination(pageNumber);
   addTestBookEvents();
   storage.currentPage = 'Book';
 };

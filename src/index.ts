@@ -42,7 +42,7 @@ const onNavigate = (location: string): void => {
       renderMain();
       break;
     case '#/book':
-      renderTextBook();
+      renderTextBook(0, 0);
       break;
     case '#/games':
       renderGamePage();
