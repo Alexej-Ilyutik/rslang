@@ -311,7 +311,7 @@ const startTimer = (elem:HTMLElement, time: number) => {
   }, 500);
 }
 
-export const sprintGame = async () => {
+export const sprintGame = async (learnedWords?: string[]) => {
   const sprintContent = <HTMLElement>document.querySelector('.audiocall__content');
   const wrongBtn = <HTMLButtonElement>document.getElementById('sprint-wrong-btn');
   const rightBtn = <HTMLButtonElement>document.getElementById('sprint-right-btn');
@@ -348,7 +348,10 @@ export const sprintGame = async () => {
       const {group, page} = sprintWords[0];
       if (page > 0) {
         const prevPage = page - 1;
-        const extraWords = await API.getWords(group, prevPage);
+        let extraWords = await API.getWords(group, prevPage);
+        if (learnedWords) {
+          extraWords = extraWords.filter((x: { id: string; }) => !learnedWords.includes(x.id));
+        }
         sprintWords = sprintWords.concat(extraWords);
       }
     }
@@ -471,13 +474,15 @@ export const startSprintFromTextBook = async () => {
   renderSpinner();
   isSprintFromTextBook = true;
   const {wordsListCurrentGroup, wordsListCurrentPage} = storage;
+  const learnedWords = (await API.getAggregatedWords('easy')).map((x: { _id: string; }) => x._id);
 
   if (wordsListCurrentGroup === 6) {
     sprintWords = await API.getAggregatedWords('hard');
   } else {
     sprintWords = await API.getWords(wordsListCurrentGroup, wordsListCurrentPage);
+    sprintWords = sprintWords.filter((x: { id: string; }) => !learnedWords.includes(x.id));
   }
 
   renderSprint();
-  sprintGame();
+  sprintGame(learnedWords);
 }
