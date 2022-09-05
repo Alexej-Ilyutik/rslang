@@ -1,12 +1,19 @@
 /* eslint-disable no-underscore-dangle */
 import './textBook.scss';
-import { PageOfWordsInterface, UserWordInterface, WordInterface } from '../../shared/types';
+import { PageOfWordsInterface, WordInterface } from '../../shared/types';
 import { storage } from '../../shared/storage';
 import API from '../../services/api';
 import { deleteClassActive } from '../../services/deleteClassActive';
 import { playAllAudioFiles } from '../../components/audioButton/audioButton';
+import { updateWordProperties } from '../../services/updateWordProperties';
+import { getWordProperties } from '../../services/getWordProperties';
+import { renderGamePageContainer } from '../../components/gamePageContainer/gamePageContainer';
+import { startSprintFromTextBook } from '../sprint/sprint';
+import { isLogin } from '../../services/isLogin';
+import { hideElement } from '../../services/hideElement';
 
 export const renderTextBookNavigation = (): void => {
+
   const textBook = `
     <div class="textBook container">
       <h2 class="textBook__title">Text book</h2>
@@ -19,33 +26,26 @@ export const renderTextBookNavigation = (): void => {
           <button type="button" class="textBook__btn-group_button btn btn-outline-primary" data-group="3">B2</button>
           <button type="button" class="textBook__btn-group_button btn btn-outline-primary" data-group="4">C1</button>
           <button type="button" class="textBook__btn-group_button btn btn-outline-primary" data-group="5">C2</button>
-          <button type="button" class="textBook__btn-group_button btn btn-outline-primary" data-group="6">
+          <button type="button" class="textBook__btn-group_button btn btn-outline-primary" data-group="6"
+          ${hideElement(storage.isLogin)}>
           Hard words</button>
         </div>
         <nav class="textBook__pagination" aria-label="Page navigation example">
           <ul class="textBook__pagination_list pagination justify-content-center">
           </ul>
         </nav>
-        <div class="textBook__games">
+        <div class="textBook__games" ${hideElement(storage.isLogin)}>
           <a href="#/sprint" class="textBook__games_game-button link-direction">
             <img src="../../assets/sprint-icon.svg" class="textBook__games_game-img" alt="game image"></img>
             <h2 class="textBook__games_game-name">Sprint</h2>
-          </a>
+          </button>
           <a href="#/audio" class="textBook__games_game-button link-direction">
             <img src="../../assets/audio-icon.svg" class="textBook__games_game-img" alt="game image"></img>
             <h2 class="textBook__games_game-name">Audio-game</h2>
-<<<<<<< HEAD
-          </button>
-          <div class="textBook__games_information">
-            <p>Learned 0/20 words on page</p>
-          </div>
-=======
           </a>
-          <ul class="textBook__games_information-wrapper">
-            <li class="textBook__games_information">Page: Has learned ${0}/${20} words</li>
-            <li class="textBook__games_information">Groupe: Has learned ${0}/${600} words</li>
-          </ul>
->>>>>>> develop
+          <div class="textBook__games_information">
+            <p>Learned ?/20 words on page</p>
+          </div>
         </div>
         <ul class="textBook__words-list">
         </ul>
@@ -55,49 +55,47 @@ export const renderTextBookNavigation = (): void => {
   main.innerHTML = textBook;
 };
 
-export const getAllUserWords = async (): Promise<void> => {
-  const arrayOfWords: Promise<UserWordInterface[]> = API.getUserWords();
-  storage.userWords = await arrayOfWords;
-};
+export const setWordStatus = async (wordId: string): Promise<void> => {
+  const learnedCheckbox = document.getElementById(`${wordId}Learned`) as HTMLInputElement;
+  const hardCheckbox = document.getElementById(`${wordId}Hard`) as HTMLInputElement;
+  const guessCounterSign = document.getElementById(`${wordId}Counter`) as HTMLElement;
+  const { difficultyValue, guessCounterValue } = await getWordProperties(wordId);
+  if (guessCounterValue >= 5 || difficultyValue === 'easy') {
+    learnedCheckbox.checked = true;
+    hardCheckbox.checked = false;
+  } else if (difficultyValue === 'hard') {
+    hardCheckbox.checked = true;
+    learnedCheckbox.checked = false;
+  }
+  guessCounterSign.setAttribute('data-guessCounter', guessCounterValue.toString());
+  guessCounterSign.innerHTML = `Guessed ${guessCounterValue.toString()} times`;
+}
 
-export const isUserWord = (wordId: string): number | null => {
-  let wordIndex: number | null = null;
-  storage.userWords.forEach((element, index) => {
-    if (element.wordId === wordId) wordIndex = index;
-  });
-  return wordIndex;
-};
+export const setWordsStatus = async (arrayOfWords: WordInterface[], isUserLogIn:boolean): Promise<void> => {
+  if (isUserLogIn) {
+    arrayOfWords.forEach(async element => {
+      const wordId = element.id || element._id;
+      await setWordStatus(wordId || '');
+    });
+  }
+}
 
-export const setWordsStatus = async (arrayOfWords: WordInterface[]): Promise<void> => {
-  await getAllUserWords();
-  let learnedWordsOnPage = 0;
-  arrayOfWords.forEach(async element => {
-    const wordId = element.id || element._id;
-    const hardCheckbox = document.getElementById(`${wordId}Hard`) as HTMLInputElement;
-    const learnedCheckbox = document.getElementById(`${wordId}Learned`) as HTMLInputElement;
-    const guessCounterSign = document.getElementById(`${wordId}`) as HTMLElement;
-    const userWordIndex = isUserWord(wordId || '');
+export const updateLearnWordsCounter = async (isUserLogIn: boolean): Promise<void> => {
+  if (isUserLogIn) {
+    const learnedWordsCounter = document.querySelector('.textBook__games_information') as HTMLElement;
+    const learnedWordArray = await API.getAggregatedWords('easy');
+    storage.learnedWordsOnPage = learnedWordArray;
+    learnedWordsCounter.innerHTML = `<p>Learned ${learnedWordArray.length - 1}/20 words on page</p>`;
+  }
+}
 
-    let difficulty = 'easy';
-    let guessCounter = 0;
-    if (userWordIndex || userWordIndex === 0) {
-      if (storage.userWords[userWordIndex].optional.guessCounter >= 5) learnedWordsOnPage += 1;
-      difficulty = storage.userWords[userWordIndex].difficulty;
-      guessCounter = storage.userWords[userWordIndex].optional.guessCounter;
-    }
-    if (difficulty === 'hard') hardCheckbox.checked = true;
-    if (guessCounter >= 5) learnedCheckbox.checked = true;
-    guessCounterSign.setAttribute('data-guessCounter', guessCounter.toString());
-    guessCounterSign.innerHTML = `Guessed ${guessCounter.toString()} times`;
-  });
-};
-
-export const renderTextBoxPage = async (groupNumber: number, pageNumber: number): Promise<void> => {
+export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
+: Promise<void> => {
   storage.wordsListCurrentGroup = groupNumber;
 
   const getWords = async (_groupNumber: number, _pageNumber: number): PageOfWordsInterface => {
     if (_groupNumber === 6) {
-      const arrayOfWords: PageOfWordsInterface = await API.getAggregatedWords();
+      const arrayOfWords: PageOfWordsInterface = await API.getAggregatedWords('hard');
       return arrayOfWords;
     }
     const arrayOfWords: PageOfWordsInterface = await API.getWords(_groupNumber, _pageNumber);
@@ -124,8 +122,8 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
           <p class="word-card_word-meaning-translation">${element.textMeaningTranslate}</p>
           <p class="word-card_word-example">${element.textExample}</p>
           <p class="word-card_word-example-translation">${element.textExampleTranslate}</p>
-          <hr class="word-card_line">
-          <div class="word-card_status-wrapper">
+          <hr class="word-card_line" ${hideElement(storage.isLogin)}>
+          <div class="word-card_status-wrapper" ${hideElement(storage.isLogin)}>
             <div class="word-card_status-checkbox-wrapper">
               <input type="checkbox" class="word-card_status-checkbox hard-checkbox"
               id="${element.id || element._id}Hard" value="yes" data-id="${element.id || element._id}">
@@ -139,7 +137,8 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
               <p class="word-card_status-checkbox-text">Learned word</p>
             </div>
           </div>
-          <h3 class="word-card_counter-information" id="${element.id || element._id}">Guessed 0 times</h3>
+          <h3 class="word-card_counter-information" ${hideElement(storage.isLogin)}
+          id="${element.id || element._id}Counter">Guessed 0 times</h3>
         </div>
       </div>
       <div class="word-card_audio-content-wrapper">
@@ -154,8 +153,8 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
     )
     .join('');
   wordsList.innerHTML = html;
-
-  setWordsStatus(await arrayOfWords);
+  updateLearnWordsCounter(storage.isLogin);
+  setWordsStatus(await arrayOfWords, storage.isLogin);
 };
 
 export const renderPagination = (pageNumber: number, totalPagesNumber: number = storage.limitOfPages): void => {
@@ -281,48 +280,59 @@ export const addEventWords = (): void => {
     }
     if ((event.target as HTMLInputElement).classList.contains('hard-checkbox')) {
       const wordId = (event.target as HTMLInputElement).getAttribute('data-id')?.toString() || '';
-      const userWordIndex = isUserWord(wordId);
-      if (userWordIndex || userWordIndex === 0) {
-        let { difficulty } = storage.userWords[userWordIndex];
-        if ((event.target as HTMLInputElement).checked === true) difficulty = 'hard';
-        else difficulty = 'easy';
-        const { guessCounter } = storage.userWords[userWordIndex].optional;
-        await API.updateUserWord(wordId, difficulty, guessCounter);
+      if (((event.target as HTMLInputElement)).checked === true) {
+        await updateWordProperties(wordId, undefined, 'hard');
+        setWordStatus(wordId);
+        updateLearnWordsCounter(storage.isLogin);
       } else {
-        let difficulty = 'easy';
-        if ((event.target as HTMLInputElement).checked === true) difficulty = 'hard';
-        await API.createUserWord(wordId, difficulty, 0);
+        await updateWordProperties(wordId, undefined, 'normal');
+        setWordStatus(wordId);
       }
-      setWordsStatus(storage.currentPageWords);
     }
     if ((event.target as HTMLInputElement).classList.contains('learned-checkbox')) {
       const wordId = (event.target as HTMLInputElement).getAttribute('data-id')?.toString() || '';
-      const userWordIndex = isUserWord(wordId);
-      let guessCounterValue = 0;
-      if (userWordIndex || userWordIndex === 0) {
-        const { difficulty } = storage.userWords[userWordIndex];
-        if ((event.target as HTMLInputElement).checked === true) guessCounterValue = 5;
-        await API.updateUserWord(wordId, difficulty, guessCounterValue);
+      if (((event.target as HTMLInputElement)).checked === true) {
+        await updateWordProperties(wordId, undefined, 'easy');
+        setWordStatus(wordId);
+        updateLearnWordsCounter(storage.isLogin);
       } else {
-        if ((event.target as HTMLInputElement).checked === true) guessCounterValue = 5;
-        await API.createUserWord(wordId, 'easy', guessCounterValue);
+        await updateWordProperties(wordId, undefined, 'normal');
+        setWordStatus(wordId);
+        updateLearnWordsCounter(storage.isLogin);
       }
-
-      setWordsStatus(storage.currentPageWords);
     }
   });
 };
+
+const addEventGames = () => {
+  const textBookGames = <HTMLButtonElement>document.querySelector('.textBook__games');
+  const sprintStartBtn = <HTMLButtonElement>document.getElementById('start-sprint-text-book');
+  // const AudioGameStartBtn = <HTMLButtonElement>document.getElementById('start-audio-game-text-book');
+  textBookGames.addEventListener('click', (e) => {
+    const target = <HTMLElement>e.target;
+    if (sprintStartBtn.contains(target)) {
+      renderGamePageContainer();
+      startSprintFromTextBook();
+    }
+    // if (AudioGameStartBtn.contains(target)) {
+    //   renderGamePageContainer();
+    //   renderAudioPage();
+    // }
+  });
+}
 
 export const addTestBookEvents = (): void => {
   addEventWordsGroup();
   addEventPagination();
   addEventWords();
-};
+  addEventGames();
+}
 
 export const renderTextBook = (): void => {
+  storage.isLogin = isLogin(); // Check
   renderTextBookNavigation();
-  renderTextBoxPage(storage.wordsListCurrentGroup, storage.wordsListCurrentPage);
-  renderPagination(storage.wordsListCurrentPage);
+  renderTextBoxPage(0, 0);
+  renderPagination(0);
   addTestBookEvents();
   storage.currentPage = 'Book';
 };
