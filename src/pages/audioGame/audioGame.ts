@@ -3,6 +3,7 @@ import './audioGame.scss';
 import { WordInterface } from '../../shared/types';
 import { storage } from '../../shared/storage';
 import { getAllGroupWords } from '../../services/getAllGroupWords';
+import { getGuessWord } from '../../services/getGuessWord';
 import { getRandomNumber } from '../../services/getRandomNumber';
 import { playAllAudioFiles } from '../../components/audioButton/audioButton';
 import { setAttrDisabled } from '../../services/setAttrDisabled';
@@ -37,17 +38,6 @@ function getUniqueArray(array: WordInterface[]) {
     uniqueArray.shift();
   }
   return uniqueArray;
-}
-
-function getGuessWord(currentPage: string | null, arr: WordInterface[]) {
-  let guessWordCur: WordInterface;
-  if (currentPage === 'Book') {
-    guessWordCur = storage.currentPageWords[getRandomNumber(0, 19)];
-  } else {
-    guessWordCur = arr[getRandomNumber(0, 599)];
-  }
-
-  return guessWordCur;
 }
 
 export const renderResultAudioPage = (

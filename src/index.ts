@@ -19,9 +19,9 @@ import { renderStatistic } from './pages/statistic/statistic';
 
 const renderPage = (): void => {
   renderHeader();
-  renderMain();
-  // renderGamePageContainer();
-  // renderWordPuzzlePage();
+  // renderMain();
+  renderGamePageContainer();
+  renderWordPuzzlePage();
   renderFooter();
 };
 
