@@ -16,6 +16,8 @@ import { renderGamePageContainer } from './components/gamePageContainer/gamePage
 import { startSprint } from './pages/sprint/sprint';
 import { renderGraphs, renderStatistic } from './pages/statistic/statistic';
 import { renderGraph } from './components/gpaph/graph';
+import { renderWordPuzzlePage } from './pages/wordPuzzle/wordPuzzle';
+
 
 const renderPage = (): void => {
   renderHeader();
@@ -41,16 +43,20 @@ const onNavigate = (location: string): void => {
   switch (location) {
     case '#/main':
       renderMain();
+      renderFooter();
       break;
     case '#/book':
       renderTextBook();
+      renderFooter();
       break;
     case '#/games':
       renderGamePage();
+      renderFooter();
       break;
     case '#/statistic':
       renderStatistic();
       renderGraphs();
+      renderFooter();
       break;
     case '#/sprint':
       renderGamePageContainer();
@@ -64,10 +70,8 @@ const onNavigate = (location: string): void => {
       main.innerHTML = `<h1>sprintBook</h1>`;
       break;
     case '#/wordPuzzle':
-      main.innerHTML = `<h1>#/wordPuzzle</h1>`;
-      break;
-    case '#/sentencePuzzle':
-      main.innerHTML = `<h1>#/sentencePuzzle</h1>`;
+      renderGamePageContainer();
+      renderWordPuzzlePage();
       break;
     default:
       renderMain();
