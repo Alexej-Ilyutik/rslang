@@ -171,11 +171,19 @@ export const renderStatistic = (): void => {
 
         </div>
       </div>
-      <div class="all-time">
+      <div class="all-time container">
         <h3>All time</h3>
-        <div class="d-flex">
-          <h1>Graph</h1>
-          <h1>Graph</h1>
+        <div class="all-time__content d-flex">
+          <div class="card line-graph">
+            <div class="card-body">
+              <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
+            </div>
+          </div>
+          <div class="card line-graph">
+            <div class="card-body">
+              <canvas id="myChart2" style="width:100%;max-width:700px"></canvas>
+            </div>
+          </div>
         </div>
       </div>
     </div>
