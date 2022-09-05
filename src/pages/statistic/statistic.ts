@@ -96,9 +96,10 @@ export const updateStatistic = async (): Promise<void> => {
 
 export const renderGraphs = async () => {
   const statistic: UserStatisticInterfaceAll = await API.getStatistics();
+  const tempArray = Object.entries(statistic.optional).sort();
 
-  const dateArray = Object.keys(statistic.optional);
-  const valuesArray = Object.values(statistic.optional);
+  const dateArray = tempArray.map(x => x[0]);
+  const valuesArray = tempArray.map(x => x[1]);
 
   let sum = 0;
   const totalLearnedWords = valuesArray.map((x, i) => {

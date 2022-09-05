@@ -109,7 +109,7 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
   storage.currentPageWords = await arrayOfWords;
 
   const wordsList = document.querySelector('.textBook__words-list') as HTMLElement;
-  storage.wordsListCurrentPage = pageNumber; // update page number
+  storage.wordsListCurrentPage = pageNumber;
   const html = (await arrayOfWords)
     .map(
       element => `
@@ -315,7 +315,7 @@ export const addTestBookEvents = (): void => {
 };
 
 export const renderTextBook = (groupNumber: number, pageNumber: number): void => {
-  storage.isLogin = isLogin(); // Check
+  storage.isLogin = isLogin();
   renderTextBookNavigation();
   renderTextBoxPage(groupNumber, pageNumber);
   renderPagination(pageNumber);
