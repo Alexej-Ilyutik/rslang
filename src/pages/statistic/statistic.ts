@@ -1,6 +1,6 @@
 import "./statistic.scss";
 import API from "../../services/api";
-import { GameStatisticInterface } from "../../shared/types";
+import { GameStatisticInterface, UserWordInterface, WordInterface } from "../../shared/types";
 
 export const findGameAccuracy = (array: GameStatisticInterface[]): number => {
   const numberOfGames = array.length;
@@ -8,7 +8,7 @@ export const findGameAccuracy = (array: GameStatisticInterface[]): number => {
   array.forEach((element) => {
     sumOfSprintAccuracy += element.accuracy;
   })
-  return sumOfSprintAccuracy / (numberOfGames - 1);
+  return sumOfSprintAccuracy / (numberOfGames);
 }
 
 export const findGameBestStrike = (array: GameStatisticInterface[]): number => {
@@ -19,33 +19,77 @@ export const findGameBestStrike = (array: GameStatisticInterface[]): number => {
   return bestStreakValue;
 }
 
+export const findDailyAccuracy = (gamesStatistic: GameStatisticInterface[][]): number => {
+  let sumOfDailyAccuracy = 0;
+  let numberOfPlayedGames = 0;
+  gamesStatistic.forEach((game) => {
+    game.forEach((element) => {
+      sumOfDailyAccuracy += element.accuracy;
+      numberOfPlayedGames += 1;
+    })
+  })
+  return sumOfDailyAccuracy / numberOfPlayedGames;
+}
+
+export const findDailyNewWords = async (date: string): Promise<number> => {
+  let sumOfDailyWords = 0;
+  const arrayOfUserWords: UserWordInterface[] = await API.getUserWords();
+  // arrayOfUserWords.forEach((element) => {
+  //   if (element.optional.firstShowedDate === date) sumOfDailyWords += 1;
+  // })
+  for (let i = 0; i < arrayOfUserWords.length; i += 1) {
+    if (arrayOfUserWords[i].optional.firstShowedDate === date) sumOfDailyWords += 1;
+  }
+  return sumOfDailyWords;
+}
+
 export const updateStatistic = async (): Promise<void> => {
   const userStatistic = await API.getStatistics();
   const currentDate = new Date().toLocaleDateString('en-GB');
 
-  const dailyAccuracy = document.getElementById('daily-accuracy') as HTMLElement;
+  if (!(currentDate in userStatistic.optional)) {
+    userStatistic.optional[currentDate] = { // Initialization
+      gamesStatistic: {
+        sprintGame: [],
+        audioGame: [],
+      },
+      globalStatistic: {
+        learnedWordsToday: 0,
+      },
+    }
+  }
 
-  const dailyNewWords = document.getElementById('daily-new-words') as HTMLElement;
   const dailyLearnedWords = document.getElementById('daily-learned-words') as HTMLElement;
   dailyLearnedWords.innerHTML = userStatistic.optional[currentDate].globalStatistic.learnedWordsToday.toString();
 
   const arrayOfSprintGames = userStatistic.optional[currentDate].gamesStatistic.sprintGame;
   const lastSprintGameNumber = arrayOfSprintGames.length;
-  const sprintNewLearnedWords = document.getElementById('Sprint-new-learned-words') as HTMLElement;
-  sprintNewLearnedWords.innerHTML = arrayOfSprintGames[lastSprintGameNumber - 1].newWordsCount.toString();
-  const sprintAccuracy = document.getElementById('Sprint-accuracy') as HTMLElement;
-  sprintAccuracy.innerHTML = findGameAccuracy(arrayOfSprintGames).toString();
-  const sprintBestStreak = document.getElementById('Sprint-best-streak') as HTMLElement;
-  sprintBestStreak.innerHTML = findGameBestStrike(arrayOfSprintGames).toString();
+  if (lastSprintGameNumber) {
+    const sprintNewLearnedWords = document.getElementById('Sprint-new-learned-words') as HTMLElement;
+    sprintNewLearnedWords.innerHTML = arrayOfSprintGames[lastSprintGameNumber - 1].newWordsCount.toString();
+    const sprintAccuracy = document.getElementById('Sprint-accuracy') as HTMLElement;
+    sprintAccuracy.innerHTML = findGameAccuracy(arrayOfSprintGames).toString();
+    const sprintBestStreak = document.getElementById('Sprint-best-streak') as HTMLElement;
+    sprintBestStreak.innerHTML = findGameBestStrike(arrayOfSprintGames).toString();
+  }
 
   const arrayOfAudioGames = userStatistic.optional[currentDate].gamesStatistic.audioGame;
   const lastAudioGameNumber = arrayOfAudioGames.length;
-  const audioNewLearnedWords = document.getElementById('Audio-new-learned-words') as HTMLElement;
-  audioNewLearnedWords.innerHTML = arrayOfAudioGames[lastAudioGameNumber - 1].newWordsCount.toString();
-  const audioAccuracy = document.getElementById('Audio-accuracy') as HTMLElement;
-  audioAccuracy.innerHTML = findGameAccuracy(arrayOfAudioGames).toString();
-  const audioBestStreak = document.getElementById('Audio-best-streak') as HTMLElement;
-  audioBestStreak.innerHTML = findGameBestStrike(arrayOfAudioGames).toString();
+  if (lastAudioGameNumber) {
+    const audioNewLearnedWords = document.getElementById('Audio-new-learned-words') as HTMLElement;
+    audioNewLearnedWords.innerHTML = arrayOfAudioGames[lastAudioGameNumber - 1].newWordsCount.toString();
+    const audioAccuracy = document.getElementById('Audio-accuracy') as HTMLElement;
+    audioAccuracy.innerHTML = findGameAccuracy(arrayOfAudioGames).toString();
+    const audioBestStreak = document.getElementById('Audio-best-streak') as HTMLElement;
+    audioBestStreak.innerHTML = findGameBestStrike(arrayOfAudioGames).toString();
+  }
+
+  const dailyAccuracy = document.getElementById('daily-accuracy') as HTMLElement;
+  dailyAccuracy.innerHTML = findDailyAccuracy([arrayOfSprintGames, arrayOfAudioGames]).toString();
+
+  const dailyNewWords = document.getElementById('daily-new-words') as HTMLElement;
+  const DailyNewWords = await findDailyNewWords(currentDate);
+  dailyNewWords.innerHTML = DailyNewWords.toString();
 }
 
 export const renderStatistic = (): void => {
@@ -59,7 +103,7 @@ export const renderStatistic = (): void => {
         <div class="daily__content d-flex">
           <div class="card words">
             <div class="card-body d-flex words__body">
-              <h3 class="card-title words__title" id="daily-accuracy">100%</h3>
+              <h3 class="card-title words__title" id="daily-accuracy">?</h3>
               <div class="words__text">
                 <h3 class="mb-0">accuracy</h3>
                 <span class="card-text">were achieved</span>
@@ -68,7 +112,7 @@ export const renderStatistic = (): void => {
           </div>
           <div class="card words">
             <div class="card-body d-flex words__body">
-              <h3 class="card-title words__title" id="daily-new-words">1000</h3>
+              <h3 class="card-title words__title" id="daily-new-words">?</h3>
               <div class="words__text">
                 <h3 class="mb-0">words</h3>
                 <span class="card-text">were new</span>
@@ -77,7 +121,7 @@ export const renderStatistic = (): void => {
           </div>
           <div class="card words">
             <div class="card-body d-flex words__body">
-              <h3 class="card-title words__title" id="daily-learned-words">1000</h3>
+              <h3 class="card-title words__title" id="daily-learned-words">?</h3>
               <div class="words__text">
                 <h3 class="mb-0">words</h3>
                 <span class="card-text">were learned</span>
@@ -90,15 +134,15 @@ export const renderStatistic = (): void => {
               <h3 class="card-title game__blue-title">Sprint</h3>
               <div class="game__content">
                 <div class="game__text">
-                  <span id="Sprint-new-learned-words">0</span>
+                  <span id="Sprint-new-learned-words">?</span>
                   <span>words</span>
                 </div>
                 <div class="game__text">
-                  <span id="Sprint-accuracy">0%</span>
+                  <span id="Sprint-accuracy">?</span>
                   <span>accuracy</span>
                 </div>
                 <div class="game__text">
-                  <span id="Sprint-best-streak">0</span>
+                  <span id="Sprint-best-streak">?</span>
                   <span>best streak</span>
                 </div>
               </div>
@@ -110,15 +154,15 @@ export const renderStatistic = (): void => {
               <h3 class="card-title game__red-title">Audio challenge</h3>
               <div class="game__content">
               <div class="game__text">
-                <span id="Audio-new-learned-words">0</span>
+                <span id="Audio-new-learned-words">?</span>
                   <span>words</span>
                 </div>
                 <div class="game__text">
-                  <span id="Audio-accuracy">0%</span>
+                  <span id="Audio-accuracy">?</span>
                   <span>accuracy</span>
                 </div>
                 <div class="game__text">
-                  <span id="Audio-best-streak">0</span>
+                  <span id="Audio-best-streak">?</span>
                   <span>best streak</span>
                 </div>
               </div>
