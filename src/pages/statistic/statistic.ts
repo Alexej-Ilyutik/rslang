@@ -9,7 +9,7 @@ export const findGameAccuracy = (array: GameStatisticInterface[]): number => {
   array.forEach((element) => {
     sumOfSprintAccuracy += element.accuracy;
   })
-  return sumOfSprintAccuracy / (numberOfGames);
+  return Math.round(sumOfSprintAccuracy / (numberOfGames));
 }
 
 export const findGameBestStrike = (array: GameStatisticInterface[]): number => {
@@ -29,7 +29,7 @@ export const findDailyAccuracy = (gamesStatistic: GameStatisticInterface[][]): n
       numberOfPlayedGames += 1;
     })
   })
-  return sumOfDailyAccuracy / numberOfPlayedGames;
+  return Math.round(sumOfDailyAccuracy / numberOfPlayedGames);
 }
 
 export const findDailyNewWords = async (date: string): Promise<number> => {
