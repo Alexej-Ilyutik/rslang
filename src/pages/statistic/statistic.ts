@@ -2,6 +2,9 @@ import "./statistic.scss";
 import API from "../../services/api";
 import { GameStatisticInterface, UserStatisticInterfaceAll, UserWordInterface, WordInterface } from "../../shared/types";
 import { renderGraph } from "../../components/gpaph/graph";
+import { storage } from "../../shared/storage";
+import { isLogin } from "../../services/isLogin";
+import { hideElement } from "../../services/hideElement";
 
 export const findGameAccuracy = (array: GameStatisticInterface[]): number => {
   const numberOfGames = array.length;
@@ -112,8 +115,9 @@ export const renderGraphs = async () => {
 }
 
 export const renderStatistic = (): void => {
+  storage.isLogin = isLogin();
   const statistic = `
-  <div class="statistic">
+  <div class="statistic" ${hideElement(storage.isLogin)}>
   <div class="statistic__wrapper container">
     <h2>Statistic</h2>
     <div class="statistic__content container">
