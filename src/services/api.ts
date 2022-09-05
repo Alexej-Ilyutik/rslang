@@ -225,7 +225,8 @@ class API {
         [new Date().toLocaleDateString('en-GB')]: {
           gamesStatistic: {
             sprintGame: [],
-            audioGame: []
+            audioGame: [],
+            puzzleGame: []
           },
           globalStatistic: {
             learnedWordsToday: 0

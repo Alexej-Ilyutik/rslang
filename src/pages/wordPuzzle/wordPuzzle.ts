@@ -236,7 +236,7 @@ const addEventStartWordPuzzleGame = async (): Promise<void> => {
             accuracy: myAccuracy,
             bestStreak: Math.max.apply(null, currentStreakArray),
           },
-          'audioGame',
+          'puzzleGame',
         );
       }
     }

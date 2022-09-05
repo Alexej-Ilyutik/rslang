@@ -3,7 +3,6 @@ import API from "../../services/api";
 import { GameStatisticInterface, UserStatisticInterfaceAll, UserWordInterface } from "../../shared/types";
 import { renderGraph } from "../../components/gpaph/graph";
 import { storage } from "../../shared/storage";
-import { isLogin } from "../../services/isLogin";
 import { hideElement } from "../../services/hideElement";
 
 export const findGameAccuracy = (array: GameStatisticInterface[]): number => {
@@ -26,24 +25,25 @@ export const findGameBestStrike = (array: GameStatisticInterface[]): number => {
 export const findDailyAccuracy = (gamesStatistic: GameStatisticInterface[][]): number => {
   let sumOfDailyAccuracy = 0;
   let numberOfPlayedGames = 0;
-  gamesStatistic.forEach((game) => {
-    game.forEach((element) => {
+  for(let i = 0; i < gamesStatistic.length; i += 1) {
+    // eslint-disable-next-line no-continue
+    if (gamesStatistic[i].length === 0) continue;
+    // eslint-disable-next-line @typescript-eslint/no-loop-func
+    gamesStatistic[i].forEach((element) => {
       sumOfDailyAccuracy += element.accuracy;
       numberOfPlayedGames += 1;
     })
-  })
+  }
+  if (numberOfPlayedGames === 0) return 0;
   return Math.round(sumOfDailyAccuracy / numberOfPlayedGames);
 }
 
 export const findDailyNewWords = async (date: string): Promise<number> => {
   let sumOfDailyWords = 0;
   const arrayOfUserWords: UserWordInterface[] = await API.getUserWords();
-  // arrayOfUserWords.forEach((element) => {
-  //   if (element.optional.firstShowedDate === date) sumOfDailyWords += 1;
-  // })
-  for (let i = 0; i < arrayOfUserWords.length; i += 1) {
-    if (arrayOfUserWords[i].optional.firstShowedDate === date) sumOfDailyWords += 1;
-  }
+  arrayOfUserWords.forEach((element) => {
+    if (element.optional.firstShowedDate === date) sumOfDailyWords += 1;
+  })
   return sumOfDailyWords;
 }
 
@@ -52,10 +52,11 @@ export const updateStatistic = async (): Promise<void> => {
   const currentDate = new Date().toLocaleDateString('en-GB');
 
   if (!(currentDate in userStatistic.optional)) {
-    userStatistic.optional[currentDate] = { // Initialization
+    userStatistic.optional[currentDate] = {
       gamesStatistic: {
         sprintGame: [],
         audioGame: [],
+        puzzleGame: []
       },
       globalStatistic: {
         learnedWordsToday: 0,
@@ -88,8 +89,19 @@ export const updateStatistic = async (): Promise<void> => {
     audioBestStreak.innerHTML = findGameBestStrike(arrayOfAudioGames).toString();
   }
 
+  const arrayOfPuzzleGames = userStatistic.optional[currentDate].gamesStatistic.puzzleGame;
+  const lastPuzzleGameNumber = arrayOfPuzzleGames.length;
+  if (lastPuzzleGameNumber) {
+    const puzzleNewLearnedWords = document.getElementById('Puzzle-new-learned-words') as HTMLElement;
+    puzzleNewLearnedWords.innerHTML = arrayOfPuzzleGames[lastPuzzleGameNumber - 1].newWordsCount.toString();
+    const puzzleAccuracy = document.getElementById('Puzzle-accuracy') as HTMLElement;
+    puzzleAccuracy.innerHTML = findGameAccuracy(arrayOfPuzzleGames).toString();
+    const puzzleBestStreak = document.getElementById('Puzzle-best-streak') as HTMLElement;
+    puzzleBestStreak.innerHTML = findGameBestStrike(arrayOfPuzzleGames).toString();
+  }
+
   const dailyAccuracy = document.getElementById('daily-accuracy') as HTMLElement;
-  dailyAccuracy.innerHTML = findDailyAccuracy([arrayOfSprintGames, arrayOfAudioGames]).toString();
+  dailyAccuracy.innerHTML = findDailyAccuracy([arrayOfSprintGames, arrayOfAudioGames, arrayOfPuzzleGames]).toString();
 
   const dailyNewWords = document.getElementById('daily-new-words') as HTMLElement;
   const DailyNewWords = await findDailyNewWords(currentDate);
@@ -193,18 +205,18 @@ export const renderStatistic = (): void => {
 
           <div class="card game">
             <div class="card-body d-flex game__body">
-              <h3 class="card-title game__green-title">Audio challenge</h3>
+              <h3 class="card-title game__green-title">Puzzle game</h3>
               <div class="game__content">
               <div class="game__text">
-                <span id="puzzle-new-learned-words">?</span>
+                <span id="Puzzle-new-learned-words">?</span>
                   <span>words</span>
                 </div>
                 <div class="game__text">
-                  <span id="puzzle-accuracy">?</span>
+                  <span id="Puzzle-accuracy">?</span>
                   <span>accuracy</span>
                 </div>
                 <div class="game__text">
-                  <span id="puzzle-best-streak">?</span>
+                  <span id="Puzzle-best-streak">?</span>
                   <span>best streak</span>
                 </div>
               </div>

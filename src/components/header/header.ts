@@ -40,7 +40,7 @@ export const renderHeader = (): void => {
                 <a class="nav-link fw-bolder fs-5 link-direction" href="#/games"
                 >Games</a>
               </li>
-              <li class="nav-item mx-3" ${hideElement(storage.isLogin)}>
+              <li class="nav-item mx-3">
                 <a class="nav-link fw-bolder fs-5 link-direction" href="#/statistic"
                 >Statistics</a>
               </li>

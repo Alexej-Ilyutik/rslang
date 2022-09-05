@@ -9,6 +9,7 @@ import { updateWordProperties } from '../../services/updateWordProperties';
 import { getWordProperties } from '../../services/getWordProperties';
 import { isLogin } from '../../services/isLogin';
 import { hideElement } from '../../services/hideElement';
+import { resetUserStatistic } from '../../services/resetUserStatistic';
 
 export const renderTextBookNavigation = (): void => {
 
@@ -320,3 +321,7 @@ export const renderTextBook = (groupNumber: number, pageNumber: number): void =>
   addTestBookEvents();
   storage.currentPage = 'Book';
 };
+
+const stat = await API.getStatistics();
+console.log(stat);
+// resetUserStatistic();

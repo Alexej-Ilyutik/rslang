@@ -7,10 +7,9 @@ export const resetUserStatistic = async (): Promise<void> => {
   const statisticForm: UserStatisticInterface = {
     [currentDate]: {
       gamesStatistic: {
-        // sprintGame: [{newWordsCount: 0, accuracy: 0, bestStreak: 0}],
         sprintGame: [],
-        // audioGame: [{newWordsCount: 0, accuracy: 0, bestStreak: 0}],
         audioGame: [],
+        puzzleGame: []
       },
       globalStatistic: {
         learnedWordsToday: 0,

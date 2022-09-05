@@ -13,9 +13,11 @@ export const updateUserStatistic = async (obj: GameStatisticInterface, gameName:
 
   let sprintGameStatistics;
   let audioGameStatistics;
+  let puzzleGameStatistics;
   if (currentDate in currentUserStatistic.optional) {
     sprintGameStatistics = [...currentUserStatistic.optional[currentDate].gamesStatistic.sprintGame];
     audioGameStatistics = [...currentUserStatistic.optional[currentDate].gamesStatistic.audioGame];
+    puzzleGameStatistics = [...currentUserStatistic.optional[currentDate].gamesStatistic.puzzleGame];
 
     switch (gameName) {
       case 'sprintGame':
@@ -26,6 +28,10 @@ export const updateUserStatistic = async (obj: GameStatisticInterface, gameName:
         audioGameStatistics.push({newWordsCount, accuracy, bestStreak});
         break;
 
+      case 'puzzleGame':
+        puzzleGameStatistics.push({newWordsCount, accuracy, bestStreak});
+        break;
+
       default:
         break;
     }
@@ -34,6 +40,7 @@ export const updateUserStatistic = async (obj: GameStatisticInterface, gameName:
       gamesStatistic: {
         sprintGame: sprintGameStatistics,
         audioGame: audioGameStatistics,
+        puzzleGame: puzzleGameStatistics,
       },
       globalStatistic: {
         learnedWordsToday: learnedWordsTodayValue,
@@ -44,6 +51,7 @@ export const updateUserStatistic = async (obj: GameStatisticInterface, gameName:
       gamesStatistic: {
         sprintGame: [],
         audioGame: [],
+        puzzleGame: [],
       },
       globalStatistic: {
         learnedWordsToday: learnedWordsTodayValue,
@@ -56,6 +64,10 @@ export const updateUserStatistic = async (obj: GameStatisticInterface, gameName:
 
       case 'audioGame':
         currentUserStatistic.optional[currentDate].gamesStatistic.audioGame[0] = {newWordsCount, accuracy, bestStreak};
+        break;
+
+      case 'puzzleGame':
+        currentUserStatistic.optional[currentDate].gamesStatistic.puzzleGame[0] = {newWordsCount, accuracy, bestStreak};
         break;
 
       default:

@@ -32,7 +32,7 @@ export interface UserWordInterface {
   wordId: string,
 }
 
-export type GameNameType = 'sprintGame' | 'audioGame';
+export type GameNameType = 'sprintGame' | 'audioGame' | 'puzzleGame';
 
 export interface GameStatisticInterface {
   newWordsCount: number,
@@ -53,6 +53,7 @@ export type UserStatisticInterface = {
     gamesStatistic: {
       sprintGame: GameStatisticInterface[];
       audioGame: GameStatisticInterface[];
+      puzzleGame: GameStatisticInterface[];
     };
     globalStatistic: {
       learnedWordsToday: number;
