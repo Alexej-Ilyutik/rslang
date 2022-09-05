@@ -5,7 +5,9 @@ export const switchLoginMode = () => {
   const loginBtn = document.getElementById('login-btn') as HTMLButtonElement;
   const logoutBtn = document.getElementById('logout-btn') as HTMLButtonElement;
   const registerBtn = document.getElementById('register-btn') as HTMLButtonElement;
+  const statisticBtnHeader = document.querySelector('.statistic-button-header') as HTMLButtonElement;
+
 
   storage.isLogin = isLogin();
-  [loginBtn, registerBtn, logoutBtn].forEach(x => x.classList.toggle('hidden-element'));
+  [loginBtn, registerBtn, logoutBtn, statisticBtnHeader].forEach(x => x.classList.toggle('hidden-element'));
 }

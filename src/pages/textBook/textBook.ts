@@ -321,7 +321,3 @@ export const renderTextBook = (groupNumber: number, pageNumber: number): void =>
   addTestBookEvents();
   storage.currentPage = 'Book';
 };
-
-const stat = await API.getStatistics();
-console.log(stat);
-// resetUserStatistic();

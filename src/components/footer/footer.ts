@@ -35,8 +35,8 @@ export const renderFooter = (): void => {
             <p>
               <a class="text-white nav-link link-direction" href="#/games">Games</a>
             </p>
-            <p ${hideElement(storage.isLogin)}>
-              <a class="text-white nav-link link-direction" href="#/statistic">Statistics</a>
+            <p>
+              <a class="text-white nav-link link-direction ${hideElement(storage.isLogin)}" href="#/statistic">Statistics</a>
             </p>
           </div>
           <!-- Grid column -->

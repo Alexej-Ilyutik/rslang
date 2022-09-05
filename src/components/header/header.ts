@@ -1,5 +1,3 @@
-import { hideElement } from '../../services/hideElement';
-import { storage } from '../../shared/storage';
 import './header.scss';
 
 export const renderHeader = (): void => {
@@ -41,7 +39,7 @@ export const renderHeader = (): void => {
                 >Games</a>
               </li>
               <li class="nav-item mx-3">
-                <a class="nav-link fw-bolder fs-5 link-direction" href="#/statistic"
+                <a class="nav-link fw-bolder fs-5 link-direction statistic-button-header hidden-element" href="#/statistic"
                 >Statistics</a>
               </li>
             </ul>
