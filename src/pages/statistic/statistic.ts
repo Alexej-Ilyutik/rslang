@@ -94,17 +94,17 @@ export const updateStatistic = async (): Promise<void> => {
 }
 
 export const renderGraphs = async () => {
-  const statistic: UserStatisticInterfaceAll = await API.getStatistics()
+  const statistic: UserStatisticInterfaceAll = await API.getStatistics();
 
-  const dateArray = Object.keys(statistic.optional).sort();
+  const dateArray = Object.keys(statistic.optional);
+  const valuesArray = Object.values(statistic.optional);
 
   let sum = 0;
-  const totalLearnedWords = Object.keys(statistic.optional).map((x) => {
-    sum += statistic.optional[x].globalStatistic.learnedWordsToday;
+  const totalLearnedWords = valuesArray.map((x, i) => {
+    sum += valuesArray[i].globalStatistic.learnedWordsToday;
     return sum;
   });
-
-  const totalNewWords = await Promise.all(Object.keys(statistic.optional).map(async (x) => findDailyNewWords(x)));
+  const totalNewWords = await Promise.all(dateArray.map(async (x) => findDailyNewWords(x)));
 
   renderGraph(dateArray, totalNewWords, 'new word per day', (<HTMLCanvasElement>document.getElementById('myChart')));
   renderGraph(dateArray, totalLearnedWords, 'leaned words', (<HTMLCanvasElement>document.getElementById('myChart2')));
