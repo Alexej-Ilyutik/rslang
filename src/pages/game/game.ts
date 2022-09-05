@@ -38,19 +38,6 @@ export const renderGamePage = (): void => {
 				<a href="#/wordPuzzle" class="game__btn btn btn-warning link-direction" role="button">Play game</a>
 			</div>
 		</article>
-		<article class="postcard light yellow">
-
-				<img class="postcard__img" src="../../assets/sentence-puzzle.png" alt="Image Title" />
-
-			<div class="postcard__text t-dark">
-				<h2 class="postcard__title yellow"><a class = "link-direction"
-        href="#/sentencePuzzle">Sentence puzzle</a></h2>
-
-				<div class="postcard__bar"></div>
-				<div class="postcard__preview-txt">Make sentences out of words. Be careful, you only have 5 lives!</div>
-			<a href="#/sentencePuzzle" class="game__btn btn btn-warning link-direction" role="button">Play game</a>
-			</div>
-		</article>
 	</div>
 </section>
 `;

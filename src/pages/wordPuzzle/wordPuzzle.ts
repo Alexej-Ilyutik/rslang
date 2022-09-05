@@ -8,12 +8,25 @@ import { storage } from '../../shared/storage';
 import { shuffle } from '../../services/shuffleArray';
 import { playAllAudioFiles } from '../../components/audioButton/audioButton';
 import { renderVolumeBtn } from '../../components/renderVolumeBtn/renderVolumeBtn';
+import { renderGamePage } from '../game/game';
+import { renderGamePageContainer } from '../../components/gamePageContainer/gamePageContainer';
+import { updateWord } from '../../services/updateWord';
+import { updateUserStatistic } from '../../services/updateUserStatistic';
+import { findDailyNewWords } from '../statistic/statistic';
 
 let level = 0;
 let count = 0;
-let life = 0;
+let amountClick = 0;
+let life = 5;
+let trueAnswerRez = 0;
+let allAnswerRez = 0;
+let falseAnswerRez = 0;
 const trueAnswerAudio = new Audio('../../assets/success.mp3');
 const falseAnswerAudio = new Audio('../../assets/error.mp3');
+let falseAnswerArr: WordInterface[] = [];
+let newWordStart = 0;
+let newWordFinish = 0;
+const currentDate = new Date().toLocaleDateString('en-GB');
 
 const renderOptionLetters = (block: HTMLElement, wordArr: string[]): void => {
   for (let i = 0; i < wordArr.length; i += 1) {
@@ -91,17 +104,23 @@ const renderListItem = (block: HTMLElement, wordArr: WordInterface[]): void => {
   }
 };
 
+const renderLife = (block: HTMLElement, num: number): void => {
+  for (let i = 0; i < num; i += 1) {
+    const item = document.createElement('div');
+    item.className = 'audiocall__life-item';
+    item.innerHTML = `
+             <i id="life${i}" class="fa-solid fa-heart fa-2x"></i>
+        `;
+    block.appendChild(item);
+  }
+};
+
 async function renderContentWordPuzzlePage(block: HTMLElement, mainWord: WordInterface): Promise<void> {
   const mainBlock = `
   <div class = "audiocall__volume">${renderVolumeBtn()}
     </div>
     <h3 class="audiocall__subtitle">Game: Word Puzzle</h3>
     <div class="audiocall__life-container">
-       <div class = "audiocall__volume-on"><i id="life1" class="fa-solid fa-heart fa-2x"></i></div>
-       <div class = "audiocall__volume-on"><i id="life2" class="fa-solid fa-heart fa-2x"></i></div>
-       <div class = "audiocall__volume-on"><i id="life3" class="fa-solid fa-heart fa-2x"></i></div>
-       <div class = "audiocall__volume-on"><i id="life4" class="fa-solid fa-heart fa-2x"></i></div>
-       <div class = "audiocall__volume-on"><i id="life5" class="fa-solid fa-heart fa-2x"></i></div>
     </div>
     <figure class="figure wordPuzzle__figure-container">
       <div class="wordPuzzle__image">
@@ -127,17 +146,15 @@ async function renderContentWordPuzzlePage(block: HTMLElement, mainWord: WordInt
     <button type="button" class="btn btn-info audiocall__next" id = "btn-wordPuzzle-next">I don't know</button>
   `;
   block.innerHTML = mainBlock;
+  amountClick = 0;
+  falseAnswerArr.push(mainWord);
 }
 
 const addEventStartWordPuzzleGame = async (): Promise<void> => {
-  const btnNext = document.querySelector('.audiocall__next') as HTMLElement;
   const audioContent = document.querySelector('.audiocall__content') as HTMLElement;
-  // let trueAnswer = 0;
-  // let falseAnswer = 0;
-  // let currentStreak = 0;
+  let currentStreak = 0;
   const currentStreakArray: Array<number> = [];
   const trueAnswerArr: WordInterface[] = [];
-  const falseAnswerArr: WordInterface[] = [];
 
   audioContent.addEventListener('click', async e => {
     const target = e.target as HTMLInputElement;
@@ -158,36 +175,75 @@ const addEventStartWordPuzzleGame = async (): Promise<void> => {
 
     if (target.classList.contains('options-letter')) {
       const wordBlockContent = Array.from(document.getElementsByClassName('word-letter'));
+      const btnNext = document.querySelector('.audiocall__next') as HTMLElement;
       const btnVoice = document.getElementById('voice-audio') as HTMLElement;
       const currentWord = btnVoice.getAttribute('data-name') as string;
+      const getIdWord = btnVoice.getAttribute('data-id') || '';
+      const currentWordObj: WordInterface = await API.getWord(getIdWord);
+
       if (target.innerHTML === currentWord[count]) {
         wordBlockContent[count].innerHTML = target.innerHTML;
-        console.log(target.innerHTML);
-        console.log(currentWord);
-        console.log(wordBlockContent[count]);
 
         if (storage.volumeState) {
           trueAnswerAudio.play();
         }
+        amountClick += 1;
         count += 1;
         target.innerHTML = '';
         if (count === currentWord.length) {
           btnNext.innerHTML = 'Next';
         }
-        console.log(count);
-         console.log(btnNext.innerHTML);
-
       } else {
         if (storage.volumeState) {
           falseAnswerAudio.play();
         }
-        life += 1;
-        (document.getElementById(`life${life}`) as HTMLElement).style.color = 'gray';
+        currentStreak = 0;
+        life -= 1;
+        amountClick -= 1;
+        const lifeContent = document.querySelector('.audiocall__life-container') as HTMLElement;
+        lifeContent.innerHTML = '';
+        renderLife(lifeContent, life);
+      }
+
+      if (amountClick === currentWord.length) {
+        trueAnswerRez += 1;
+        trueAnswerArr.push(currentWordObj);
+        currentStreak += 1;
+        currentStreakArray.push(currentStreak);
+      }
+
+      if (life === 0) {
+        let myAccuracy = 0;
+        allAnswerRez += 1;
+        if (allAnswerRez !== 0) {
+          myAccuracy = Math.round((trueAnswerRez * 100) / allAnswerRez);
+        }
+        falseAnswerRez = allAnswerRez - trueAnswerRez;
+
+        const falseResult = falseAnswerArr.filter(x => !trueAnswerArr.some(y => x.id === y.id));
+
+        renderResultWordPuzzlePage(audioContent, myAccuracy, trueAnswerRez, falseAnswerRez);
+        const itemListTrue = document.querySelector('.result__list-true') as HTMLElement;
+        const itemListFalse = document.querySelector('.result__list-false') as HTMLElement;
+        renderListItem(itemListTrue, trueAnswerArr);
+        renderListItem(itemListFalse, falseResult);
+        await updateWord(trueAnswerArr, falseResult);
+        newWordFinish = await findDailyNewWords(currentDate);
+
+        await updateUserStatistic(
+          {
+            newWordsCount: newWordFinish - newWordStart,
+            accuracy: myAccuracy,
+            bestStreak: Math.max.apply(null, currentStreakArray),
+          },
+          'audioGame',
+        );
       }
     }
 
     if (target.classList.contains('audiocall__next')) {
       count = 0;
+      allAnswerRez += 1;
       renderPreLoader(audioContent);
       const arrWords = await getAllGroupWords(level);
       const newGuessWord = getGuessWord(storage.currentPage, arrWords);
@@ -196,6 +252,8 @@ const addEventStartWordPuzzleGame = async (): Promise<void> => {
       shuffle(newArrOptions);
 
       renderContentWordPuzzlePage(audioContent, newGuessWord);
+      const lifeContent = document.querySelector('.audiocall__life-container') as HTMLElement;
+      renderLife(lifeContent, life);
       const wordContent = document.querySelector('.wordPuzzle__game-word') as HTMLElement;
       const optionContent = document.querySelector('.wordPuzzle__game-options') as HTMLElement;
 
@@ -203,14 +261,13 @@ const addEventStartWordPuzzleGame = async (): Promise<void> => {
       renderOptionLetters(optionContent, newArrOptions);
     }
 
-    if (life === 5) {
-      // const accuracy = trueAnswer * 10;
-      // renderResultWordPuzzlePage(audioContent, accuracy, trueAnswer, falseAnswer);
-      // const itemListTrue = document.querySelector('.result__list-true') as HTMLElement;
-      // const itemListFalse = document.querySelector('.result__list-false') as HTMLElement;
-      // renderListItem(itemListTrue, trueAnswerArr);
-      // renderListItem(itemListFalse, falseAnswerArr);
-      console.log('result');
+    if (target.classList.contains('result__close')) {
+      trueAnswerRez = 0;
+      allAnswerRez = 0;
+      life = 5;
+      count = 0;
+      falseAnswerArr = [];
+      renderGamePage();
     }
   });
 };
@@ -231,6 +288,7 @@ export const renderWordPuzzlePage = async (): Promise<void> => {
       level = Number(target.getAttribute('data-level'));
     }
     if (target.classList.contains('settings__start')) {
+      newWordStart = await findDailyNewWords(currentDate);
       renderPreLoader(audioContent);
       const arrWords = await getAllGroupWords(level);
       const guessWord = getGuessWord(storage.currentPage, arrWords);
@@ -239,11 +297,14 @@ export const renderWordPuzzlePage = async (): Promise<void> => {
       shuffle(arrOptions);
 
       renderContentWordPuzzlePage(audioContent, guessWord);
+      const lifeContent = document.querySelector('.audiocall__life-container') as HTMLElement;
+      renderLife(lifeContent, life);
       const wordContent = document.querySelector('.wordPuzzle__game-word') as HTMLElement;
       const optionContent = document.querySelector('.wordPuzzle__game-options') as HTMLElement;
 
       renderWordLetters(wordContent, arrOptions);
       renderOptionLetters(optionContent, arrOptions);
+
       addEventStartWordPuzzleGame();
       target.disabled = true;
 
@@ -253,7 +314,12 @@ export const renderWordPuzzlePage = async (): Promise<void> => {
     }
     if (target.classList.contains('result__btn-play')) {
       level = 0;
-      // renderGamePageContainer();
+      life = 5;
+      count = 0;
+      trueAnswerRez = 0;
+      allAnswerRez = 0;
+      falseAnswerArr = [];
+      renderGamePageContainer();
       renderWordPuzzlePage();
     }
   });
