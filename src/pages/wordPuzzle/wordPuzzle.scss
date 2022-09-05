@@ -46,6 +46,16 @@
   margin-bottom: 2rem;
 }
 
+.audiocall__life-container {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+  justify-content: center;
+  i {
+    color: var(--bs-red);
+  }
+}
+
 .wordPuzzle__game-options {
   display: flex;
   gap: 0.8rem;
