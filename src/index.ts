@@ -14,10 +14,13 @@ import { renderGamePage } from './pages/game/game';
 import { renderAudioPage } from './pages/audioGame/audioGame';
 import { renderGamePageContainer } from './components/gamePageContainer/gamePageContainer';
 import { startSprint } from './pages/sprint/sprint';
+import { renderWordPuzzlePage } from './pages/wordPuzzle/wordPuzzle';
 
 const renderPage = (): void => {
   renderHeader();
-  renderMain();
+  // renderMain();
+  renderGamePageContainer();
+  renderWordPuzzlePage();
   renderFooter();
 };
 
@@ -61,7 +64,8 @@ const onNavigate = (location: string): void => {
       main.innerHTML = `<h1>sprintBook</h1>`;
       break;
     case '#/wordPuzzle':
-      main.innerHTML = `<h1>#/wordPuzzle</h1>`;
+      renderGamePageContainer();
+      renderWordPuzzlePage();
       break;
     case '#/sentencePuzzle':
       main.innerHTML = `<h1>#/sentencePuzzle</h1>`;
