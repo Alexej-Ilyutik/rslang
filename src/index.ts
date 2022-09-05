@@ -14,8 +14,9 @@ import { renderGamePage } from './pages/game/game';
 import { renderAudioPage } from './pages/audioGame/audioGame';
 import { renderGamePageContainer } from './components/gamePageContainer/gamePageContainer';
 import { startSprint } from './pages/sprint/sprint';
+import { renderGraphs, renderStatistic } from './pages/statistic/statistic';
+import { renderGraph } from './components/gpaph/graph';
 import { renderWordPuzzlePage } from './pages/wordPuzzle/wordPuzzle';
-import { renderStatistic } from './pages/statistic/statistic';
 
 
 const renderPage = (): void => {
@@ -54,6 +55,7 @@ const onNavigate = (location: string): void => {
       break;
     case '#/statistic':
       renderStatistic();
+      renderGraphs();
       renderFooter();
       break;
     case '#/sprint':
