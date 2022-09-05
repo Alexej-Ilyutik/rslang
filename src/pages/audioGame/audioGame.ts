@@ -15,6 +15,7 @@ import { renderPreLoader } from '../../components/preLoader/preLoader';
 import { renderGamePageContainer } from '../../components/gamePageContainer/gamePageContainer';
 import { renderVolumeBtn } from '../../components/renderVolumeBtn/renderVolumeBtn';
 import { updateWordProperties } from '../../services/updateWordProperties';
+import { updateUserStatistic } from '../../services/updateUserStatistic';
 
 const trueAnswerAudio = new Audio('../../assets/success.mp3');
 const falseAnswerAudio = new Audio('../../assets/error.mp3');
@@ -160,12 +161,19 @@ async function renderContentAudioPage(
 const updateWord = async (arrTrue: WordInterface[], arrFalse: WordInterface[]) => {
   await Promise.all(
     arrTrue.map(async x => {
-      if (x._id) await updateWordProperties(x._id, true, undefined);
+      if (x.id) {
+        console.log('updateWord1');
+
+        await updateWordProperties(x.id, true, undefined);
+      }
     }),
   );
   await Promise.all(
     arrFalse.map(async x => {
-      if (x._id) await updateWordProperties(x._id, true, undefined);
+      if (x.id) {
+        console.log('updateWord2');
+        await updateWordProperties(x.id, true, undefined);
+      }
     }),
   );
 };
@@ -245,28 +253,38 @@ const addEventStartAudioGame = async (): Promise<void> => {
       const newGuessWord = getGuessWord(storage.currentPage, arrWords);
       arrayOptions.push(newGuessWord);
 
-      console.log(newGuessWord);
+      // console.log(newGuessWord);
 
       const newArrayOptions = getUniqueArray(arrayOptions);
       shuffle(newArrayOptions);
-      console.log(newArrayOptions);
+      // console.log(newArrayOptions);
 
       renderContentAudioPage(audioContent, newGuessWord, newArrayOptions, progress);
 
       playAllAudioFiles([`${API.base}/${newGuessWord.audio}`]);
     } else if (target.classList.contains('audiocall__next') && progress === 100) {
-      const accuracy = trueAnswer * 10;
-      renderResultAudioPage(audioContent, accuracy, trueAnswer, falseAnswer);
+      const myAccuracy = trueAnswer * 10;
+      renderResultAudioPage(audioContent, myAccuracy, trueAnswer, falseAnswer);
       const itemListTrue = document.querySelector('.result__list-true') as HTMLElement;
       const itemListFalse = document.querySelector('.result__list-false') as HTMLElement;
       renderListItem(itemListTrue, trueAnswerArr);
       renderListItem(itemListFalse, falseAnswerArr);
 
       await updateWord(trueAnswerArr, falseAnswerArr);
-      // console.log(await API.getUserWords());
+      console.log(trueAnswerArr);
+
+      console.log(await API.getUserWords());
       currentStreakArray.push(currentStreak);
       console.log(currentStreakArray);
       console.log(Math.max.apply(null, currentStreakArray));
+      await updateUserStatistic(
+        {
+          newWordsCount: 2,
+          accuracy: myAccuracy,
+          bestStreak: Math.max.apply(null, currentStreakArray),
+        },
+        'audioGame',
+      );
     }
 
     if (target.classList.contains('result__close')) {

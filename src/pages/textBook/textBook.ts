@@ -328,8 +328,8 @@ export const renderTextBook = (): void => {
 };
 
 
-const currentUserStatistic = await API.getStatistics();
-console.log(currentUserStatistic);
+// const currentUserStatistic = await API.getStatistics();
+// console.log(currentUserStatistic);
 // updateUserStatistic({newWordsCount: 10, accuracy: 10, bestStreak: 20}, 'audioGame');
 // getNumberOfLearnedWordsByDate(new Date().toLocaleDateString('en-GB'));
 // resetUserStatistic();
