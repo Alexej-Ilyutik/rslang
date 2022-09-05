@@ -1,6 +1,10 @@
+import { hideElement } from '../../services/hideElement';
+import { isLogin } from '../../services/isLogin';
+import { storage } from '../../shared/storage';
 import './footer.scss';
 
 export const renderFooter = (): void => {
+  storage.isLogin = isLogin();
   const footerBlock = `
         <div class="container p-4 pb-0">
       <!-- Section: Links -->
@@ -33,7 +37,7 @@ export const renderFooter = (): void => {
             <p>
               <a class="text-white nav-link link-direction" href="#/games">Games</a>
             </p>
-            <p>
+            <p ${hideElement(storage.isLogin)}>
               <a class="text-white nav-link link-direction" href="#/statistic">Statistics</a>
             </p>
           </div>

@@ -1,6 +1,10 @@
+import { hideElement } from '../../services/hideElement';
+import { isLogin } from '../../services/isLogin';
+import { storage } from '../../shared/storage';
 import './header.scss';
 
 export const renderHeader = (): void => {
+  storage.isLogin = isLogin();
   const headerBlock = `
         <nav class="navbar navbar-expand-lg mb-5">
         <div class="container">
@@ -38,7 +42,7 @@ export const renderHeader = (): void => {
                 <a class="nav-link fw-bolder fs-5 link-direction" href="#/games"
                 >Games</a>
               </li>
-              <li class="nav-item mx-3">
+              <li class="nav-item mx-3" ${hideElement(storage.isLogin)}>
                 <a class="nav-link fw-bolder fs-5 link-direction" href="#/statistic"
                 >Statistics</a>
               </li>

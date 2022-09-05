@@ -30,7 +30,7 @@ export const renderMain = (): void => {
           <h3 class="card-title main-title">Games</h3>
           <p class="card-text">For learning words and reinforcing memorization, the application has 2 games:
           Savannah and Sprint, which will help you to "pump" your vocabulary in a playful way.</p>
-          <h3 class="card-title main-title">Statistics</h3>
+          <h3 class="card-title main-title"}>Statistics</h3>
           <p class="card-text">All the progress of training can be viewed in statistics,
           where data for the current day, as well as for the entire training period, are presented.
           The information is presented both in the form of a table and graphs, which is very convenient.</p>
