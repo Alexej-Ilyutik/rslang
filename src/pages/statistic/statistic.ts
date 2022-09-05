@@ -1,6 +1,7 @@
 import "./statistic.scss";
 import API from "../../services/api";
-import { GameStatisticInterface, UserWordInterface, WordInterface } from "../../shared/types";
+import { GameStatisticInterface, UserStatisticInterfaceAll, UserWordInterface, WordInterface } from "../../shared/types";
+import { renderGraph } from "../../components/gpaph/graph";
 
 export const findGameAccuracy = (array: GameStatisticInterface[]): number => {
   const numberOfGames = array.length;
@@ -90,6 +91,710 @@ export const updateStatistic = async (): Promise<void> => {
   const dailyNewWords = document.getElementById('daily-new-words') as HTMLElement;
   const DailyNewWords = await findDailyNewWords(currentDate);
   dailyNewWords.innerHTML = DailyNewWords.toString();
+}
+
+export const renderGraphs = async () => {
+  const statistic: UserStatisticInterfaceAll = await API.getStatistics()
+
+//   const mock: UserStatisticInterfaceAll = {
+//     "id": "6313e2e05e9b9873c3dcf650",
+//     "learnedWords": 41,
+//     "optional": {
+//       "03/09/2022": {
+//         "gamesStatistic": {
+//             "sprintGame": [
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 0,
+//                     "bestStreak": 0
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 100,
+//                     "bestStreak": 3
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 60,
+//                     "bestStreak": 4
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 40,
+//                     "bestStreak": 2
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 53,
+//                     "bestStreak": 2
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 56,
+//                     "bestStreak": 3
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 50,
+//                     "bestStreak": 7
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 69,
+//                     "bestStreak": 9
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 50,
+//                     "bestStreak": 2
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 61,
+//                     "bestStreak": 7
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 72,
+//                     "bestStreak": 7
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 33,
+//                     "bestStreak": 3
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 61,
+//                     "bestStreak": 6
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 0,
+//                     "bestStreak": 0
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 56,
+//                     "bestStreak": 3
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 61,
+//                     "bestStreak": 4
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 52,
+//                     "bestStreak": 7
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 39,
+//                     "bestStreak": 3
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 44,
+//                     "bestStreak": 3
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 22,
+//                     "bestStreak": 3
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 44,
+//                     "bestStreak": 4
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 44,
+//                     "bestStreak": 3
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 50,
+//                     "bestStreak": 4
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 29,
+//                     "bestStreak": 4
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 39,
+//                     "bestStreak": 3
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 56,
+//                     "bestStreak": 5
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 67,
+//                     "bestStreak": 6
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 44,
+//                     "bestStreak": 6
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 56,
+//                     "bestStreak": 6
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 50,
+//                     "bestStreak": 6
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 75,
+//                     "bestStreak": 6
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 44,
+//                     "bestStreak": 3
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 51,
+//                     "bestStreak": 5
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 0,
+//                     "bestStreak": 0
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 0,
+//                     "bestStreak": 0
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 0,
+//                     "bestStreak": 0
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 0,
+//                     "bestStreak": 0
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 0,
+//                     "bestStreak": 0
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 0,
+//                     "bestStreak": 0
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 0,
+//                     "bestStreak": 0
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 53,
+//                     "bestStreak": 2
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 58,
+//                     "bestStreak": 10
+//                 }
+//             ],
+//             "audioGame": [
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 0,
+//                     "bestStreak": 0
+//                 }
+//             ]
+//         },
+//         "globalStatistic": {
+//             "learnedWordsToday": 40
+//         }
+//       },
+//       "04/09/2022": {
+//         "gamesStatistic": {
+//             "sprintGame": [
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 0,
+//                     "bestStreak": 0
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 100,
+//                     "bestStreak": 3
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 60,
+//                     "bestStreak": 4
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 40,
+//                     "bestStreak": 2
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 53,
+//                     "bestStreak": 2
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 56,
+//                     "bestStreak": 3
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 50,
+//                     "bestStreak": 7
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 69,
+//                     "bestStreak": 9
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 50,
+//                     "bestStreak": 2
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 61,
+//                     "bestStreak": 7
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 72,
+//                     "bestStreak": 7
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 33,
+//                     "bestStreak": 3
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 61,
+//                     "bestStreak": 6
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 0,
+//                     "bestStreak": 0
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 56,
+//                     "bestStreak": 3
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 61,
+//                     "bestStreak": 4
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 52,
+//                     "bestStreak": 7
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 39,
+//                     "bestStreak": 3
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 44,
+//                     "bestStreak": 3
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 22,
+//                     "bestStreak": 3
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 44,
+//                     "bestStreak": 4
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 44,
+//                     "bestStreak": 3
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 50,
+//                     "bestStreak": 4
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 29,
+//                     "bestStreak": 4
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 39,
+//                     "bestStreak": 3
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 56,
+//                     "bestStreak": 5
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 67,
+//                     "bestStreak": 6
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 44,
+//                     "bestStreak": 6
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 56,
+//                     "bestStreak": 6
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 50,
+//                     "bestStreak": 6
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 75,
+//                     "bestStreak": 6
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 44,
+//                     "bestStreak": 3
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 51,
+//                     "bestStreak": 5
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 0,
+//                     "bestStreak": 0
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 0,
+//                     "bestStreak": 0
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 0,
+//                     "bestStreak": 0
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 0,
+//                     "bestStreak": 0
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 0,
+//                     "bestStreak": 0
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 0,
+//                     "bestStreak": 0
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 0,
+//                     "bestStreak": 0
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 53,
+//                     "bestStreak": 2
+//                 },
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 58,
+//                     "bestStreak": 10
+//                 }
+//             ],
+//             "audioGame": [
+//                 {
+//                     "newWordsCount": 0,
+//                     "accuracy": 0,
+//                     "bestStreak": 0
+//                 }
+//             ]
+//         },
+//         "globalStatistic": {
+//             "learnedWordsToday": 40
+//         }
+//       },
+//       "05/09/2022": {
+//             "gamesStatistic": {
+//                 "sprintGame": [
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 0,
+//                         "bestStreak": 0
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 100,
+//                         "bestStreak": 3
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 60,
+//                         "bestStreak": 4
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 40,
+//                         "bestStreak": 2
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 53,
+//                         "bestStreak": 2
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 56,
+//                         "bestStreak": 3
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 50,
+//                         "bestStreak": 7
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 69,
+//                         "bestStreak": 9
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 50,
+//                         "bestStreak": 2
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 61,
+//                         "bestStreak": 7
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 72,
+//                         "bestStreak": 7
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 33,
+//                         "bestStreak": 3
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 61,
+//                         "bestStreak": 6
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 0,
+//                         "bestStreak": 0
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 56,
+//                         "bestStreak": 3
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 61,
+//                         "bestStreak": 4
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 52,
+//                         "bestStreak": 7
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 39,
+//                         "bestStreak": 3
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 44,
+//                         "bestStreak": 3
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 22,
+//                         "bestStreak": 3
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 44,
+//                         "bestStreak": 4
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 44,
+//                         "bestStreak": 3
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 50,
+//                         "bestStreak": 4
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 29,
+//                         "bestStreak": 4
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 39,
+//                         "bestStreak": 3
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 56,
+//                         "bestStreak": 5
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 67,
+//                         "bestStreak": 6
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 44,
+//                         "bestStreak": 6
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 56,
+//                         "bestStreak": 6
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 50,
+//                         "bestStreak": 6
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 75,
+//                         "bestStreak": 6
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 44,
+//                         "bestStreak": 3
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 51,
+//                         "bestStreak": 5
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 0,
+//                         "bestStreak": 0
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 0,
+//                         "bestStreak": 0
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 0,
+//                         "bestStreak": 0
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 0,
+//                         "bestStreak": 0
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 0,
+//                         "bestStreak": 0
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 0,
+//                         "bestStreak": 0
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 0,
+//                         "bestStreak": 0
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 53,
+//                         "bestStreak": 2
+//                     },
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 58,
+//                         "bestStreak": 10
+//                     }
+//                 ],
+//                 "audioGame": [
+//                     {
+//                         "newWordsCount": 0,
+//                         "accuracy": 0,
+//                         "bestStreak": 0
+//                     }
+//                 ]
+//             },
+//             "globalStatistic": {
+//                 "learnedWordsToday": 40
+//             }
+//       }
+//     }
+// };
+
+const dateArray = Object.keys(statistic.optional);
+
+let sum = 0;
+const totalLearnedWords = Object.keys(statistic.optional).map((x) => {
+  console.log(x);
+  console.log(statistic.optional[x].globalStatistic.learnedWordsToday)
+  sum += statistic.optional[x].globalStatistic.learnedWordsToday;
+  return sum;
+});
+
+const totalNewWords = await Promise.all(Object.keys(statistic.optional).map(async (x) => findDailyNewWords(x)));
+
+  renderGraph(dateArray, totalNewWords, 'new word per day', (<HTMLCanvasElement>document.getElementById('myChart')));
+  renderGraph(dateArray, totalLearnedWords, 'leaned words', (<HTMLCanvasElement>document.getElementById('myChart2')));
 }
 
 export const renderStatistic = (): void => {
