@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import './audioGame.scss';
 import { WordInterface } from '../../shared/types';
 import { storage } from '../../shared/storage';
@@ -12,6 +13,7 @@ import API from '../../services/api';
 import { renderPreLoader } from '../../components/preLoader/preLoader';
 import { renderGamePageContainer } from '../../components/gamePageContainer/gamePageContainer';
 import { renderVolumeBtn } from '../../components/renderVolumeBtn/renderVolumeBtn';
+import { updateWordProperties } from '../../services/updateWordProperties';
 
 const trueAnswerAudio = new Audio('../../assets/success.mp3');
 const falseAnswerAudio = new Audio('../../assets/error.mp3');
@@ -25,12 +27,13 @@ function getArrOptions(array: WordInterface[]) {
     arr.push(el);
     uniqueArray = [...new Set(arr)];
   }
+
   return uniqueArray;
 }
 
 function getUniqueArray(array: WordInterface[]) {
   const uniqueArray = [...new Set(array)];
-  if (uniqueArray.length > 3) {
+  if (uniqueArray.length > 4) {
     uniqueArray.shift();
   }
   return uniqueArray;
@@ -164,12 +167,27 @@ async function renderContentAudioPage(
   block.innerHTML = mainBlock;
 }
 
+const updateWord = async (arrTrue: WordInterface[], arrFalse: WordInterface[]) => {
+  await Promise.all(
+    arrTrue.map(async x => {
+      if (x._id) await updateWordProperties(x._id, true, undefined);
+    }),
+  );
+  await Promise.all(
+    arrFalse.map(async x => {
+      if (x._id) await updateWordProperties(x._id, true, undefined);
+    }),
+  );
+};
+
 const addEventStartAudioGame = async (): Promise<void> => {
   const arrWords = await getAllGroupWords(level);
   const audioContent = document.querySelector('.audiocall__content') as HTMLElement;
 
   let trueAnswer = 0;
   let falseAnswer = 0;
+  let currentStreak = 0;
+  const currentStreakArray: Array<number> = [];
   const trueAnswerArr: WordInterface[] = [];
   const falseAnswerArr: WordInterface[] = [];
 
@@ -213,6 +231,7 @@ const addEventStartAudioGame = async (): Promise<void> => {
         btnVoiceContainer.style.display = 'none';
         setAttrDisabled(btnsOption);
         trueAnswerArr.push(currentWord);
+        currentStreak += 1;
       } else {
         target.classList.add('audiocall__btn-false');
         if (storage.volumeState) {
@@ -225,6 +244,8 @@ const addEventStartAudioGame = async (): Promise<void> => {
         btnVoiceContainer.style.display = 'none';
         setAttrDisabled(btnsOption);
         falseAnswerArr.push(currentWord);
+        currentStreakArray.push(currentStreak);
+        currentStreak = 0;
       }
     }
 
@@ -233,7 +254,6 @@ const addEventStartAudioGame = async (): Promise<void> => {
 
       const newGuessWord = getGuessWord(storage.currentPage, arrWords);
       arrayOptions.push(newGuessWord);
-      console.log(level);
 
       console.log(newGuessWord);
 
@@ -251,6 +271,12 @@ const addEventStartAudioGame = async (): Promise<void> => {
       const itemListFalse = document.querySelector('.result__list-false') as HTMLElement;
       renderListItem(itemListTrue, trueAnswerArr);
       renderListItem(itemListFalse, falseAnswerArr);
+
+      await updateWord(trueAnswerArr, falseAnswerArr);
+      // console.log(await API.getUserWords());
+      currentStreakArray.push(currentStreak);
+      console.log(currentStreakArray);
+      console.log(Math.max.apply(null, currentStreakArray));
     }
 
     if (target.classList.contains('result__close')) {
@@ -302,6 +328,7 @@ export const renderAudioPage = async (): Promise<void> => {
 
   gameContainer.addEventListener('click', async e => {
     const target = <HTMLButtonElement>e.target;
+    const inputs = Array.from(document.getElementsByClassName('setting__level'));
 
     if (target.classList.contains('setting__level')) {
       level = Number(target.getAttribute('data-level'));
@@ -319,6 +346,10 @@ export const renderAudioPage = async (): Promise<void> => {
       playAllAudioFiles([`${API.base}/${guessWord.audio}`]);
       addEventStartAudioGame();
       target.disabled = true;
+
+      for (let i = 0; i < inputs.length; i += 1) {
+        (<HTMLInputElement>inputs[i]).disabled = true;
+      }
     }
     if (target.classList.contains('result__btn-play')) {
       level = 0;

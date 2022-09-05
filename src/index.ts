@@ -60,8 +60,15 @@ const onNavigate = (location: string): void => {
     case '#/sprintBook':
       main.innerHTML = `<h1>sprintBook</h1>`;
       break;
+    case '#/wordPuzzle':
+      main.innerHTML = `<h1>#/wordPuzzle</h1>`;
+      break;
+    case '#/sentencePuzzle':
+      main.innerHTML = `<h1>#/sentencePuzzle</h1>`;
+      break;
     default:
       renderMain();
+      renderFooter();
       break;
   }
 };

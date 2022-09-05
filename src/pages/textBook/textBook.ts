@@ -305,28 +305,11 @@ export const addEventWords = (): void => {
   });
 };
 
-const addEventGames = () => {
-  const textBookGames = <HTMLButtonElement>document.querySelector('.textBook__games');
-  const sprintStartBtn = <HTMLButtonElement>document.getElementById('start-sprint-text-book');
-  // const AudioGameStartBtn = <HTMLButtonElement>document.getElementById('start-audio-game-text-book');
-  textBookGames.addEventListener('click', (e) => {
-    const target = <HTMLElement>e.target;
-    if (sprintStartBtn.contains(target)) {
-      renderGamePageContainer();
-      startSprintFromTextBook();
-    }
-    // if (AudioGameStartBtn.contains(target)) {
-    //   renderGamePageContainer();
-    //   renderAudioPage();
-    // }
-  });
-}
 
 export const addTestBookEvents = (): void => {
   addEventWordsGroup();
   addEventPagination();
   addEventWords();
-  addEventGames();
 }
 
 export const renderTextBook = (): void => {

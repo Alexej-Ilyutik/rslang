@@ -43,4 +43,7 @@ export const renderGamePageContainer = (): void => {
       (<HTMLInputElement>inputs[i]).disabled = true;
     }
   }
+
+  const footer = document.getElementById('footer') as HTMLElement;
+  footer.innerHTML = '';
 };
