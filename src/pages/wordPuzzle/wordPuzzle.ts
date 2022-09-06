@@ -13,6 +13,7 @@ import { renderGamePageContainer } from '../../components/gamePageContainer/game
 import { updateWord } from '../../services/updateWord';
 import { updateUserStatistic } from '../../services/updateUserStatistic';
 import { findDailyNewWords } from '../statistic/statistic';
+import { isLogin } from '../../services/isLogin';
 
 let level = 0;
 let count = 0;
@@ -227,17 +228,19 @@ const addEventStartWordPuzzleGame = async (): Promise<void> => {
         const itemListFalse = document.querySelector('.result__list-false') as HTMLElement;
         renderListItem(itemListTrue, trueAnswerArr);
         renderListItem(itemListFalse, falseResult);
-        await updateWord(trueAnswerArr, falseResult);
-        newWordFinish = await findDailyNewWords(currentDate);
+        if (isLogin()) {
+          await updateWord(trueAnswerArr, falseResult);
+          newWordFinish = await findDailyNewWords(currentDate);
 
-        await updateUserStatistic(
-          {
-            newWordsCount: newWordFinish - newWordStart,
-            accuracy: myAccuracy,
-            bestStreak: Math.max.apply(null, currentStreakArray),
-          },
-          'puzzleGame',
-        );
+          await updateUserStatistic(
+            {
+              newWordsCount: newWordFinish - newWordStart,
+              accuracy: myAccuracy,
+              bestStreak: Math.max.apply(null, currentStreakArray),
+            },
+            'puzzleGame',
+          );
+        }
       }
     }
 
@@ -288,7 +291,9 @@ export const renderWordPuzzlePage = async (): Promise<void> => {
       level = Number(target.getAttribute('data-level'));
     }
     if (target.classList.contains('settings__start')) {
-      newWordStart = await findDailyNewWords(currentDate);
+      if (isLogin()) {
+        newWordStart = await findDailyNewWords(currentDate);
+      }
       renderPreLoader(audioContent);
       const arrWords = await getAllGroupWords(level);
       const guessWord = getGuessWord(storage.currentPage, arrWords);
