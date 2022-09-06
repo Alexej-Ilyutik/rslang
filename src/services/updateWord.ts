@@ -12,7 +12,7 @@ export const updateWord = async (arrTrue: WordInterface[], arrFalse: WordInterfa
   await Promise.all(
     arrFalse.map(async x => {
       if (x.id) {
-        await updateWordProperties(x.id, true, undefined);
+        await updateWordProperties(x.id, false, undefined);
       }
     }),
   );
