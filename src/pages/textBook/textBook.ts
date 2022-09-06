@@ -35,10 +35,14 @@ export const renderTextBookNavigation = (): void => {
           <a href="#/sprintBook" class="textBook__games_game-button link-direction">
             <img src="../../assets/sprint-icon.svg" class="textBook__games_game-img" alt="game image"></img>
             <h2 class="textBook__games_game-name">Sprint</h2>
-          </button>
+          </a>
           <a href="#/audio" class="textBook__games_game-button link-direction">
             <img src="../../assets/audio-icon.svg" class="textBook__games_game-img" alt="game image"></img>
-            <h2 class="textBook__games_game-name">Audio-game</h2>
+            <h2 class="textBook__games_game-name">Audio challenge</h2>
+          </a>
+          <a href="#/wordPuzzle" class="textBook__games_game-button link-direction">
+            <img src="../../assets/puzzle-icon.svg" class="textBook__games_game-img" alt="game image"></img>
+            <h2 class="textBook__games_game-name">Word puzzle</h2>
           </a>
           <div class="textBook__games_information">
             <p>Learned ?/20 words on page</p>
