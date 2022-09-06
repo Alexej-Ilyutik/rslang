@@ -85,4 +85,6 @@ export const loginHandler = () => {
       }
     }
   });
+
+  API.getWord('5e9f5ee35eb9e72bc21af4f5');
 };
