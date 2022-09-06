@@ -17,6 +17,7 @@ import { renderVolumeBtn } from '../../components/renderVolumeBtn/renderVolumeBt
 import { updateUserStatistic } from '../../services/updateUserStatistic';
 import { updateWord } from '../../services/updateWord';
 import { findDailyNewWords } from '../statistic/statistic';
+import { isLogin } from '../../services/isLogin';
 
 const trueAnswerAudio = new Audio('../../assets/success.mp3');
 const falseAnswerAudio = new Audio('../../assets/error.mp3');
@@ -251,20 +252,22 @@ const addEventStartAudioGame = async (): Promise<void> => {
       renderListItem(itemListTrue, trueAnswerArr);
       renderListItem(itemListFalse, falseAnswerArr);
 
-      await updateWord(trueAnswerArr, falseAnswerArr);
+      if (isLogin()) {
+        await updateWord(trueAnswerArr, falseAnswerArr);
 
-      currentStreakArray.push(currentStreak);
+        currentStreakArray.push(currentStreak);
 
-      newWordFinish = await findDailyNewWords(currentDate);
+        newWordFinish = await findDailyNewWords(currentDate);
 
-      await updateUserStatistic(
-        {
-          newWordsCount: newWordFinish - newWordStart,
-          accuracy: myAccuracy,
-          bestStreak: Math.max.apply(null, currentStreakArray),
-        },
-        'audioGame',
-      );
+        await updateUserStatistic(
+          {
+            newWordsCount: newWordFinish - newWordStart,
+            accuracy: myAccuracy,
+            bestStreak: Math.max.apply(null, currentStreakArray),
+          },
+          'audioGame',
+        );
+      }
     }
 
     if (target.classList.contains('result__close')) {
@@ -322,7 +325,9 @@ export const renderAudioPage = async (): Promise<void> => {
       level = Number(target.getAttribute('data-level'));
     }
     if (target.classList.contains('settings__start')) {
-      newWordStart = await findDailyNewWords(currentDate);
+      if (isLogin()) {
+        newWordStart = await findDailyNewWords(currentDate);
+      }
 
       progress = 0;
       renderPreLoader(audioContent);
