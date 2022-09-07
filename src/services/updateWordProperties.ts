@@ -21,19 +21,20 @@ export const updateWordProperties = async (
     if (difficultyValue) difficulty = difficultyValue;
 
     let { guessCounter } = (await arrayOfWords)[wordIndex].optional;
+
     if (isGuessed !== undefined) {
       if (isGuessed) guessCounter += 1;
       else guessCounter = 0;
     }
+    if (guessCounter >= storage.maxGuessNumber && !difficultyValue) difficulty = 'easy';
 
     let { learnDate } = (await arrayOfWords)[wordIndex].optional;
     if (guessCounter >= storage.maxGuessNumber || difficulty === 'easy') {
-      if (guessCounter === storage.maxGuessNumber || difficultyValue === 'easy') {
+      if (guessCounter === storage.maxGuessNumber) {
         // Word has just been learned
         learnDate = new Date().toLocaleDateString('en-GB');
       }
     }
-
     const { firstShowedDate } = (await arrayOfWords)[wordIndex].optional;
 
     await API.updateUserWord(wordId, difficulty, guessCounter, firstShowedDate, learnDate);

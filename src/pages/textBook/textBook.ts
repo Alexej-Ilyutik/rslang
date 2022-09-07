@@ -64,7 +64,7 @@ export const setWordStatus = async (wordId: string): Promise<void> => {
   if (difficultyValue === 'hard') {
     hardCheckbox.checked = true;
     learnedCheckbox.checked = false;
-  } else if (guessCounterValue >= 5 || difficultyValue === 'easy') {
+  } else if (difficultyValue === 'easy') {
     learnedCheckbox.checked = true;
     hardCheckbox.checked = false;
   }
@@ -91,9 +91,16 @@ export const updateLearnWordsCounter = async (
     const learnedWordArray = await API.getAggregatedWords('easy');
     let learnedWordsOnPage = 0;
     for (let i = 0; i < learnedWordArray.length; i += 1) {
-      if (learnedWordArray[i].group === groupNumber && learnedWordArray[i].page === pageNumber) learnedWordsOnPage += 1;
+      if (learnedWordArray[i].group === groupNumber && learnedWordArray[i].page === pageNumber) {
+        learnedWordsOnPage += 1;
+      }
     }
-    storage.learnedWordsOnPage = learnedWordArray;
+    const gamesArea = document.querySelector('.textBook__games') as HTMLElement;
+    gamesArea.classList.remove('hidden-element');
+    if (learnedWordsOnPage === storage.limitOfWordsOnPage) {
+      gamesArea.classList.add('hidden-element');
+    }
+    storage.learnedWordsOnPage = learnedWordsOnPage;
     learnedWordsCounter.innerHTML = `<p>Learned ${learnedWordsOnPage}/20 words on page</p>`;
   }
 };

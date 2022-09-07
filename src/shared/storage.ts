@@ -11,6 +11,7 @@ interface StorageInterface {
   volumeState: boolean;
   learnedWordsOnPage: number;
   isLogin: boolean;
+  limitOfWordsOnPage: number
 }
 
 export const storage: StorageInterface = {
@@ -24,4 +25,5 @@ export const storage: StorageInterface = {
   volumeState: true,
   learnedWordsOnPage: 0,
   isLogin: false,
+  limitOfWordsOnPage: 20,
 };
