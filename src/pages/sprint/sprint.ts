@@ -370,11 +370,12 @@ export const sprintGame = async (learnedWords?: string[]) => {
     }
 
     if (isSprintFromTextBook && sprintWords.length === 1) {
-      const { group, page } = sprintWords[0];
-      if (page > 0) {
-        const prevPage = page - 1;
-        let extraWords = await API.getWords(group, prevPage);
-        if (learnedWords) {
+      const { wordsListCurrentGroup, wordsListCurrentPage } = storage;
+      if (wordsListCurrentPage > 0) {
+        const prevPage = wordsListCurrentPage - 1;
+        let extraWords = await API.getWords(wordsListCurrentGroup, prevPage);
+        storage.wordsListCurrentPage = prevPage;
+        if (learnedWords?.length) {
           extraWords = extraWords.filter((x: { id: string }) => !learnedWords.includes(x.id));
         }
         sprintWords = sprintWords.concat(extraWords);
