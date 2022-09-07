@@ -31,7 +31,7 @@ export const renderTextBookNavigation = (): void => {
           <ul class="textBook__pagination_list pagination justify-content-center">
           </ul>
         </nav>
-        <div class="textBook__games hidden-element" ${hideElement(storage.isLogin)}>
+        <div class="textBook__games" ${hideElement(storage.isLogin)}>
           <a href="#/sprintBook" class="textBook__games_game-button link-direction">
             <img src="../../assets/sprint-icon.svg" class="textBook__games_game-img" alt="game image"></img>
             <h2 class="textBook__games_game-name">Sprint</h2>
@@ -68,7 +68,6 @@ export const setWordStatus = async (wordId: string): Promise<void> => {
     learnedCheckbox.checked = true;
     hardCheckbox.checked = false;
   }
-
   guessCounterSign.setAttribute('data-guessCounter', guessCounterValue.toString());
   guessCounterSign.innerHTML = `Guessed ${guessCounterValue.toString()} times`;
 };
@@ -92,24 +91,26 @@ export const updateLearnWordsCounter = async (
     const learnedWordArray = await API.getAggregatedWords('easy');
     let learnedWordsOnPage = 0;
     for (let i = 0; i < learnedWordArray.length; i += 1) {
-      if (learnedWordArray[i].group === groupNumber && learnedWordArray[i].page === pageNumber) {
-        learnedWordsOnPage += 1;
-        console.log(learnedWordArray[i]);
-
-      }
+      if (learnedWordArray[i].group === groupNumber && learnedWordArray[i].page === pageNumber) learnedWordsOnPage += 1;
     }
-    const gamesArea = document.querySelector('.textBook__games') as HTMLElement;
-    gamesArea.classList.remove('hidden-element');
-    if (learnedWordsOnPage === storage.limitOfWordsOnPage) {
-      gamesArea.classList.add('hidden-element');
-    }
-    storage.learnedWordsOnPage = learnedWordsOnPage;
+    storage.learnedWordsOnPage = learnedWordArray;
     learnedWordsCounter.innerHTML = `<p>Learned ${learnedWordsOnPage}/20 words on page</p>`;
   }
 };
 
 export const renderTextBoxPage = async (groupNumber: number, pageNumber: number): Promise<void> => {
   storage.wordsListCurrentGroup = groupNumber;
+
+  const spinner = `
+  <div class="spinner-wrapper">
+    <div class="d-flex justify-content-center my-auto">
+      <div class="spinner-border" role="status" style="width: 5rem; height: 5rem; margin-top: 2rem">
+      </div>
+    </div>
+  </div>`;
+
+  const textBoxPage = document.querySelector('.textBook__words-list') as HTMLElement;
+  textBoxPage.innerHTML = spinner;
 
   const getWords = async (_groupNumber: number, _pageNumber: number): PageOfWordsInterface => {
     if (_groupNumber === 6) {
