@@ -101,6 +101,17 @@ export const updateLearnWordsCounter = async (
 export const renderTextBoxPage = async (groupNumber: number, pageNumber: number): Promise<void> => {
   storage.wordsListCurrentGroup = groupNumber;
 
+  const spinner = `
+  <div class="spinner-wrapper">
+    <div class="d-flex justify-content-center my-auto">
+      <div class="spinner-border" role="status" style="width: 5rem; height: 5rem; margin-top: 2rem">
+      </div>
+    </div>
+  </div>`;
+
+  const textBoxPage = document.querySelector('.textBook__words-list') as HTMLElement;
+  textBoxPage.innerHTML = spinner;
+
   const getWords = async (_groupNumber: number, _pageNumber: number): PageOfWordsInterface => {
     if (_groupNumber === 6) {
       const arrayOfWords: PageOfWordsInterface = await API.getAggregatedWords('hard');
