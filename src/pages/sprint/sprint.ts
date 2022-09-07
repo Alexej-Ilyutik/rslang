@@ -9,12 +9,12 @@ import { storage } from '../../shared/storage';
 import { renderSpinner } from '../../components/spinner/spinner';
 import { setSettingsGameStyles } from '../../services/setSettingsGameStyles';
 import { textBlinker } from '../../services/textBlinker';
-import { updateWordProperties } from '../../services/updateWordProperties';
 import { setBestStreak } from '../../services/setBestStreak';
 import { updateUserStatistic } from '../../services/updateUserStatistic';
 import { isLogin } from '../../services/isLogin';
 import { renderVolumeBtn } from '../../components/renderVolumeBtn/renderVolumeBtn';
 import { renderTextBook } from '../textBook/textBook';
+import { updateWords } from '../../services/updateWords';
 
 export const renderSprint = (): void => {
   const sprint = `
@@ -270,23 +270,13 @@ const finishGame = async () => {
   });
   if (isLogin()) {
     const oldUserWords = await API.getUserWords();
-    const updateWords = async () => {
-      await Promise.all(
-        sprintStorage.correct.map(async x => {
-          if (x._id) await updateWordProperties(x._id, true, undefined);
-        }),
-      );
-      await Promise.all(
-        sprintStorage.incorrect.map(async x => {
-          if (x._id) await updateWordProperties(x._id, false, undefined);
-        }),
-      );
-    };
-    await updateWords();
+
+    await updateWords(sprintStorage.correct, sprintStorage.incorrect);
+
     const newWordsCount = async () => {
       const userWords = await API.getUserWords();
-      const result = oldUserWords.length - userWords.length;
-      return Math.abs(result);
+      const result = userWords.length - oldUserWords.length;
+      return result;
     };
     const result = {
       newWordsCount: await newWordsCount(),
@@ -516,20 +506,14 @@ export const startSprintFromTextBook = async () => {
   setSettingsGameStyles();
   renderSpinner();
   isSprintFromTextBook = true;
-  const { wordsListCurrentGroup, wordsListCurrentPage } = storage;
+  const { wordsListCurrentGroup, wordsListCurrentPage, currentPageWords } = storage;
   const learnedWords = (await API.getAggregatedWords('easy')).map((x: { _id: string }) => x._id);
+  sprintWords = currentPageWords.filter((x: { id: string }) => !learnedWords.includes(x.id));
 
-  if (wordsListCurrentGroup === 6) {
-    sprintWords = await API.getAggregatedWords('hard');
-  } else {
-    sprintWords = await API.getWords(wordsListCurrentGroup, wordsListCurrentPage);
-    sprintWords = sprintWords.filter((x: { id: string }) => !learnedWords.includes(x.id));
-  }
   if (!sprintWords.length) {
     renderTextBook(wordsListCurrentGroup, wordsListCurrentPage);
     return;
   }
-
   renderSprint();
   sprintGame(learnedWords);
 };

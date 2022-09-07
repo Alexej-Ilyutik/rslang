@@ -71,7 +71,8 @@ export const updateStatistic = async (): Promise<void> => {
   const lastSprintGameNumber = arrayOfSprintGames.length;
   if (lastSprintGameNumber) {
     const sprintNewLearnedWords = document.getElementById('Sprint-new-learned-words') as HTMLElement;
-    sprintNewLearnedWords.innerHTML = arrayOfSprintGames[lastSprintGameNumber - 1].newWordsCount.toString();
+    sprintNewLearnedWords.innerHTML = arrayOfSprintGames.reduce(
+      (a: number, b: { newWordsCount: number; }) => a + b.newWordsCount, 0).toString();
     const sprintAccuracy = document.getElementById('Sprint-accuracy') as HTMLElement;
     sprintAccuracy.innerHTML = findGameAccuracy(arrayOfSprintGames).toString();
     const sprintBestStreak = document.getElementById('Sprint-best-streak') as HTMLElement;
@@ -82,7 +83,8 @@ export const updateStatistic = async (): Promise<void> => {
   const lastAudioGameNumber = arrayOfAudioGames.length;
   if (lastAudioGameNumber) {
     const audioNewLearnedWords = document.getElementById('Audio-new-learned-words') as HTMLElement;
-    audioNewLearnedWords.innerHTML = arrayOfAudioGames[lastAudioGameNumber - 1].newWordsCount.toString();
+    audioNewLearnedWords.innerHTML = arrayOfAudioGames.reduce(
+      (a: number, b: { newWordsCount: number; }) => a + b.newWordsCount, 0).toString();
     const audioAccuracy = document.getElementById('Audio-accuracy') as HTMLElement;
     audioAccuracy.innerHTML = findGameAccuracy(arrayOfAudioGames).toString();
     const audioBestStreak = document.getElementById('Audio-best-streak') as HTMLElement;
@@ -93,7 +95,8 @@ export const updateStatistic = async (): Promise<void> => {
   const lastPuzzleGameNumber = arrayOfPuzzleGames.length;
   if (lastPuzzleGameNumber) {
     const puzzleNewLearnedWords = document.getElementById('Puzzle-new-learned-words') as HTMLElement;
-    puzzleNewLearnedWords.innerHTML = arrayOfPuzzleGames[lastPuzzleGameNumber - 1].newWordsCount.toString();
+    puzzleNewLearnedWords.innerHTML = arrayOfPuzzleGames.reduce(
+      (a: number, b: { newWordsCount: number; }) => a + b.newWordsCount, 0).toString();
     const puzzleAccuracy = document.getElementById('Puzzle-accuracy') as HTMLElement;
     puzzleAccuracy.innerHTML = findGameAccuracy(arrayOfPuzzleGames).toString();
     const puzzleBestStreak = document.getElementById('Puzzle-best-streak') as HTMLElement;
