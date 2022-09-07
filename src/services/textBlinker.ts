@@ -3,4 +3,4 @@ export const textBlinker = (elem: HTMLElement) => {
   setTimeout(() => {
     elem.classList.remove('blinker');
   }, 1000);
-}
+};

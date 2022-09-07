@@ -1,3 +1,5 @@
+import { hideElement } from '../../services/hideElement';
+import { storage } from '../../shared/storage';
 import './footer.scss';
 
 export const renderFooter = (): void => {
@@ -34,7 +36,7 @@ export const renderFooter = (): void => {
               <a class="text-white nav-link link-direction" href="#/games">Games</a>
             </p>
             <p>
-              <a class="text-white nav-link link-direction" href="#/statistic">Statistics</a>
+              <a class="text-white nav-link link-direction ${hideElement(storage.isLogin)}" href="#/statistic">Statistics</a>
             </p>
           </div>
           <!-- Grid column -->
@@ -109,7 +111,7 @@ export const renderFooter = (): void => {
               href="https://github.com/EJ252" target="_blank"
                class="btn btn-outline-light btn-floating mx-2 footer__github"
                class="text-white"
-               data-title="Vadim"
+               data-title="Vadzim"
                role="button"
                ><i class="fa fa-github fa-2x"></i
               ></a>

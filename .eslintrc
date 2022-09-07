@@ -9,9 +9,10 @@
   "parserOptions": {
     "project": "./tsconfig.json"
   },
-  "plugins": ["prettier", "import","@typescript-eslint"],
+  "plugins": ["prettier", "import", "@typescript-eslint"],
   "ignorePatterns": ["*.config.js", "node_modules/", "dist/"],
   "rules": {
+    "no-underscore-dangle": ["error", { "allow": ["foo_", "_bar", "_id"] }],
     "no-param-reassign": 0,
     "max-len": ["warn", { "code": 120 }],
     "indent": [
@@ -28,6 +29,6 @@
         "SwitchCase": 1
       }
     ],
-    "import/prefer-default-export": "off"
+    "import/prefer-default-export": "off",
   }
 }

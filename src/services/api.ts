@@ -1,4 +1,4 @@
-import { DateFormat, UserStatisticInterface, WordDifficulty } from "../shared/types";
+import { DateFormat, UserStatisticInterface, WordDifficulty } from '../shared/types';
 
 class API {
   static base = 'https://be-rs-lang.herokuapp.com';
@@ -50,7 +50,7 @@ class API {
     }
 
     const content = await response.json();
-    console.log(content);
+    // console.log(content);
     return content;
   }
 
@@ -62,7 +62,7 @@ class API {
       },
     });
     const content = await response.json();
-    console.log('getUser', content);
+    // console.log('getUser', content);
     return content;
   }
 
@@ -78,7 +78,7 @@ class API {
       body: JSON.stringify({ email: `${email}`, password: `${password}` }),
     });
     const content = await response.json();
-    console.log(content);
+    // console.log(content);
   }
 
   static async deleteUser() {
@@ -101,7 +101,7 @@ class API {
     });
     const content = await response.json();
     localStorage.setItem('userAuthenticationData', JSON.stringify(content));
-    console.log(content);
+    // console.log(content);
     return content;
   }
 
@@ -119,9 +119,14 @@ class API {
     return content;
   }
 
-
-  static async createUserWord(wordId: string, difficulty: string, guessCounter: number, firstShowedDate: DateFormat, learnDate: DateFormat) {
-    const {userId, token} = API.getJwt();
+  static async createUserWord(
+    wordId: string,
+    difficulty: string,
+    guessCounter: number,
+    firstShowedDate: DateFormat,
+    learnDate: DateFormat,
+  ) {
+    const { userId, token } = API.getJwt();
 
     const response = await fetch(`${API.users}/${userId}/words/${wordId}`, {
       method: 'POST',
@@ -132,11 +137,10 @@ class API {
         'Content-Type': 'application/json',
       },
 
-      body: JSON.stringify({ "difficulty": `${difficulty}`, "optional": {guessCounter, firstShowedDate, learnDate} })
-
+      body: JSON.stringify({ difficulty: `${difficulty}`, optional: { guessCounter, firstShowedDate, learnDate } }),
     });
     const content = await response.json();
-    console.log(content, 'create');
+    // console.log(content, 'create');
     return content;
   }
 
@@ -148,12 +152,18 @@ class API {
       },
     });
     const content = await response.json();
-    console.log(content);
+    // console.log(content);
     return content;
   }
 
-  static async updateUserWord(wordId: string, difficulty: string, guessCounter: number, firstShowedDate: Date, learnDate: DateFormat) {
-    const {userId, token} = API.getJwt();
+  static async updateUserWord(
+    wordId: string,
+    difficulty: string,
+    guessCounter: number,
+    firstShowedDate: Date,
+    learnDate: DateFormat,
+  ) {
+    const { userId, token } = API.getJwt();
     const response = await fetch(`${API.users}/${userId}/words/${wordId}`, {
       method: 'PUT',
       headers: {
@@ -162,11 +172,10 @@ class API {
         'Content-Type': 'application/json',
       },
 
-      body: JSON.stringify({ "difficulty": `${difficulty}`, "optional": {guessCounter, firstShowedDate, learnDate} })
-
+      body: JSON.stringify({ difficulty: `${difficulty}`, optional: { guessCounter, firstShowedDate, learnDate } }),
     });
     const content = await response.json();
-    console.log(content, 'updated');
+    // console.log(content, 'updated');
     return content;
   }
 
@@ -179,7 +188,7 @@ class API {
       },
     });
     const content = response.status;
-    console.log(`Server response with status: ${content}`);
+    // console.log(`Server response with status: ${content}`);
   }
 
   // USERS/AGGREGATED WORDS:
@@ -206,11 +215,37 @@ class API {
       },
     });
     const content = await response.json();
-    console.log(content);
+    // console.log(content);
     return content;
   }
 
   // USERS/STATISTICS:
+
+  static async createStatistics() {
+    const { userId, token } = API.getJwt();
+    const response = await fetch(`${API.base}/users/${userId}/statistics`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ "learnedWords": 0, "optional": {
+        [new Date().toLocaleDateString('en-GB')]: {
+          gamesStatistic: {
+            sprintGame: [],
+            audioGame: [],
+            puzzleGame: []
+          },
+          globalStatistic: {
+            learnedWordsToday: 0
+          },
+        },
+      } }),
+    });
+    const content = await response.json();
+    return content;
+  }
 
   static async getStatistics() {
     const { userId, token } = API.getJwt();
@@ -220,11 +255,11 @@ class API {
       },
     });
     const content = await response.json();
-    console.log(content);
+    // console.log(content);
     return content;
   }
 
-  static async upsertStatistics(obj: UserStatisticInterface, learnedWords: number) {
+  static async upsertStatistics(learnedWords: number, obj: UserStatisticInterface) {
     const { userId, token } = API.getJwt();
     const response = await fetch(`${API.base}/users/${userId}/statistics`, {
       method: 'PUT',
@@ -233,10 +268,10 @@ class API {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ "learnedWords": learnedWords, "optional": obj }),
+      body: JSON.stringify({ learnedWords, optional: obj }),
     });
     const content = await response.json();
-    console.log(content);
+    // console.log(content);
     return content;
   }
 
@@ -250,7 +285,7 @@ class API {
       },
     });
     const content = await response.json();
-    console.log(content);
+    // console.log(content);
     return content;
   }
 
@@ -265,7 +300,7 @@ class API {
       },
     });
     const content = await response.json();
-    console.log(content);
+    // console.log(content);
     return content;
   }
 
@@ -294,7 +329,7 @@ class API {
     }
 
     const content = await response.json();
-    console.log(content);
+    // console.log(content);
     localStorage.setItem('userAuthenticationData', JSON.stringify(content));
     return content;
   }

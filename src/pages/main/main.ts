@@ -30,25 +30,10 @@ export const renderMain = (): void => {
           <h3 class="card-title main-title">Games</h3>
           <p class="card-text">For learning words and reinforcing memorization, the application has 2 games:
           Savannah and Sprint, which will help you to "pump" your vocabulary in a playful way.</p>
-          <h3 class="card-title main-title">Statistics</h3>
+          <h3 class="card-title main-title"}>Statistics</h3>
           <p class="card-text">All the progress of training can be viewed in statistics,
           where data for the current day, as well as for the entire training period, are presented.
           The information is presented both in the form of a table and graphs, which is very convenient.</p>
-        </div>
-      </div>
-    </section>
-     <section class="card card__video">
-      <div class="row ">
-        <div class="col-md-3">
-          <h2 class="card-title main-title">Presentation & tutorial</h2>
-        </div>
-        <div class="col-md-9">
-         <div class="ratio ratio-16x9">
-            <iframe src="https://www.youtube.com/embed/vlDzYIIOYmM"
-                    title="YouTube video"
-                    allowfullscreen
-            ></iframe>
-          </div>
         </div>
       </div>
     </section>
@@ -58,13 +43,14 @@ export const renderMain = (): void => {
             </div>
             <div class="row people">
                 <div class="col-md-6 col-lg-4 item">
-                    <div class="box"><img class="rounded-circle" src="../../../assets/Alexej.jpg" alt="ava">
+                    <div class="box"><img class="rounded border border-light"
+                    src="../../../assets/Alexej.jpg" alt="ava">
                         <a href="https://alexej-ilyutik.github.io/rsschool-cv/" target="_blank">
                         <h3 class="name">Alexej Ilyutik</h3></a>
                         <p class="title">Frontend developer</p>
                         <p class="description">Did basic project settings, initial layout, router setup.
                         Designed the main page of the application.
-                        Created the game "Audio Challenge".</p>
+                        Created the game "Audio Challenge". Created the game "Word Puzzle".</p>
                         <div class="social">
                         <a href="https://www.linkedin.com/in/alexej-ilyutik/" target="_blank">
                         <i class="fab fa-linkedin-in"></i></a>
@@ -74,14 +60,15 @@ export const renderMain = (): void => {
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4 item">
-                    <div class="box"><img class="rounded-circle" src="../../../assets/ava.png" alt="ava">
-                        <a href="#" target="_blank">
+                    <div class="box"><img class="rounded border border-light" src="../../../assets/Anton.jpg" alt="ava">
+                        <a href="https://github.com/NewAnton/rsschool-cv/blob/main/cv.md" target="_blank">
                         <h3 class="name">Anton Korobov</h3></a>
                         <p class="title">Frontend developer</p>
                         <p class="description">Created application design. Developed the TextBook page.
-                        Helped to think over the logic of the application.</p>
+                        Helped to think over the logic of the application. Creating a statistics page.</p>
                         <div class="social">
-                        <a href="#" target="_blank">
+                        <a href="http://www.linkedin.com/in/%D0%B0%D0%BD%D1%82%D0%BE%D0%BD-%D0%BA%D0%BE%D1%80%D0%BE%D0%B1%D0%BE%D0%B2-a2a619221"
+                        target="_blank">
                         <i class="fab fa-linkedin-in"></i></a>
                         <a href="https://github.com/NewAnton" target="_blank">
                         <i class="fa fa-github fa-x"></i></a>
@@ -89,14 +76,16 @@ export const renderMain = (): void => {
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4 item">
-                    <div class="box"><img class="rounded-circle" src="../../../assets/ava.png" alt="ava">
-                        <a href="#" target="_blank">
-                        <h3 class="name">Vadim</h3></a>
+                    <div class="box"><img class="rounded border border-light" src="../../../assets/vadzim.jpg"
+                    alt="ava">
+                        <a href="https://ej252.github.io/rsschool-cv/" target="_blank">
+                        <h3 class="name">Vadzim Embala</h3></a>
                         <p class="title">Frontend developer</p>
                         <p class="description">Created the game "Sprint". Created a registration form.
-                        Set up the backend.</p>
+                        Set up the backend. Creation of charts. Statistics layout. Participation in the
+                        development of statistics interfaces.</p>
                         <div class="social">
-                        <a href="#" target="_blank">
+                        <a href="https://www.linkedin.com/in/vadzim-embala-65021b200/" target="_blank">
                         <i class="fab fa-linkedin-in"></i></a>
                         <a href="https://github.com/EJ252" target="_blank">
                         <i class="fa fa-github fa-x"></i></a>

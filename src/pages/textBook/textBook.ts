@@ -7,13 +7,10 @@ import { deleteClassActive } from '../../services/deleteClassActive';
 import { playAllAudioFiles } from '../../components/audioButton/audioButton';
 import { updateWordProperties } from '../../services/updateWordProperties';
 import { getWordProperties } from '../../services/getWordProperties';
-import { renderGamePageContainer } from '../../components/gamePageContainer/gamePageContainer';
-import { startSprintFromTextBook } from '../sprint/sprint';
 import { isLogin } from '../../services/isLogin';
 import { hideElement } from '../../services/hideElement';
 
 export const renderTextBookNavigation = (): void => {
-
   const textBook = `
     <div class="textBook container">
       <h2 class="textBook__title">Text book</h2>
@@ -35,13 +32,17 @@ export const renderTextBookNavigation = (): void => {
           </ul>
         </nav>
         <div class="textBook__games" ${hideElement(storage.isLogin)}>
-          <a href="#/sprint" class="textBook__games_game-button link-direction">
+          <a href="#/sprintBook" class="textBook__games_game-button link-direction">
             <img src="../../assets/sprint-icon.svg" class="textBook__games_game-img" alt="game image"></img>
             <h2 class="textBook__games_game-name">Sprint</h2>
-          </button>
+          </a>
           <a href="#/audio" class="textBook__games_game-button link-direction">
             <img src="../../assets/audio-icon.svg" class="textBook__games_game-img" alt="game image"></img>
-            <h2 class="textBook__games_game-name">Audio-game</h2>
+            <h2 class="textBook__games_game-name">Audio challenge</h2>
+          </a>
+          <a href="#/wordPuzzle" class="textBook__games_game-button link-direction">
+            <img src="../../assets/puzzle-icon.svg" class="textBook__games_game-img" alt="game image"></img>
+            <h2 class="textBook__games_game-name">Word puzzle</h2>
           </a>
           <div class="textBook__games_information">
             <p>Learned ?/20 words on page</p>
@@ -60,37 +61,44 @@ export const setWordStatus = async (wordId: string): Promise<void> => {
   const hardCheckbox = document.getElementById(`${wordId}Hard`) as HTMLInputElement;
   const guessCounterSign = document.getElementById(`${wordId}Counter`) as HTMLElement;
   const { difficultyValue, guessCounterValue } = await getWordProperties(wordId);
-  if (guessCounterValue >= 5 || difficultyValue === 'easy') {
-    learnedCheckbox.checked = true;
-    hardCheckbox.checked = false;
-  } else if (difficultyValue === 'hard') {
+  if (difficultyValue === 'hard') {
     hardCheckbox.checked = true;
     learnedCheckbox.checked = false;
+  } else if (guessCounterValue >= 5 || difficultyValue === 'easy') {
+    learnedCheckbox.checked = true;
+    hardCheckbox.checked = false;
   }
   guessCounterSign.setAttribute('data-guessCounter', guessCounterValue.toString());
   guessCounterSign.innerHTML = `Guessed ${guessCounterValue.toString()} times`;
-}
+};
 
-export const setWordsStatus = async (arrayOfWords: WordInterface[], isUserLogIn:boolean): Promise<void> => {
+export const setWordsStatus = async (arrayOfWords: WordInterface[], isUserLogIn: boolean): Promise<void> => {
   if (isUserLogIn) {
     arrayOfWords.forEach(async element => {
       const wordId = element.id || element._id;
       await setWordStatus(wordId || '');
     });
   }
-}
+};
 
-export const updateLearnWordsCounter = async (isUserLogIn: boolean): Promise<void> => {
+export const updateLearnWordsCounter = async (
+  groupNumber: number,
+  pageNumber: number,
+  isUserLogIn: boolean,
+): Promise<void> => {
   if (isUserLogIn) {
     const learnedWordsCounter = document.querySelector('.textBook__games_information') as HTMLElement;
     const learnedWordArray = await API.getAggregatedWords('easy');
+    let learnedWordsOnPage = 0;
+    for (let i = 0; i < learnedWordArray.length; i += 1) {
+      if (learnedWordArray[i].group === groupNumber && learnedWordArray[i].page === pageNumber) learnedWordsOnPage += 1;
+    }
     storage.learnedWordsOnPage = learnedWordArray;
-    learnedWordsCounter.innerHTML = `<p>Learned ${learnedWordArray.length - 1}/20 words on page</p>`;
+    learnedWordsCounter.innerHTML = `<p>Learned ${learnedWordsOnPage}/20 words on page</p>`;
   }
-}
+};
 
-export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
-: Promise<void> => {
+export const renderTextBoxPage = async (groupNumber: number, pageNumber: number): Promise<void> => {
   storage.wordsListCurrentGroup = groupNumber;
 
   const getWords = async (_groupNumber: number, _pageNumber: number): PageOfWordsInterface => {
@@ -105,7 +113,7 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
   storage.currentPageWords = await arrayOfWords;
 
   const wordsList = document.querySelector('.textBook__words-list') as HTMLElement;
-  storage.wordsListCurrentPage = pageNumber; // update page number
+  storage.wordsListCurrentPage = pageNumber;
   const html = (await arrayOfWords)
     .map(
       element => `
@@ -153,7 +161,7 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
     )
     .join('');
   wordsList.innerHTML = html;
-  updateLearnWordsCounter(storage.isLogin);
+  updateLearnWordsCounter(storage.wordsListCurrentGroup, storage.wordsListCurrentPage, storage.isLogin);
   setWordsStatus(await arrayOfWords, storage.isLogin);
 };
 
@@ -280,10 +288,10 @@ export const addEventWords = (): void => {
     }
     if ((event.target as HTMLInputElement).classList.contains('hard-checkbox')) {
       const wordId = (event.target as HTMLInputElement).getAttribute('data-id')?.toString() || '';
-      if (((event.target as HTMLInputElement)).checked === true) {
+      if ((event.target as HTMLInputElement).checked === true) {
         await updateWordProperties(wordId, undefined, 'hard');
         setWordStatus(wordId);
-        updateLearnWordsCounter(storage.isLogin);
+        updateLearnWordsCounter(storage.wordsListCurrentGroup, storage.wordsListCurrentPage, storage.isLogin);
       } else {
         await updateWordProperties(wordId, undefined, 'normal');
         setWordStatus(wordId);
@@ -291,48 +299,30 @@ export const addEventWords = (): void => {
     }
     if ((event.target as HTMLInputElement).classList.contains('learned-checkbox')) {
       const wordId = (event.target as HTMLInputElement).getAttribute('data-id')?.toString() || '';
-      if (((event.target as HTMLInputElement)).checked === true) {
+      if ((event.target as HTMLInputElement).checked === true) {
         await updateWordProperties(wordId, undefined, 'easy');
         setWordStatus(wordId);
-        updateLearnWordsCounter(storage.isLogin);
+        updateLearnWordsCounter(storage.wordsListCurrentGroup, storage.wordsListCurrentPage, storage.isLogin);
       } else {
         await updateWordProperties(wordId, undefined, 'normal');
         setWordStatus(wordId);
-        updateLearnWordsCounter(storage.isLogin);
+        updateLearnWordsCounter(storage.wordsListCurrentGroup, storage.wordsListCurrentPage, storage.isLogin);
       }
     }
   });
 };
 
-const addEventGames = () => {
-  const textBookGames = <HTMLButtonElement>document.querySelector('.textBook__games');
-  const sprintStartBtn = <HTMLButtonElement>document.getElementById('start-sprint-text-book');
-  // const AudioGameStartBtn = <HTMLButtonElement>document.getElementById('start-audio-game-text-book');
-  textBookGames.addEventListener('click', (e) => {
-    const target = <HTMLElement>e.target;
-    if (sprintStartBtn.contains(target)) {
-      renderGamePageContainer();
-      startSprintFromTextBook();
-    }
-    // if (AudioGameStartBtn.contains(target)) {
-    //   renderGamePageContainer();
-    //   renderAudioPage();
-    // }
-  });
-}
-
 export const addTestBookEvents = (): void => {
   addEventWordsGroup();
   addEventPagination();
   addEventWords();
-  addEventGames();
-}
+};
 
-export const renderTextBook = (): void => {
-  storage.isLogin = isLogin(); // Check
+export const renderTextBook = (groupNumber: number, pageNumber: number): void => {
+  storage.isLogin = isLogin();
   renderTextBookNavigation();
-  renderTextBoxPage(0, 0);
-  renderPagination(0);
+  renderTextBoxPage(groupNumber, pageNumber);
+  renderPagination(pageNumber);
   addTestBookEvents();
   storage.currentPage = 'Book';
 };

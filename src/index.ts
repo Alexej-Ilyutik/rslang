@@ -13,7 +13,9 @@ import { switchLoginMode } from './services/switchLoginMode';
 import { renderGamePage } from './pages/game/game';
 import { renderAudioPage } from './pages/audioGame/audioGame';
 import { renderGamePageContainer } from './components/gamePageContainer/gamePageContainer';
-import { startSprint } from './pages/sprint/sprint';
+import { startSprint, startSprintFromTextBook } from './pages/sprint/sprint';
+import { renderGraphs, renderStatistic } from './pages/statistic/statistic';
+import { renderWordPuzzlePage } from './pages/wordPuzzle/wordPuzzle';
 
 const renderPage = (): void => {
   renderHeader();
@@ -23,42 +25,63 @@ const renderPage = (): void => {
 
 renderPage();
 
-const header = document.getElementById('header');
-header?.insertAdjacentHTML('beforeend', loginForm);
-header?.insertAdjacentHTML('beforeend', registerForm);
+const header = <HTMLElement>document.getElementById('header');
+header.insertAdjacentHTML('beforeend', loginForm);
+header.insertAdjacentHTML('beforeend', registerForm);
 loginHandler();
 registerHandler();
 
 if (isLogin()) switchLoginMode();
 
-const main = document.getElementById('main') as HTMLElement;
-
 const navLinks = Array.from(document.getElementsByClassName('nav-link'));
 
-const onNavigate = (location: string): void => {
+const onNavigate = async (location: string): Promise<void> => {
   switch (location) {
     case '#/main':
       renderMain();
+      renderFooter();
+      localStorage.setItem('currentPage', '#/main');
       break;
     case '#/book':
-      renderTextBook();
+      renderTextBook(0, 0);
+      renderFooter();
+      localStorage.setItem('currentPage', '#/book');
       break;
     case '#/games':
       renderGamePage();
+      renderFooter();
+      localStorage.setItem('currentPage', '#/games');
       break;
     case '#/statistic':
-      main.innerHTML = `<h1>Statistic</h1>`;
+      renderStatistic();
+      renderGraphs();
+      renderFooter();
+      localStorage.setItem('currentPage', '#/statistic');
       break;
     case '#/sprint':
       renderGamePageContainer();
       startSprint();
+      localStorage.setItem('currentPage', '#/sprint');
+      break;
+    case '#/sprintBook':
+      renderGamePageContainer();
+      startSprintFromTextBook();
+      localStorage.setItem('currentPage', '#/sprintBook');
       break;
     case '#/audio':
       renderGamePageContainer();
       renderAudioPage();
+      localStorage.setItem('currentPage', '#/audio');
+      break;
+    case '#/wordPuzzle':
+      renderGamePageContainer();
+      renderWordPuzzlePage();
+      localStorage.setItem('currentPage', '#/wordPuzzle');
       break;
     default:
       renderMain();
+      renderFooter();
+      localStorage.setItem('currentPage', '#/main');
       break;
   }
 };
@@ -78,4 +101,17 @@ window.addEventListener('click', (e: Event) => {
     }
   });
   onNavigate(location);
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  const location = localStorage.getItem('currentPage') as string;
+  deleteClassActive(navLinks);
+  navLinks.forEach(el => {
+    if (el.innerHTML.toLowerCase() === location.slice(2)) {
+      el.classList.add('active');
+    }
+
+  });
+  onNavigate(location);
+
 });

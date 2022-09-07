@@ -5,4 +5,4 @@ export const togglePasswordVisibility = (passwordInput: HTMLInputElement) => {
   } else {
     element.type = 'password';
   }
-}
+};
