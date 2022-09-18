@@ -113,6 +113,12 @@ async function renderContentAudioPage(
   array: WordInterface[],
   progressLine: number,
 ): Promise<void> {
+  let wordId: string | undefined;
+  if (mainWord.id === undefined) {
+    wordId = mainWord._id;
+  } else {
+    wordId = mainWord.id;
+  }
   const mainBlock = `
     <div class = "audiocall__volume">${renderVolumeBtn()}
     </div>
@@ -125,7 +131,7 @@ async function renderContentAudioPage(
           src="../../assets/volume.svg" alt="audio button"
           data-audio="${`${API.base}/${mainWord.audio}`}"
           data-name ="${`${mainWord.wordTranslate}`}"
-          data-id="${`${mainWord.id}`}">
+          data-id="${`${wordId}`}">
         </button>
         <figcaption class="figure-caption">${`${mainWord.word}`} ${`${mainWord.transcription}`} -
         ${`${mainWord.wordTranslate}`}</figcaption>
@@ -137,7 +143,7 @@ async function renderContentAudioPage(
           <img class="word-card_audio-button-image voice__audio" src="../../assets/volume.svg" alt="audio button"
           data-audio="${`${API.base}/${mainWord.audio}`}"
           data-name ="${`${mainWord.wordTranslate}`}"
-          data-id="${`${mainWord.id}`}">
+          data-id="${`${wordId}`}">
         </button>
     </div>
     <div class="audiocall__btns">
@@ -200,6 +206,8 @@ const addEventStartAudioGame = async (): Promise<void> => {
       const btnVoice = document.getElementById('voice-audio') as HTMLElement;
       const value = target.innerHTML.slice(3);
       const getIdWord = btnVoice.getAttribute('data-id') || '';
+      console.log(getIdWord);
+
       const currentWord: WordInterface = await API.getWord(getIdWord);
 
       if (value === btnVoice.getAttribute('data-name')) {
@@ -235,13 +243,15 @@ const addEventStartAudioGame = async (): Promise<void> => {
     if (target.classList.contains('audiocall__next') && progress !== 100) {
       const arrayOptions = getArrOptions(arrWords);
 
-      const newGuessWord = getGuessWord(storage.currentPage, arrWords);
+      const newGuessWord = await getGuessWord(storage.currentPage, arrWords);
+
       arrayOptions.push(newGuessWord);
 
       const newArrayOptions = getUniqueArray(arrayOptions);
       shuffle(newArrayOptions);
 
       renderContentAudioPage(audioContent, newGuessWord, newArrayOptions, progress);
+      console.log(newGuessWord);
 
       playAllAudioFiles([`${API.base}/${newGuessWord.audio}`]);
     } else if (target.classList.contains('audiocall__next') && progress === 100) {
@@ -333,7 +343,8 @@ export const renderAudioPage = async (): Promise<void> => {
       renderPreLoader(audioContent);
       const arrWords = await getAllGroupWords(level);
       const arrOptions = getArrOptions(arrWords);
-      const guessWord = getGuessWord(storage.currentPage, arrWords);
+      const guessWord = await getGuessWord(storage.currentPage, arrWords);
+
       arrOptions.push(guessWord);
       const newArrOptions = getUniqueArray(arrOptions);
       shuffle(newArrOptions);
