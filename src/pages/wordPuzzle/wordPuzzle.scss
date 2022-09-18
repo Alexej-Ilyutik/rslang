@@ -60,6 +60,7 @@
 .wordPuzzle__game-options {
   display: flex;
   gap: 0.8rem;
+  flex-wrap: wrap;
   .options-letter {
     padding: 0.5rem 0.8rem;
     background-color: var(--bs-warning);
@@ -80,6 +81,7 @@
 .wordPuzzle__game-word {
   display: flex;
   gap: 0.5rem;
+  flex-wrap: wrap;
   .word-letter {
     padding: 0.2rem 0.4rem;
     font-size: 1.2rem;
