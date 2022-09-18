@@ -20,6 +20,12 @@ nav {
   border: 0.3rem solid var(--bs-warning);
 }
 
+@media (max-width: 768px) {
+  .textBook {
+    padding: 1rem;
+  }
+}
+
 .textBook__btn-group-wrapper {
   display: flex;
   flex-wrap: wrap;
@@ -62,6 +68,7 @@ nav {
 .textBook__pagination_list {
   gap: 0.2rem;
   margin-bottom: 2rem;
+  flex-wrap: wrap;
   .page-link {
     width: 40px;
     padding: 0.3rem 0.5rem;
@@ -257,6 +264,14 @@ nav {
     flex-wrap: wrap;
     gap: 1rem;
     justify-content: space-between;
+  }
+}
+
+@media (max-width: 768px) {
+  .textBook__games {
+    .textBook__games-control {
+      justify-content: center;
+    }
   }
 }
 
