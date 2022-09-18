@@ -20,6 +20,12 @@ nav {
   border: 0.3rem solid var(--bs-warning);
 }
 
+@media (max-width: 768px) {
+  .textBook {
+    padding: 1rem;
+  }
+}
+
 .textBook__btn-group-wrapper {
   display: flex;
   flex-wrap: wrap;
@@ -62,6 +68,7 @@ nav {
 .textBook__pagination_list {
   gap: 0.2rem;
   margin-bottom: 2rem;
+  flex-wrap: wrap;
   .page-link {
     width: 40px;
     padding: 0.3rem 0.5rem;
@@ -247,15 +254,25 @@ nav {
 }
 
 .textBook__games {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: space-between;
   padding: 1rem 2rem;
   margin-top: 1rem;
   box-shadow: 0 4px 21px -12px rgba(0, 0, 0, 0.66);
   border-radius: 0.5rem;
   background-color: var(--bg-second);
+  .textBook__games-control {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 768px) {
+  .textBook__games {
+    .textBook__games-control {
+      justify-content: center;
+    }
+  }
 }
 
 .textBook__games_game-img {
@@ -302,3 +319,10 @@ nav {
 }
 
 //min-width: 1200, 992, 768, 576, 320
+
+.hard-message {
+  display: none;
+  font-size: 3rem;
+  text-align: center;
+  padding: 2rem;
+}
