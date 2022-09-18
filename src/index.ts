@@ -86,23 +86,6 @@ const onNavigate = async (location: string): Promise<void> => {
   }
 };
 
-window.addEventListener('click', (e: Event) => {
-  const target = e.target as HTMLAnchorElement;
-  const link = target.closest('.link-direction') as HTMLAnchorElement | null;
-
-  if (!link) return;
-
-  deleteClassActive(navLinks);
-
-  const location = link.href.split('/').slice(-2).join('/');
-  navLinks.forEach(el => {
-    if (el.innerHTML === target.innerHTML) {
-      el.classList.add('active');
-    }
-  });
-  onNavigate(location);
-});
-
 document.addEventListener('DOMContentLoaded', () => {
   const location = localStorage.getItem('currentPage') as string;
   deleteClassActive(navLinks);
@@ -110,8 +93,22 @@ document.addEventListener('DOMContentLoaded', () => {
     if (el.innerHTML.toLowerCase() === location.slice(2)) {
       el.classList.add('active');
     }
-
   });
   onNavigate(location);
-
 });
+
+window.addEventListener(
+  'popstate',
+  (): void => {
+    const location = window.document.URL.split('/').slice(-2).join('/');
+    deleteClassActive(navLinks);
+    navLinks.forEach(el => {
+      if (el.innerHTML.toLowerCase() === location.slice(2)) {
+        el.classList.add('active');
+      }
+    });
+    onNavigate(location);
+  },
+  false,
+);
+

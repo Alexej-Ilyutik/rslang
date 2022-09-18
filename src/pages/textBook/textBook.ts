@@ -101,10 +101,16 @@ export const updateLearnWordsCounter = async (
       }
     }
     const gamesArea = document.querySelector('.textBook__games') as HTMLElement;
-    gamesArea.classList.remove('hidden-element');
+    if (gamesArea) {
+      gamesArea.classList.remove('hidden-element');
+    }
+
+    // gamesArea.classList.remove('hidden-element');
+    // gamesArea.style.display = 'flex';
 
     if (learnedWordsOnPage === storage.limitOfWordsOnPage) {
       gamesArea.classList.add('hidden-element');
+      // gamesArea.style.display = 'none';
     }
     storage.learnedWordsOnPage = learnedWordsOnPage;
     learnedWordsCounter.innerHTML = `<p>Learned ${learnedWordsOnPage}/20 words on page</p>`;
@@ -113,9 +119,8 @@ export const updateLearnWordsCounter = async (
 
 export const renderTextBoxPage = async (groupNumber: number, pageNumber: number): Promise<void> => {
   storage.wordsListCurrentGroup = groupNumber;
-  const gamesArea = document.querySelector('.textBook__games') as HTMLElement;
   const messageArea = document.querySelector('.hard-message') as HTMLElement;
-  gamesArea.style.display = 'flex';
+
   messageArea.style.display = 'none';
 
   const spinner = `
@@ -134,7 +139,6 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
       const arrayOfWords: PageOfWordsInterface = await API.getAggregatedWords('hard');
 
       if ((await arrayOfWords).length === 0) {
-        gamesArea.style.display = 'none';
         messageArea.style.display = 'block';
       }
 
