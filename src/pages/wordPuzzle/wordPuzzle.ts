@@ -117,6 +117,12 @@ const renderLife = (block: HTMLElement, num: number): void => {
 };
 
 async function renderContentWordPuzzlePage(block: HTMLElement, mainWord: WordInterface): Promise<void> {
+  let wordId: string | undefined;
+  if (mainWord.id === undefined) {
+    wordId = mainWord._id;
+  } else {
+    wordId = mainWord.id;
+  }
   const mainBlock = `
   <div class = "audiocall__volume">${renderVolumeBtn()}
     </div>
@@ -133,7 +139,7 @@ async function renderContentWordPuzzlePage(block: HTMLElement, mainWord: WordInt
           src="../../assets/volume.svg" alt="audio button"
           data-audio="${`${API.base}/${mainWord.audio}`}"
           data-name ="${`${mainWord.word}`}"
-          data-id="${`${mainWord.id}`}">
+          data-id="${`${wordId}`}">
         </button>
         <figcaption class="figure-caption">${`${mainWord.wordTranslate}`}</figcaption>
       </div>
@@ -249,7 +255,7 @@ const addEventStartWordPuzzleGame = async (): Promise<void> => {
       allAnswerRez += 1;
       renderPreLoader(audioContent);
       const arrWords = await getAllGroupWords(level);
-      const newGuessWord = getGuessWord(storage.currentPage, arrWords);
+      const newGuessWord = await getGuessWord(storage.currentPage, arrWords);
 
       const newArrOptions = newGuessWord.word.split('');
       shuffle(newArrOptions);
@@ -296,7 +302,7 @@ export const renderWordPuzzlePage = async (): Promise<void> => {
       }
       renderPreLoader(audioContent);
       const arrWords = await getAllGroupWords(level);
-      const guessWord = getGuessWord(storage.currentPage, arrWords);
+      const guessWord = await getGuessWord(storage.currentPage, arrWords);
 
       const arrOptions = guessWord.word.split('');
       shuffle(arrOptions);
