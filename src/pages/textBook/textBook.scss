@@ -302,3 +302,11 @@ nav {
 }
 
 //min-width: 1200, 992, 768, 576, 320
+
+.hard-message{
+  display: none;
+  box-shadow: 0 4px 21px -12px rgb(0 0 0 / 66%);
+  border-radius: 0.5rem;
+  background-color: var(--bg-second);
+  padding: 3rem;
+}

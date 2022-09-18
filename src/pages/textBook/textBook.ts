@@ -51,6 +51,11 @@ export const renderTextBookNavigation = (): void => {
         <ul class="textBook__words-list">
         </ul>
       </div>
+      <div class="card text-center hard-message">
+        <div class="card-body">
+          <h3 class="card-title">You don't have "Hard words"!</h3>
+        </div>
+      </div>
     </div>`;
   const main = document.getElementById('main') as HTMLElement;
   main.innerHTML = textBook;
@@ -97,6 +102,7 @@ export const updateLearnWordsCounter = async (
     }
     const gamesArea = document.querySelector('.textBook__games') as HTMLElement;
     gamesArea.classList.remove('hidden-element');
+
     if (learnedWordsOnPage === storage.limitOfWordsOnPage) {
       gamesArea.classList.add('hidden-element');
     }
@@ -107,6 +113,10 @@ export const updateLearnWordsCounter = async (
 
 export const renderTextBoxPage = async (groupNumber: number, pageNumber: number): Promise<void> => {
   storage.wordsListCurrentGroup = groupNumber;
+  const gamesArea = document.querySelector('.textBook__games') as HTMLElement;
+  const messageArea = document.querySelector('.hard-message') as HTMLElement;
+  gamesArea.style.display = 'flex';
+  messageArea.style.display = 'none';
 
   const spinner = `
   <div class="spinner-wrapper">
@@ -122,6 +132,12 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
   const getWords = async (_groupNumber: number, _pageNumber: number): PageOfWordsInterface => {
     if (_groupNumber === 6) {
       const arrayOfWords: PageOfWordsInterface = await API.getAggregatedWords('hard');
+
+      if ((await arrayOfWords).length === 0) {
+        gamesArea.style.display = 'none';
+        messageArea.style.display = 'block';
+      }
+
       return arrayOfWords;
     }
     const arrayOfWords: PageOfWordsInterface = await API.getWords(_groupNumber, _pageNumber);
