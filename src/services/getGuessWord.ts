@@ -12,6 +12,5 @@ export async function getGuessWord(currentPage: string | null, arr: WordInterfac
   } else {
     guessWordCur = arr[getRandomNumber(0, 599)];
   }
-  console.log(currentPage);
   return guessWordCur;
 }

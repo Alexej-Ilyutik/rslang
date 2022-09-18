@@ -206,7 +206,6 @@ const addEventStartAudioGame = async (): Promise<void> => {
       const btnVoice = document.getElementById('voice-audio') as HTMLElement;
       const value = target.innerHTML.slice(3);
       const getIdWord = btnVoice.getAttribute('data-id') || '';
-      console.log(getIdWord);
 
       const currentWord: WordInterface = await API.getWord(getIdWord);
 
@@ -251,7 +250,6 @@ const addEventStartAudioGame = async (): Promise<void> => {
       shuffle(newArrayOptions);
 
       renderContentAudioPage(audioContent, newGuessWord, newArrayOptions, progress);
-      console.log(newGuessWord);
 
       playAllAudioFiles([`${API.base}/${newGuessWord.audio}`]);
     } else if (target.classList.contains('audiocall__next') && progress === 100) {
