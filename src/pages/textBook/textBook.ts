@@ -32,29 +32,28 @@ export const renderTextBookNavigation = (): void => {
           </ul>
         </nav>
         <div class="textBook__games" ${hideElement(storage.isLogin)}>
-          <a href="#/sprintBook" class="textBook__games_game-button link-direction">
-            <img src="../../assets/sprint-icon.svg" class="textBook__games_game-img" alt="game image"></img>
-            <h2 class="textBook__games_game-name">Sprint</h2>
-          </a>
-          <a href="#/audio" class="textBook__games_game-button link-direction">
-            <img src="../../assets/audio-icon.svg" class="textBook__games_game-img" alt="game image"></img>
-            <h2 class="textBook__games_game-name">Audio challenge</h2>
-          </a>
-          <a href="#/wordPuzzle" class="textBook__games_game-button link-direction">
-            <img src="../../assets/puzzle-icon.svg" class="textBook__games_game-img" alt="game image"></img>
-            <h2 class="textBook__games_game-name">Word puzzle</h2>
-          </a>
-          <div class="textBook__games_information">
-            <p>Learned ?/20 words on page</p>
+          <div class="textBook__games-control">
+              <a href="#/sprintBook" class="textBook__games_game-button link-direction">
+                <img src="../../assets/sprint-icon.svg" class="textBook__games_game-img" alt="game image"></img>
+                <h2 class="textBook__games_game-name">Sprint</h2>
+              </a>
+              <a href="#/audio" class="textBook__games_game-button link-direction">
+                <img src="../../assets/audio-icon.svg" class="textBook__games_game-img" alt="game image"></img>
+                <h2 class="textBook__games_game-name">Audio challenge</h2>
+              </a>
+              <a href="#/wordPuzzle" class="textBook__games_game-button link-direction">
+                <img src="../../assets/puzzle-icon.svg" class="textBook__games_game-img" alt="game image"></img>
+                <h2 class="textBook__games_game-name">Word puzzle</h2>
+              </a>
+              <div class="textBook__games_information">
+                <p>Learned ?/20 words on page</p>
+              </div>
           </div>
+
+          <h3 class="card-title hard-message">You don't have "Hard words"!</h3>
         </div>
         <ul class="textBook__words-list">
         </ul>
-      </div>
-      <div class="card text-center hard-message">
-        <div class="card-body">
-          <h3 class="card-title">You don't have "Hard words"!</h3>
-        </div>
       </div>
     </div>`;
   const main = document.getElementById('main') as HTMLElement;
@@ -103,14 +102,11 @@ export const updateLearnWordsCounter = async (
     const gamesArea = document.querySelector('.textBook__games') as HTMLElement;
     if (gamesArea) {
       gamesArea.classList.remove('hidden-element');
+      //  controlArea.style.display = 'flex';
     }
-
-    // gamesArea.classList.remove('hidden-element');
-    // gamesArea.style.display = 'flex';
 
     if (learnedWordsOnPage === storage.limitOfWordsOnPage) {
       gamesArea.classList.add('hidden-element');
-      // gamesArea.style.display = 'none';
     }
     storage.learnedWordsOnPage = learnedWordsOnPage;
     learnedWordsCounter.innerHTML = `<p>Learned ${learnedWordsOnPage}/20 words on page</p>`;
@@ -120,8 +116,10 @@ export const updateLearnWordsCounter = async (
 export const renderTextBoxPage = async (groupNumber: number, pageNumber: number): Promise<void> => {
   storage.wordsListCurrentGroup = groupNumber;
   const messageArea = document.querySelector('.hard-message') as HTMLElement;
+  const controlArea = document.querySelector('.textBook__games-control') as HTMLElement;
 
   messageArea.style.display = 'none';
+  controlArea.style.display = 'flex';
 
   const spinner = `
   <div class="spinner-wrapper">
@@ -140,6 +138,7 @@ export const renderTextBoxPage = async (groupNumber: number, pageNumber: number)
 
       if ((await arrayOfWords).length === 0) {
         messageArea.style.display = 'block';
+        controlArea.style.display = 'none';
       }
 
       return arrayOfWords;

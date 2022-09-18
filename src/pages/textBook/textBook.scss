@@ -247,15 +247,17 @@ nav {
 }
 
 .textBook__games {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: space-between;
   padding: 1rem 2rem;
   margin-top: 1rem;
   box-shadow: 0 4px 21px -12px rgba(0, 0, 0, 0.66);
   border-radius: 0.5rem;
   background-color: var(--bg-second);
+  .textBook__games-control {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-between;
+  }
 }
 
 .textBook__games_game-img {
@@ -303,10 +305,9 @@ nav {
 
 //min-width: 1200, 992, 768, 576, 320
 
-.hard-message{
+.hard-message {
   display: none;
-  box-shadow: 0 4px 21px -12px rgb(0 0 0 / 66%);
-  border-radius: 0.5rem;
-  background-color: var(--bg-second);
-  padding: 3rem;
+  font-size: 3rem;
+  text-align: center;
+  padding: 2rem;
 }
